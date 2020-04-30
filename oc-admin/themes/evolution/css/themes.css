@@ -1,0 +1,241 @@
+* {
+    box-sizing: border-box !important;
+}
+h2 {
+    font-size: 1.5rem !important;
+}
+h3 {
+    font-size: 1.3rem !important;
+    margin: 10px 0 !important;
+}
+img {
+    /*margin: 15px 0 !important;*/
+}
+li {
+    list-style: none;
+}
+.flashmessage p,
+.alert p {
+    margin: 0 !important;
+}
+.clear {
+    clear: both;
+}
+.container-fluid {
+    box-sizing: border-box !important;
+    line-height: initial !important;
+}
+.container-fluid .card,
+.container-fluid .card div {
+    box-sizing: content-box !important;
+}
+.card .fileinput-new:hover {
+    cursor: pointer !important;
+}
+.card .btn{
+    height: 40px !important;
+    color: #fff;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    padding: 0.40625rem 1.25rem !important;
+    background-color: #2CA8FF;
+    border-color: #2CA8FF;
+    line-height: 1;
+    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+}
+.card .btn:hover {
+    color: #fff;
+    background-color: #00aec5;
+    border-color: #008697;
+    cursor: pointer !important;
+}
+.card .btn.btn-sm,
+.card .btn.btn-mini {
+    height: 30px !important;
+}
+.card .form-actions .btn {
+    margin-top: 15px;
+}
+.card .btn.btn-submit,
+.btn-submit {
+    background-color: #2CA8FF !important;
+    border-color: #2CA8FF !important;
+}
+.card .btn.btn-submit:hover,
+.btn-submit:hover {
+    background-color: #00aec5 !important;
+    border-color: #008697 !important;
+}
+.card .btn.btn-red {
+    color: #fff;
+    background-color: #f44336;
+    border-color: #f44336;
+    box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+.card .btn.btn-red:hover {
+    color: #fff;
+    background-color: #f33527;
+    border-color: #e11b0c;
+}
+.card .btn.btn-success {
+    color: #fff;
+    background-color: #4caf50;
+    border-color: #4caf50;
+    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
+}
+.card .btn.btn-success:hover {
+    color: #fff;
+    background-color: #47a44b;
+    border-color: #39843c;
+}
+.card .dropdown-toggle.btn {
+    font-size: 11px !important;
+    height: 30px !important;
+    margin: 5px 0 !important;
+    line-height: 1.5 !important;
+}
+.card .btn.btn-file {
+    font-weight: 400;
+    line-height: 2.2;
+    /*height: 35px !important;*/
+    /*margin-top: 5px !important;*/
+}
+.form-row {
+    display: block;
+}
+.form-horizontal .form-row {
+    margin-bottom: 15px;
+}
+.form-horizontal .form-label {
+    width: 200px;
+    padding: 5px 15px 10px;
+    text-align: right;
+    float: left;
+    clear: both;
+}
+.form-horizontal .form-label.wide {
+    width: 300px !important;
+    max-width: 300px !important;
+}
+.form-horizontal .form-controls {
+    margin-left: 230px;
+}
+.form-horizontal .form-label.wide + .form-controls {
+    margin-left: 350px !important;
+}
+.form-actions {
+    border-top: 2px solid #ddd;
+    margin: 30px 0;
+}
+input[type="text"] {
+    text-align: center;
+    min-width: 250px;
+}
+input[type="number"] {
+    display: inline-block;
+    width: 208px;
+    height: 18px;
+    padding: 4px 6px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    vertical-align: baseline;
+    box-sizing: content-box !important;
+}
+input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-size: 23px;
+    cursor: pointer !important;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    direction: ltr;
+}
+textarea {
+    min-height: 25px !important;
+}
+input[type="text"], textarea {
+    color: #495057;
+    background: no-repeat center bottom, center calc(100% - 1px);
+    background-size: 0 100%, 100% 100%;
+    background-image: linear-gradient(to top, #2ca8ff 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px) !important;
+    border: 0;
+    height: 36px;
+    transition: background 0s ease-out;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+    font-size: 14px;
+}
+.form-controls.input-group-focus input[type="text"],
+.form-controls.input-group-focus textarea {
+    background-image: linear-gradient(to top, #2ca8ff 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px) !important;
+    background-size: 100% 100%, 100% 100%;
+    transition-duration: 0.3s;
+    box-shadow: none;
+}
+select:not([multiple]) {
+    border: none !important;
+    background: transparent !important;
+}
+button.ui-dialog-titlebar-close:before {
+    content: 'x';
+    font-size: 15px;
+    font-weight: 600;
+    position: relative;
+    top: -6px;
+    left: 1px;
+    color: #222;
+}
+.help-box {
+    color: #6c757d !important;
+    display: block !important;
+    box-sizing: content-box !important;
+}
+.dropdown-menu.show li a {
+    color: #333;
+}
+.mb-row-select-multiple select {
+    height: auto;
+    -webkit-appearance: initial!important;
+    min-width: 240px;
+    min-height: 160px;
+}
+.bootstrap-switch {
+    height: auto;
+}
+.container-fluid .card .mb-body,
+.container-fluid .mb-body div {
+    box-sizing: border-box !important;
+}
+.hurkanSwitch>.hurkanSwitch-switch-box.switch-animated-on>.hurkanSwitch-switch-item.active .lbl {
+    overflow-wrap: normal;
+}
+
+@media screen and (max-width: 400px) {
+    .card-themes .form-horizontal .form-label {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 100% !important;
+        float: none !important;
+        text-align: left !important;
+    }
+    .card-themes .form-horizontal .form-controls {
+        margin-left: 0;
+    }
+    .card-themes .form-horizontal textarea {
+        width: 100% !important;
+    }
+}

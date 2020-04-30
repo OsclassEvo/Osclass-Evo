@@ -1,0 +1,81 @@
+.hummingbird-treeview,
+.hummingbird-treeview *
+{
+    list-style: none;
+    font-size: 14px;
+    line-height: 24px;
+}
+.hummingbird-treeview {
+    margin-top: 20px!important;
+    max-height: 400px;
+    overflow: hidden;
+    /*overflow-y: auto;*/
+    /*overflow-x: hidden;*/
+}
+.hummingbird-base {
+    padding-left: 0;
+}
+.hummingbird-base i {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    z-index: 999;
+}
+.hummingbird-base .form-check .form-check-label {
+    padding-left: 0;
+    top: 1px;
+}
+.hummingbird-base .form-check,
+.hummingbird-base label.form-check-label {
+    display: inline-block;
+    width: 100%;
+    left: 3px;
+}
+.hummingbird-base label.form-check-label span {
+    position: relative!important;
+    float: none;
+}
+.hummingbird-base .form-check .form-check-sign .check {
+    position: relative!important;
+    display: inline-block!important;
+    float: left;
+    margin-right: 7px;
+    top: 1px;
+}
+hummingbird-base .form-check .form-check-sign:before {
+    height: 0!important;
+    width: 0!important;
+}
+.hummingbird-treeview label {
+    font-weight: normal;
+}
+.hummingbird-treeview input[type=checkbox] {
+    width : 16px;
+    height :16px;
+    padding: 0px;
+    margin: 0px;
+}
+.hummingbird-treeview ul:not(.hummingbird-base) {
+    display: none;
+}
+.hummingbird-treeview .fa {
+    font-style: normal;
+    cursor: pointer;
+}
+.hummingbird-treeview .fas {
+    font-style: normal;
+    cursor: pointer;
+}
+.hummingbird-base {
+    white-space:nowrap;
+}
+
+.hummingbird-treeview.ps-container>.ps-scrollbar-x-rail {
+    display: none !important;
+}
+
+@media screen and (max-width: 400px) {
+    .hummingbird-treeview {
+        margin-top: 0 !important;
+    }
+}
