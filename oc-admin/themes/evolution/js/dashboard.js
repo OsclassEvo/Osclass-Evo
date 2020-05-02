@@ -58,7 +58,9 @@ $(document).ready(function () {
 
     md.initMinimizeSidebar();
 
-    $('.themes-list').equalize({children: 'img'});
+    if($('.themes-list').length) {
+        $('.themes-list').equalize({children: 'img'});
+    }
 
     // Multilevel Dropdown menu
 
