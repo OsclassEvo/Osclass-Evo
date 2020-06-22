@@ -414,7 +414,8 @@ $(document).ready(function () {
     }
 
     //  Activate the tooltips
-    $('[rel="tooltip"]').tooltip({trigger: 'hover'});
+    $('table [rel="tooltip"]').tooltip({trigger: 'hover', container: '.main-panel'});
+    $('.themes-list [rel="tooltip"]').tooltip({trigger: 'hover', container: 'body'});
 
     // Activate Popovers
     $('[data-toggle="popover"]').popover();

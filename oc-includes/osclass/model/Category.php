@@ -439,7 +439,7 @@
         {
             $results = $this->listWhere('a.pk_i_id = %d', (int)$categoryID);
 
-            if(count($results) > 0) {
+            if(count($results) && $results[0]['fk_i_parent_id']) {
                 return $this->findRootCategory( $results[0]['fk_i_parent_id'] );
             }
 

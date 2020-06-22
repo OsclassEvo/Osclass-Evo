@@ -214,6 +214,9 @@ input[type="text"]:not(.label_better),
     background-color: #f3f3f3;
     padding: 10px;
 }
+.card .info {
+    max-width: 100%;
+}
 div.form-horizontal .form-row {
     display: block;
 }

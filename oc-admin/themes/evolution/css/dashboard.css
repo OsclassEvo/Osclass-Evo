@@ -11226,21 +11226,21 @@ fieldset[disabled] .form-group.is-focused .form-check .form-check-label {
   opacity: 0.2;
 }
 
-.form-check .form-check-input:checked+.form-check-sign .check {
+.form-check .form-check-input:checked~.form-check-sign .check {
   background: #2CA8FF;
 }
 
-.form-check .form-check-input:checked+.form-check-sign .check:before {
+.form-check .form-check-input:checked~.form-check-sign .check:before {
   color: #FFFFFF;
   box-shadow: 0 0 0 10px, 10px -10px 0 10px, 32px 0 0 20px, 0px 32px 0 20px, -5px 5px 0 10px, 20px -12px 0 11px;
   animation: checkboxOn 0.3s forwards;
 }
 
-.form-check .form-check-input:checked+.form-check-sign:before {
+.form-check .form-check-input:checked~.form-check-sign:before {
   animation: rippleOn 500ms;
 }
 
-.form-check .form-check-input:checked+.form-check-sign .check:after {
+.form-check .form-check-input:checked~.form-check-sign .check:after {
   animation: rippleOn 500ms forwards;
 }
 
@@ -17559,28 +17559,28 @@ li.pagination-input button:hover {
   color: #2CA8FF;
 }
 
-.autocomplete-suggestions { 
+.autocomplete-suggestions {
     border: 2px solid #2ca8ff;
     border-top: none;
-    border-radius: 0 0 5px 5px; 
-    background: #f9f9f9; 
-    overflow: auto; 
+    border-radius: 0 0 5px 5px;
+    background: #f9f9f9;
+    overflow: auto;
 }
 
 .autocomplete-suggestion,
-.autocomplete-no-suggestion { 
-    padding: 5px; 
-    white-space: nowrap; 
-    overflow: hidden; 
+.autocomplete-no-suggestion {
+    padding: 5px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.autocomplete-selected { 
+.autocomplete-selected {
     cursor: pointer;
-    background: rgba(153, 153, 153, 0.2); 
+    background: rgba(153, 153, 153, 0.2);
 }
 
-.autocomplete-suggestions strong { 
-    color: #2ca8ff; 
+.autocomplete-suggestions strong {
+    color: #2ca8ff;
 }
 
 .autocomplete-search::before {
@@ -20240,7 +20240,8 @@ li.pagination-input button:hover {
   margin-bottom: 0;
   font-size: 1em;
   color: #3C4858;
-  padding-top: 0px;
+  margin-top: 0!important;
+  padding-top: 0!important;
 }
 
 .fixed-plugin .adjustments-line a .badge-colors {
@@ -20257,8 +20258,8 @@ li.pagination-input button:hover {
 }
 
 .fixed-plugin .dropdown-menu>li.adjustments-line>a {
-  padding-right: 0;
-  padding-left: 0;
+  padding-left: 0!important;
+  padding-right: 0!important;
   /*border-bottom: 1px solid #ddd;*/
   border-radius: 0;
   margin: 0;
@@ -20270,14 +20271,12 @@ li.pagination-input button:hover {
   border-radius: 10px;
   background-color: #FFF;
   border: 3px solid #FFF;
-  padding-left: 0;
-  padding-right: 0;
   opacity: 1;
   cursor: pointer;
   display: block;
   max-height: 100px;
   overflow: hidden;
-  padding: 0;
+  padding: 0!important;
   min-width: 25%;
 }
 

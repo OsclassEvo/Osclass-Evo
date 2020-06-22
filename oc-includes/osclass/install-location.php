@@ -24,6 +24,7 @@ require_once LIB_PATH . 'osclass/helpers/hLocale.php';
 require_once LIB_PATH . 'osclass/helpers/hPreference.php';
 require_once LIB_PATH . 'osclass/helpers/hPlugins.php';
 require_once LIB_PATH . 'osclass/helpers/hTranslations.php';
+require_once LIB_PATH . 'osclass/helpers/hUtils.php'; // delete it in future
 require_once LIB_PATH . 'osclass/compatibility.php';
 require_once LIB_PATH . 'osclass/default-constants.php';
 require_once LIB_PATH . 'osclass/formatting.php';
@@ -46,11 +47,11 @@ $json_message['email_status']   = $result['email_status'];
 $json_message['password']       = $result['s_password'];
 
 // create market.osclass.org account
-if(Params::getParam('createmarketaccount')!='' && Params::getParam('createmarketaccount')==1) {
-    create_market_account();
-}
+//if(Params::getParam('createmarketaccount')!='' && Params::getParam('createmarketaccount')==1) {
+//    create_market_account();
+//}
 
-if($_POST['skip-location-input']==0 && $_POST['country-input']!='skip') {
+if(!$_POST['skip_location_input'] && $_POST['location_api'] != 'skip') {
     $msg = install_locations();
     $json_message['status'] = $msg;
 }
@@ -77,6 +78,7 @@ function basic_info() {
     }
 
     $password = Params::getParam('s_passwd', false, false);
+
     if( $password == '' ) {
         $password = osc_genRandomPassword();
     }
@@ -109,6 +111,8 @@ function basic_info() {
         )
     );
 
+    osc_evo_activation('new_installation');
+
     $body  = sprintf(__('Hi %s,'),Params::getParam('webtitle'))."<br/><br/>";
     $body .= sprintf(__('Your Osclass Evolution installation at %s is up and running. You can access the administration panel with these details:'), WEB_PATH) . '<br/>';
     $body .= '<ul>';
@@ -126,7 +130,7 @@ function basic_info() {
     if ( substr( $sitename, 0, 4 ) == 'www.' ) {
         $sitename = substr( $sitename, 4 );
     }
-
+ 
     try{
         require_once LIB_PATH . 'phpmailer/class.phpmailer.php';
         $mail = new PHPMailer(true);
@@ -148,9 +152,29 @@ function basic_info() {
     }
 }
 
-function install_locations ( ) {
+function install_locations() {
+    $location = Params::getParam('location_api');
 
-    $country = Params::getParam("country-input");
+    if($location) {
+        $sql = osc_file_get_contents(osc_get_locations_sql_url($location));
+
+        if($sql) {
+            $conn = DBConnectionClass::newInstance();
+            $c_db = $conn->getOsclassDb();
+            $comm = new DBCommandClass( $c_db );
+            $comm->query('SET FOREIGN_KEY_CHECKS = 0');
+
+            $imported = $comm->importSQL($sql);
+
+            $comm->query('SET FOREIGN_KEY_CHECKS = 1');
+
+            return true;
+        }
+    }
+
+    return false;
+
+/*    $country = Params::getParam("country-input");
     $region = Params::getParam("region-input");
     $city = Params::getParam("city-input");
 
@@ -176,7 +200,6 @@ function install_locations ( ) {
     $comm->query("SET FOREIGN_KEY_CHECKS = 0");
     $imported = $comm->importSQL($data_sql);
     $comm->query("SET FOREIGN_KEY_CHECKS = 1");
-    return $imported;
+    return $imported;*/
 }
-
 ?>

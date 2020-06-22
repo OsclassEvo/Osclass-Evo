@@ -859,6 +859,8 @@ function display_database_config() {
 }
 
 function display_target() {
+    require_once LIB_PATH . 'osclass/helpers/hUtils.php';
+    /*
     $country_list = osc_file_get_contents('https://geo.osclass.org/newgeo.services.php?action=countries');
     $country_list = json_decode(substr($country_list, 1, strlen($country_list)-2), true);
 
@@ -870,12 +872,23 @@ function display_target() {
         $region_list = osc_file_get_contents('https://geo.osclass.org/newgeo.services.php?action=regions&country='.$match[2]);
         $region_list = json_decode(substr($region_list, 1, strlen($region_list)-2), true);
     }
+    */
 
-    if(!isset($country_list[0]) || !isset($country_list[0]['s_name'])) {
-        $internet_error = true;
+    $countries = osc_get_countries_list_api();
+
+    $country_ip = '';
+
+    if(preg_match('/([a-z]{2})-([A-Z]{2})|([a-z]{2})/', Params::getServerParam('HTTP_ACCEPT_LANGUAGE'), $match)) {
+        if(!$match[1]) {
+            $country_ip = $match[0];
+        } else {
+            $country_ip = $match[1];
+        }
     }
 
-
+    if(!isset($countries[0]) || !isset($countries[0]['name'])) {
+        $internet_error = true;
+    }
     ?>
     <form id="target_form" class="has-form-actions form-horizontal" name="target_form" action="#" method="post">
         <input id="form-validated" type="hidden" name="form_validated" value="0" />
@@ -928,7 +941,7 @@ function display_target() {
         </fieldset>
 
         <?php if(!$internet_error): ?>
-            <input type="hidden" id="skip-location-input" name="skip-location-input" value="0" />
+            <input type="hidden" id="skip-location-input" name="skip_location_input" value="0" />
             <input type="hidden" id="country-input" name="country-input" value="" />
             <input type="hidden" id="region-input" name="region-input" value="" />
             <input type="hidden" id="city-input" name="city-input" value="" />
@@ -937,53 +950,20 @@ function display_target() {
                 <legend><?php _e('Location'); ?></legend>
 
                 <div class="row no-gutters">
-                    <label class="col-lg-1 col-form-label form-label text-left"><?php _e('Choose countries/cities where your target users are located'); ?></label>
+                    <label class="col-lg-1 col-form-label form-label text-left"><?php _e('Choose country where your target users are located'); ?></label>
                     <div class="col-lg-9">
-                        <select class="selectpicker show-tick" name="country_select" data-dropup-auto="false" data-size="7" data-width="75%" data-style="btn btn-info btn-sm">
+                        <select id="location-api" class="selectpicker show-tick" name="location_api" data-dropup-auto="false" data-size="7" data-width="75%" data-style="btn btn-info btn-sm">
                             <option value="skip"><?php _e("Skip location"); ?></option>
-                            <?php foreach($country_list as $c): ?>
-                                <option value="<?php echo $c['code']; ?>" <?php if($c['code'] == $country_ip) { echo 'selected'; } ?>><?php echo $c['s_name']; ?></option>
+
+                            <?php foreach($countries as $c): ?>
+                                <option value="<?php echo $c['country_code']; ?>" <?php if($c['country_code'] == $country_ip) echo 'selected'; ?>><?php echo $c['name']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
-
-                <div class="row no-gutters fc-limited">
-                    <label class="col-lg-1 col-form-label form-label text-left"><?php _e('Core updates'); ?></label>
-                    <div class="col-lg-9">
-                        <select id="region_select" class="selectpicker show-tick" name="region_select" data-dropup-auto="false" data-size="7" data-width="75%" data-style="btn btn-info btn-sm">
-                            <option value="all"><?php _e("All regions"); ?></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row no-gutters fc-limited">
-                    <label class="col-lg-1 col-form-label form-label text-left"><?php _e('Core updates'); ?></label>
-                    <div class="col-lg-9">
-                        <select id="city_select" class="selectpicker show-tick" name="city_select" data-dropup-auto="false" data-size="7" data-width="75%" data-style="btn btn-info btn-sm">
-                            <option value="all"><?php _e("All cities"); ?></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="no_region_text" class="row no-gutters mb-3 fc-limited">
-                    <div class="col-lg-12">
-                        <p class="pl-3 text-danger">&nbsp;&nbsp;
-                             <?php _e("There are no regions available for this country"); ?>
-                        </p>
-                    </div>
-                </div>
-
-                <div id="no_city_text" class="row no-gutters mb-3 fc-limited">
-                    <div class="col-lg-12">
-                        <p class="pl-3 text-danger">&nbsp;&nbsp;
-                            <?php _e("There are no cities available for this region"); ?>
-                        </p>
-                    </div>
-                </div>
             </fieldset>
         <?php else: ?>
-            <input type="hidden" id="skip-location-input" name="skip-location-input" value="1" />
+            <input type="hidden" id="skip-location-input" name="skip_location_input" value="1" />
         <?php endif; ?>
 
         <div class="row no-gutters">
@@ -1004,7 +984,7 @@ function display_target() {
                     $('#form-validated').val(1)
                 }
 
-                var input = $("#target_form input");
+                var input = $("#target_form input, #target_form select");
 
                 $('#target_form').waitMe({
                     effect : 'stretch',

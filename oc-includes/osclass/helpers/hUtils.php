@@ -321,6 +321,48 @@ function osc_get_subdomain_params() {
     }
     return $options;
 }
+/**
+ * Get countries list
+ */
+function osc_get_countries_list_api() {
+    $countries = osc_file_get_contents('https://api.osclass.market/locations/list');
+    $countries = json_decode($countries, true);
+    $countries = $countries['countries_list'];
 
+    return $countries;
+}
 
+/**
+ * Get selected SQL country file
+ */
+function osc_get_locations_sql_url($location) {
+    $location = rawurlencode($location);
+
+    return 'https://api.osclass.market/location/' . $location;
+}
+
+function osc_evo_activation($type) {
+    $url = base64_encode(osc_base_url());
+
+    $data = array(
+        'url' => $url,
+        'installation_type' => $type
+    );
+
+    $request = curl_init('https://api.osclass.market/osclass-evo/activation');
+
+    curl_setopt($request, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($request, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt($request, CURLOPT_PORT, 443);
+    curl_setopt($request, CURLOPT_USERAGENT, 'osclass-evo-php/4.0');
+    curl_setopt($request, CURLOPT_POST, true);
+    curl_setopt($request, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($request);
+
+    osc_set_preference('osclass_activated', 1, 'osclass', 'BOOLEAN');
+
+    return $response;
+}
 ?>
