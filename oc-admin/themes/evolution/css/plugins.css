@@ -12,6 +12,11 @@ h4 {
     font-size: initial !important;
     margin: 10px 0 !important;
 }
+.card-plugins ol,
+.card-plugins ul {
+    flex: 100%;
+    padding-left: 0;
+}
 li {
     list-style: none;
 }
@@ -21,9 +26,15 @@ img {
 b, strong {
     font-weight: bold !important;
 }
+.card-plugins b,
+.card-plugins strong {
+    flex: 100%;
+}
 p {
+    flex: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    line-height: 20px;
 }
 pre, code {
     font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -39,9 +50,17 @@ pre, code {
     white-space: pre-wrap;
     border-radius: 6px;
 }
+.alert  pre, .alert  code {
+    margin: inherit!important;
+    padding: initial!important;
+}
 .flashmessage p,
 .alert p {
-    margin: 0 !important;
+    margin: 0!important;
+}
+.card-plugins .flashmessage p,
+.card-plugins .alert p {
+    margin: inherit!important;
 }
 .clear {
     clear: both;
@@ -56,10 +75,12 @@ pre, code {
     margin: 0;
     font-size: initial;
 }
-c
 input[type="checkbox"],
 input[type="radio"] {
+    width: auto;
     margin: 3px 3px 3px 4px !important;
+    border: none;
+    box-shadow: none;
 }
 textarea {
     padding: 4px 6px;
@@ -74,6 +95,9 @@ textarea {
     vertical-align: top;
     min-width: 208px;
     resize: auto;
+}
+.card-plugins textarea {
+    background-color: #fff!important;
 }
 .input-description-wide textarea {
     width: 516px;
@@ -145,6 +169,7 @@ nav ul:after {
 }
 .card .form-horizontal .form-label {
     margin-top: 0 !important;
+    padding: 10px 15px 0 0!important;
     text-align: left !important;
 }
 .card .btn.btn-submit,
@@ -308,6 +333,13 @@ form .form-group select.form-control {
 .dropdown-menu.show li {
     display: block;
     padding: 0;
+}
+#spamprot .langtab-content.current,
+#sp_security_login_honeypots {
+    width: 100%;
+}
+.nav-stacked li {
+    flex: 100%;
 }
 
 @media screen and (max-width: 1024px) {

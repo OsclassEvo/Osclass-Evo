@@ -54,18 +54,82 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
     <div class="card-body">
         <ul class="nav nav-pills nav-pills-rose" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#akismet" role="tablist">
-					<?php _e('Akismet'); ?>
+                <a class="nav-link active" data-toggle="tab" href="#recaptcha" role="tablist">
+                    <?php _e('reCAPTCHA'); ?>
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#recaptcha" role="tablist">
-					<?php _e('reCAPTCHA'); ?>
+                <a class="nav-link" data-toggle="tab" href="#akismet" role="tablist">
+					<?php _e('Akismet'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content tab-space">
-            <div class="tab-pane active" id="akismet">
+            <div class="tab-pane active" id="recaptcha">
+                <form name="comments_form" action="<?php echo osc_admin_base_url(true); ?>" method="post" class="has-form-actions form-horizontal">
+                    <input type="hidden" name="page" value="settings" />
+                    <input type="hidden" name="action" value="recaptcha_post" />
+
+                    <fieldset class="mb-3">
+                        <legend class="regular"><?php printf(__('reCAPTCHA helps prevent automated abuse of your site by using a CAPTCHA to ensure that only humans perform certain actions. <a href="%s" target="_blank">Get your key</a>'), 'https://www.google.com/recaptcha/admin#whyrecaptcha'); ?></legend>
+
+                        <div class="row no-gutters">
+                            <label class="col-12 col-xl-1 col-form-label form-label text-left"><?php _e('ReCAPTCHA Version'); ?></label>
+                            <div class="col-xl-5">
+                                <select class="selectpicker show-tick w-100 w-xl-50" name="recaptchaVersion" data-dropup-auto="false" data-size="7" data-style="btn btn-info btn-sm">
+                                    <option value="2" <?php echo (osc_recaptcha_version() == '2' ? 'selected' : ''); ?>><?php _e('reCAPTCHA v.2'); ?></option>
+                                    <option value="3" <?php echo (osc_recaptcha_version() == '3' ? 'selected' : ''); ?>><?php _e('reCAPTCHA v.3'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters mb-3 mb-md-0">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <?php _e('Site key'); ?>
+                                    <input type="text" class="form-control w-100 w-md-50 w-xl-25 text-center d-inline ml-0 ml-md-3" name="recaptchaPubKey" value="<?php echo (osc_recaptcha_public_key() ? osc_esc_html(osc_recaptcha_public_key()) : ''); ?>" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row no-gutters">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <?php _e('Secret key'); ?>
+                                    <input type="text" class="form-control w-100 w-md-50 w-xl-25 text-center d-inline" name="recaptchaPrivKey" value="<?php echo (osc_recaptcha_private_key() ? osc_esc_html(osc_recaptcha_private_key()) : ''); ?>" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if(osc_recaptcha_public_key()): ?>
+                            <div class="row no-gutters">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <?php if(osc_recaptcha_version() == '2'): ?>
+                                            <?php _e('If you see the reCAPTCHA form it means that you have correctly entered the public key'); ?>
+                                        <?php else: ?>
+                                            <?php _e('If you see the reCAPTCHA icon in the lower right corner of the screen, it means that you have correctly entered the public key'); ?>
+                                        <?php endif; ?>
+                                        <?php osc_show_recaptcha(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </fieldset>
+
+                    <div class="row no-gutters">
+                        <div class="col-md-12 mt-4">
+                            <button type="submit" class="btn btn-info">
+                                <?php echo osc_esc_html( __('Save changes') ); ?>
+                                <div class="ripple-container"></div>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="akismet">
                 <form name="comments_form" action="<?php echo osc_admin_base_url(true); ?>" method="post" class="has-form-actions form-horizontal">
                     <input type="hidden" name="page" value="settings" />
                     <input type="hidden" name="action" value="akismet_post" />
@@ -103,69 +167,6 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
-
-                    <div class="row no-gutters">
-                        <div class="col-md-12 mt-4">
-                            <button type="submit" class="btn btn-info">
-								<?php echo osc_esc_html( __('Save changes') ); ?>
-                                <div class="ripple-container"></div>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="tab-pane" id="recaptcha">
-                <form name="comments_form" action="<?php echo osc_admin_base_url(true); ?>" method="post" class="has-form-actions form-horizontal">
-                    <input type="hidden" name="page" value="settings" />
-                    <input type="hidden" name="action" value="recaptcha_post" />
-
-                    <fieldset class="mb-3">
-                        <legend class="regular"><?php printf(__('reCAPTCHA helps prevent automated abuse of your site by using a CAPTCHA to ensure that only humans perform certain actions. <a href="%s" target="_blank">Get your key</a>'), 'https://www.google.com/recaptcha/admin#whyrecaptcha'); ?></legend>
-
-                        <div class="row no-gutters">
-                            <div class="col-xl-6">
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input id="recaptchaVersion" class="form-check-input" type="checkbox" name="recaptchaVersion" value="2" <?php echo (osc_recaptcha_version()=="2" ? 'checked' : ''); ?>> <?php _e('Use reCaptcha v2.'); ?>
-                                        <span class="form-check-sign">
-                                        <span class="check"></span>
-                                    </span>
-                                    </label>
-                                </div>
-
-                                <span class="form-text text-muted"><?php printf(__('If you were using v1, you need to <a href="%s">re-generate your reCaptcha keys</a>.'), 'https://www.google.com/recaptcha/admin'); ?></span>
-                            </div>
-                        </div>
-
-                        <div class="row no-gutters mb-3 mb-md-0">
-                            <div class="col-xl-6">
-                                <div class="form-group">
-									<?php _e('Site key'); ?>
-                                    <input type="text" class="form-control w-100 w-md-50 w-xl-25 text-center d-inline ml-0 ml-md-3" name="recaptchaPubKey" value="<?php echo (osc_recaptcha_public_key() ? osc_esc_html(osc_recaptcha_public_key()) : ''); ?>" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row no-gutters">
-                            <div class="col-xl-6">
-                                <div class="form-group">
-									<?php _e('Secret key'); ?>
-                                    <input type="text" class="form-control w-100 w-md-50 w-xl-25 text-center d-inline" name="recaptchaPrivKey" value="<?php echo (osc_recaptcha_private_key() ? osc_esc_html(osc_recaptcha_private_key()) : ''); ?>" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php if(osc_recaptcha_public_key()): ?>
-                            <div class="row no-gutters">
-                                <div class="col-xl-6">
-                                    <div class="form-group">
-										<?php _e('If you see the reCAPTCHA form it means that you have correctly entered the public key'); ?>
-										<?php osc_show_recaptcha(); ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </fieldset>
 
                     <div class="row no-gutters">

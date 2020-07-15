@@ -16,10 +16,10 @@
  */
 
 
-define('OSCLASS_VERSION', '4.0.0');
+define('OSCLASS_VERSION', '4.1.0');
 
 if( !defined('ABS_PATH') ) {
-    define( 'ABS_PATH', str_replace('\\', '/', dirname(__FILE__) . '/' ));
+    define( 'ABS_PATH', str_replace('\\', '/', __DIR__ . '/' ));
 }
 
 define('LIB_PATH', ABS_PATH . 'oc-includes/');
@@ -194,14 +194,6 @@ require_once LIB_PATH . 'osclass/helpers/hCache.php';
 require_once LIB_PATH . 'openssl-cryptor/Cryptor.php';
 require_once LIB_PATH . 'osclass/compatibility.php';
 
-if(osc_get_preference('version') < 400) {
-    osc_set_preference('admin_theme', 'evolution');
-    osc_set_preference('sidebar_background', 'black');
-    osc_set_preference('sidebar_filters', 'rose');
-    osc_set_preference('sidebar_image_show', '1');
-    osc_set_preference('version', 400, 'osclass', 'INTEGER');
-}
-
 if( !defined('OSC_CRYPT_KEY') ) {
     define('OSC_CRYPT_KEY', osc_get_preference('crypt_key'));
 }
@@ -255,6 +247,7 @@ osc_register_script('jquery-nested', osc_assets_url('js/jquery.ui.nestedSortable
 osc_register_script('jquery-validate', osc_assets_url('js/jquery.validate.min.js'), 'jquery');
 osc_register_script('tabber', osc_assets_url('js/tabber-minimized.js'), 'jquery');
 osc_register_script('tiny_mce', osc_assets_url('js/tinymce/tinymce.min.js'));
+osc_register_script('tiny_mce5', osc_assets_url('js/tinymce5/tinymce.min.js'));
 osc_register_script('colorpicker', osc_assets_url('js/colorpicker/js/colorpicker.js'));
 osc_register_script('fancybox', osc_assets_url('js/fancybox/jquery.fancybox.pack.js'), array('jquery'));
 osc_register_script('jquery-migrate', osc_assets_url('js/jquery-migrate.min.js'), array('jquery'));
@@ -270,6 +263,7 @@ if( OC_ADMIN ) {
     // init admin menu
     AdminMenu::newInstance()->init();
     $functions_path = AdminThemes::newInstance()->getCurrentThemePath() . 'functions.php';
+
     if( file_exists($functions_path) ) {
         require_once $functions_path;
     }
@@ -280,7 +274,7 @@ if( OC_ADMIN ) {
 if( !class_exists('PHPMailer') ) {
     require_once osc_lib_path() . 'phpmailer/class.phpmailer.php';
 }
+
 if( !class_exists('SMTP') ) {
     require_once osc_lib_path() . 'phpmailer/class.smtp.php';
 }
-

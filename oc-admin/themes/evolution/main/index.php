@@ -33,7 +33,10 @@
     function customHead() {
         $items = __get('item_stats');
         $users = __get('user_stats');
-        
+
+        $item_date = '';
+        $item_num = '';
+
         foreach($items as $date => $num) {
             $item_date .= "'". date_format(date_create($date), 'd M') . "',";
             $item_num .= $num . ",";
@@ -41,7 +44,10 @@
         
         $item_date = rtrim($item_date, ',');
         $item_num = rtrim($item_num, ',');
-        
+
+        $user_date = '';
+        $user_num = '';
+
         foreach($users as $date => $num) {
             $user_date .= "'". date_format(date_create($date), 'd M') . "',";
             $user_num .= $num . ",";

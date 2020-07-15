@@ -78,6 +78,7 @@ $aData          = __get('aPlugins');
     <div id="flashmessage" class="alert flashmessage flashmessage-error" data-dismiss="alert">
         <a class="btn ico btn-mini ico-close close">x</a>
         <?php _e("Plugin couldn't be installed because it triggered a <strong>fatal error</strong>"); ?>
+        <div class="plugin-error-reporting" data-url="<?php echo osc_admin_base_url(true); ?>?page=plugins&amp;action=error_plugin&amp;plugin=<?php echo Params::getParam('error'); ?>"></div>
     </div>
 <?php endif; ?>
 

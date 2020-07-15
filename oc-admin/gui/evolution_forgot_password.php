@@ -225,6 +225,14 @@
     });
 </script>
 
+<style>
+    @media all and (max-width: 500px) {
+        .off-canvas-sidebar .footer {
+            display: none;
+        }
+    }
+</style>
+
 <?php osc_run_hook('admin_login_footer'); ?>
 </body>
 </html>

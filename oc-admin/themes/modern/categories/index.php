@@ -130,6 +130,7 @@
                                 data: {'list' : JSON.stringify(plist)},
                                 context: document.body,
                                 success: function(res){
+                                    console.log(res);
                                     var ret = eval( "(" + res + ")");
                                     var message = "";
                                     if( ret.error ) {

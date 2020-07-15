@@ -59,7 +59,7 @@
                         </div>
                     </div>
 
-                    <?php if(count($category['categories']) > 0): ?>
+                    <?php if(isset($category['categories']) && count($category['categories']) > 0): ?>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-check">
@@ -97,7 +97,7 @@
 
                                                 <div class="col-xl-10">
                                                     <div class="form-group">
-                                                        <input id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_name" type="text" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_name" value="<?php echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_name'], ENT_COMPAT, "UTF-8")); ?>" />
+                                                        <input id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_name" type="text" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_name" value="<?php if(isset($category['locale'][$locale['pk_c_code']]['s_name'])) echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_name'], ENT_COMPAT, "UTF-8")); ?>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
 
                                                 <div class="col-xl-10">
                                                     <div class="form-group">
-                                                        <input id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_slug" type="text" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_slug" value="<?php echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_slug'], ENT_COMPAT, "UTF-8")); ?>" />
+                                                        <input id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_slug" type="text" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_slug" value="<?php if(isset($category['locale'][$locale['pk_c_code']]['s_slug'])) echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_slug'], ENT_COMPAT, "UTF-8")); ?>" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,7 +117,7 @@
 
                                                 <div class="col-xl-10">
                                                     <div class="form-group">
-                                                        <textarea id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_description" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_description" rows="5" /><?php echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_description'], ENT_COMPAT, "UTF-8")); ?></textarea>
+                                                        <textarea id="<?php echo $locale['pk_c_code'] . $category['pk_i_id']; ?>#s_description" class="form-control w-100 d-inline clickable" name="<?php echo $locale['pk_c_code']; ?>#s_description" rows="5" /><?php if(isset($category['locale'][$locale['pk_c_code']]['s_description'])) echo osc_esc_html(htmlentities($category['locale'][$locale['pk_c_code']]['s_description'], ENT_COMPAT, "UTF-8")); ?></textarea>
                                                     </div>
                                                 </div>
                                             </div>

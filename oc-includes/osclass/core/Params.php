@@ -47,10 +47,6 @@
                 }
             }
 
-            if(get_magic_quotes_gpc()) {
-                $value = strip_slashes_extended($value);
-            }
-
             return ($value);
         }
 
@@ -76,10 +72,6 @@
                 }
             }
 
-            if(get_magic_quotes_gpc()) {
-                $value = strip_slashes_extended($value);
-            }
-
             return ($value);
         }
 
@@ -93,10 +85,6 @@
         static function getServerParamsAsArray($xss_check = true)
         {
             $value = self::_purify(self::$_server, $xss_check);
-
-            if(get_magic_quotes_gpc()) {
-                return strip_slashes_extended($value);
-            }
 
             return $value;
         }
@@ -134,10 +122,6 @@
             }
 
             $value = self::_purify($value, $htmlencode, $xss_check, $quotes_encode);
-
-            if(get_magic_quotes_gpc()) {
-                return strip_slashes_extended($value);
-            }
 
             return $value;
         }

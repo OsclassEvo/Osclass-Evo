@@ -96,7 +96,6 @@ $rule      = __get('rule');
                 </div>
             </div>
 
-            <?php osc_run_hook('admin_profile_form', $admin); ?>
             <div class="row no-gutters">
                 <div class="col-md-12 mt-4">
                     <a href="javascript:history.go(-1);" class="btn btn-link btn-light"><?php _e('Cancel'); ?></a>

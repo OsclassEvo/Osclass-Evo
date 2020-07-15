@@ -250,8 +250,9 @@
                 $priority  = 0;
             }
         }
-        
+
         $value = array();
+        $plugin_wrapper = false;
         
         foreach($aMenu as $key => $value) {
 
@@ -266,7 +267,7 @@
                     $main_menu_active      = ''; $main_menu_expanded = ''; $main_menu_opened = '';
                 }
                 
-                if( array_key_exists('sub', $value) ) {
+                if(array_key_exists('sub', $value)) {
                     // submenu
                     $aSubmenu = $value['sub'];
 
@@ -343,9 +344,12 @@
                             $expr = '/(?<=\s|^)[A-Za-zА-Яа-яё]/u';
                             preg_match_all($expr, $aSub[0], $matches);
                             $abbr = implode('', $matches[0]);
-                            $plugin_wrapper = false;
 
                             if(!$is_moderator || ($is_moderator && $credential_sub == 'moderator')) { // show
+                                if(substr($aSub[1], 0, 8) == "divider_" && strpos($aSub[2], '_menu') !== false) {
+                                    continue;
+                                }
+
                                 if(substr($aSub[1], 0, 8) == "divider_" && $key == 'plugins') {
                                     preg_match_all('#divider_(.+?)_divider#is', $aSub[1], $arr);
                                     $divider = $arr[1][0];
@@ -375,8 +379,7 @@
                                         $sSubmenu .= '<li class="nav-item ' . $plugin_sub_menu_active . '"><a class="nav-link" href="'.$aSub[1].'"><span class="sidebar-mini">' . strtoupper($abbr) . '</span><span class="sidebar-normal"> '.$aSub[0].' </span></a></li>'.PHP_EOL;
 
                                         $plugin_wrapper = true;
-                                    }
-                                    else {
+                                    } else {
                                         if($plugin_wrapper) {
                                             $sSubmenu .= '</ul>' . PHP_EOL;
                                             $sSubmenu .= '</div>' . PHP_EOL;

@@ -31,6 +31,9 @@ function customHead() {
     $comments = __get("comments");
 
     if(count($comments) > 0) {
+        $comment_date = '';
+        $comment = '';
+
         foreach($comments as $date => $num) {
             $comment_date .= "'". $date . "',";
             $comment .= $num . ",";
@@ -83,6 +86,10 @@ osc_add_hook('admin_page_header','customPageHeader');
 osc_add_hook('admin_header','customHead', 10);
 
 $type         = Params::getParam('type_stat');
+
+$is_day = '';
+$is_week = '';
+$is_month = '';
 
 switch($type){
     case 'week':

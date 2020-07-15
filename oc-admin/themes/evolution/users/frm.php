@@ -378,7 +378,7 @@ $locales   = __get('locales')
                     <label class="col-12 col-xl-1 col-form-label form-label text-left"><?php _e('User type'); ?></label>
                     <div class="col-xl-5">
                         <div class="form-group">
-                            <?php UserForm::is_company_select($admin, null, null, 'selectpicker show-tick w-100 w-xl-75', 'data-size="7" data-dropup-auto="false" data-style="btn btn-info btn-sm"'); ?>
+                            <?php UserForm::is_company_select($user, null, null, 'selectpicker show-tick w-100 w-xl-75', 'data-size="7" data-dropup-auto="false" data-style="btn btn-info btn-sm"'); ?>
                         </div>
                     </div>
                 </div>

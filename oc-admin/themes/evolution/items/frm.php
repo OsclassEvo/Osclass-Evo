@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+osc_enqueue_script('tiny_mce5');
+
+
 function customFrmText() {
     $new_item = __get('new_item');
     $return = array();
@@ -49,6 +52,56 @@ function customHead() {
     ?>
     <script type="text/javascript">
         $(document).ready(function(){
+
+            <?php if(osc_editor_enabled_at_items()): ?>
+                tinyMCE.init({
+                    mode : "textareas",
+                    skin: 'custom',
+                    mobile: {
+                        // theme: 'mobile',
+                        menubar: 'edit view insert format table'
+                    },
+                    menu: {
+                        edit: {title: 'Edit', items: 'undo redo | selectall'}
+                    },
+                    menubar: 'edit view insert format table',
+                    width: "100%",
+                    height: "440px",
+                    language: 'en',
+                    branding: false,
+                    plugins : 'advlist autolink lists link image imagetools media charmap preview anchor searchreplace visualblocks code codesample fullscreen insertdatetime media table contextmenu',
+                    toolbar: 'undo redo | styleselect bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | codesample code',
+                    entity_encoding : "raw",
+                    relative_urls: false,
+                    remove_script_host: false,
+                    convert_urls: false,
+                    media_live_embeds: true,
+                    image_advtab: true,
+                    paste_data_images: true,
+                    link_assume_external_targets: true,
+                    link_quicklink: true,
+                    file_picker_types: 'image media',
+                    file_picker_callback: function(callback, value, meta) {
+                        if (meta.filetype == 'image') {
+                            $('#upload').trigger('click');
+
+                            $('#upload').on('change', function() {
+                                var file = this.files[0];
+                                var reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    callback(e.target.result, {
+                                        alt: ''
+                                    });
+                                };
+
+                                reader.readAsDataURL(file);
+                            });
+                        }
+                    }
+                });
+            <?php endif; ?>
+
             // Code for form validation
             $("form[name='item']").validate({
                 rules: {
@@ -247,6 +300,7 @@ function customHead() {
 
             <?php
                 $extensions = explode(',', osc_esc_js(osc_allowed_extension()));
+                $allowed_extensions = '';
 
                 foreach($extensions as $ext) {
                     $allowed_extensions .= '.' . $ext . ',';
@@ -453,6 +507,7 @@ if($new_item) {
         <form id="item" action="<?php echo osc_admin_base_url(true); ?>" method="post" name="item" class="has-form-actions form-horizontal" enctype="multipart/form-data">
             <input type="hidden" name="page" value="items" />
             <input type="hidden" name="action" value="<?php echo $aux['action_frm']; ?>" />
+            <input id="upload" class="fc-limited" type="file" name="image" >
 
             <?php if($aux['edit']): ?>
                 <input type="hidden" name="id" value="<?php echo osc_item_id(); ?>" />

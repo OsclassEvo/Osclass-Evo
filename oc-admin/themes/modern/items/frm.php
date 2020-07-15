@@ -17,6 +17,7 @@
 
     osc_enqueue_script('jquery-validate');
     osc_enqueue_script('php-date');
+    osc_enqueue_script('tiny_mce5');
 
 
     // cateogry js
@@ -62,6 +63,47 @@ function customPageHeader() { ?>
 
             document.write('<style type="text/css"> .tabber{ display:none; } </style>');
             $(document).ready(function(){
+                <?php if(osc_editor_enabled_at_items()): ?>
+                    tinyMCE.init({
+                        mode : "textareas",
+                        menubar: 'edit view insert format table',
+                        width: "100%",
+                        height: "440px",
+                        language: 'en',
+                        branding: false,
+                        plugins : 'advlist autolink lists link image imagetools media charmap preview anchor searchreplace visualblocks codesample code fullscreen insertdatetime media table contextmenu',
+                        toolbar: 'undo redo | styleselect bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | codesample code',
+                        entity_encoding : "raw",
+                        relative_urls: false,
+                        remove_script_host: false,
+                        convert_urls: false,
+                        media_live_embeds: true,
+                        image_advtab: true,
+                        paste_data_images: true,
+                        link_assume_external_targets: true,
+                        link_quicklink: true,
+                        file_picker_types: 'image media',
+                        file_picker_callback: function(callback, value, meta) {
+                            if (meta.filetype == 'image') {
+                                $('#upload').trigger('click');
+
+                                $('#upload').on('change', function() {
+                                    var file = this.files[0];
+                                    var reader = new FileReader();
+
+                                    reader.onload = function(e) {
+                                        callback(e.target.result, {
+                                            alt: ''
+                                        });
+                                    };
+
+                                    reader.readAsDataURL(file);
+                                });
+                            }
+                        }
+                    });
+                <?php endif; ?>
+
                 $('input[name="user"]').attr( "autocomplete", "off" );
                 $('#user,#fUser').autocomplete({
                     source: "<?php echo osc_admin_base_url(true); ?>?page=ajax&action=userajax",
@@ -155,6 +197,7 @@ function customPageHeader() { ?>
                 <?php printLocaleTabs(); ?>
                 <form action="<?php echo osc_admin_base_url(true); ?>" method="post" enctype="multipart/form-data" name="item">
                     <input type="hidden" name="page" value="items" />
+                    <input id="upload" class="hide" type="file" name="image" >
                     <?php if( $new_item ) { ?>
                         <input type="hidden" name="action" value="post_item" />
                     <?php } else { ?>

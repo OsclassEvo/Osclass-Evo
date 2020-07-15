@@ -100,7 +100,20 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="f_price" class="form-check-input" type="checkbox" <?php echo (osc_price_enabled_at_items() ? 'checked="checked"' : ''); ?> name="enableField#f_price@items" value="1">
+                                            <input id="editor" class="form-check-input" type="checkbox" <?php echo (osc_editor_enabled_at_items() ? 'checked' : ''); ?> name="enableField#editor@items" value="1">
+                                            <?php _e('Admin panel description editor'); ?>
+
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="f_price" class="form-check-input" type="checkbox" <?php echo (osc_price_enabled_at_items() ? 'checked' : ''); ?> name="enableField#f_price@items" value="1">
                                             <?php _e('Price'); ?>
 
                                             <span class="form-check-sign">
@@ -113,7 +126,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="images" class="form-check-input" type="checkbox" <?php echo (osc_images_enabled_at_items() ? 'checked="checked"' : ''); ?> name="enableField#images@items" value="1">
+                                            <input id="images" class="form-check-input" type="checkbox" <?php echo (osc_images_enabled_at_items() ? 'checked' : ''); ?> name="enableField#images@items" value="1">
                                             <?php _e('Attach images'); ?>
 
                                             <span class="form-check-sign">
@@ -131,7 +144,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="reg_user_post" class="form-check-input" type="checkbox" <?php echo (osc_reg_user_post() ? 'checked="checked"' : ''); ?> name="reg_user_post" value="1">
+                                            <input id="reg_user_post" class="form-check-input" type="checkbox" <?php echo (osc_reg_user_post() ? 'checked' : ''); ?> name="reg_user_post" value="1">
                                             <?php _e('Only logged in users can post listings'); ?>
 
                                             <span class="form-check-sign">
@@ -149,7 +162,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="moderate_items" class="form-check-input" type="checkbox" <?php echo ((osc_moderate_items() == -1) ? '' : 'checked="checked"'); ?> name="moderate_items" value="1">
+                                            <input id="moderate_items" class="form-check-input" type="checkbox" <?php echo ((osc_moderate_items() == -1) ? '' : 'checked'); ?> name="moderate_items" value="1">
                                             <?php _e('Users have to validate their listings'); ?>
 
                                             <span class="form-check-sign">
@@ -168,7 +181,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div data-id="validate-items" class="col-md-12 mb-4 <?php if(osc_moderate_items() == -1): ?>d-none<?php endif; ?>">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="logged_user_item_validation" class="form-check-input" type="checkbox" <?php echo (osc_logged_user_item_validation() ? 'checked="checked"' : ''); ?> name="logged_user_item_validation" value="1">
+                                            <input id="logged_user_item_validation" class="form-check-input" type="checkbox" <?php echo (osc_logged_user_item_validation() ? 'checked' : ''); ?> name="logged_user_item_validation" value="1">
                                             <?php _e('Logged in users don\'t need to validate their listings'); ?>
 
                                             <span class="form-check-sign">
@@ -181,7 +194,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-4">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="enabled_recaptcha_items" class="form-check-input" type="checkbox" <?php echo ((osc_recaptcha_items_enabled() == '0') ? '' : 'checked="checked"' ); ?> name="enabled_recaptcha_items" value="1">
+                                            <input id="enabled_recaptcha_items" class="form-check-input" type="checkbox" <?php echo ((osc_recaptcha_items_enabled() == '0') ? '' : 'checked' ); ?> name="enabled_recaptcha_items" value="1">
                                             <?php _e('Show reCAPTCHA in add/edit listing form'); ?>
 
                                             <span class="form-check-sign">
@@ -202,7 +215,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="reg_user_can_contact" class="form-check-input" type="checkbox" <?php echo (osc_reg_user_can_contact() ? 'checked="checked"' : ''); ?> name="reg_user_can_contact" value="1">
+                                            <input id="reg_user_can_contact" class="form-check-input" type="checkbox" <?php echo (osc_reg_user_can_contact() ? 'checked' : ''); ?> name="reg_user_can_contact" value="1">
                                             <?php _e('Only allow registered users to contact publisher'); ?>
 
                                             <span class="form-check-sign">
@@ -215,7 +228,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-4">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="item_attachment" class="form-check-input" type="checkbox" <?php echo (osc_item_attachment() ? 'checked="checked"' : ''); ?> name="item_attachment" value="1">
+                                            <input id="item_attachment" class="form-check-input" type="checkbox" <?php echo (osc_item_attachment() ? 'checked' : ''); ?> name="item_attachment" value="1">
                                             <?php _e('Allow attached files in contact publisher form'); ?>
 
                                             <span class="form-check-sign">
@@ -234,7 +247,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="notify_new_item" class="form-check-input" type="checkbox" <?php echo (osc_notify_new_item() ? 'checked="checked"' : ''); ?> name="notify_new_item" value="1">
+                                            <input id="notify_new_item" class="form-check-input" type="checkbox" <?php echo (osc_notify_new_item() ? 'checked' : ''); ?> name="notify_new_item" value="1">
                                             <?php _e('Notify admin when a new listing is added'); ?>
 
                                             <span class="form-check-sign">
@@ -247,7 +260,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="notify_contact_item" class="form-check-input" type="checkbox" <?php echo (osc_notify_contact_item() ? 'checked="checked"' : ''); ?> name="notify_contact_item" value="1">
+                                            <input id="notify_contact_item" class="form-check-input" type="checkbox" <?php echo (osc_notify_contact_item() ? 'checked' : ''); ?> name="notify_contact_item" value="1">
                                             <?php _e('Send admin a copy of the "contact publisher" email'); ?>
 
                                             <span class="form-check-sign">
@@ -260,7 +273,7 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <div class="col-md-12 mb-2">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                            <input id="notify_contact_friends" class="form-check-input" type="checkbox" <?php echo (osc_notify_contact_friends() ? 'checked="checked"' : ''); ?> name="notify_contact_friends" value="1">
+                                            <input id="notify_contact_friends" class="form-check-input" type="checkbox" <?php echo (osc_notify_contact_friends() ? 'checked' : ''); ?> name="notify_contact_friends" value="1">
                                             <?php _e('Send admin a copy to "share listing" email'); ?>
 
                                             <span class="form-check-sign">

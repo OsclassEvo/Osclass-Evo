@@ -369,6 +369,22 @@ $aCurrencies = __get('aCurrencies');
                         </div>
                     </div>
                 </div>
+
+                <div class="row no-gutters">
+                    <label class="col-md-1 col-form-label form-label text-left text-xl-right"><?php _e('Pages preloading'); ?></label>
+                    <div class="col-md-8 col-xl-5 checkbox-radios">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input id="admin_pages_preloading" class="form-check-input" type="checkbox" <?php echo (osc_admin_pages_preloading() ? 'checked' : ''); ?> name="enabled_admin_pages_preloading" value="1">
+                                <?php _e('Set up preloading pages in the admin panel'); ?>
+
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </fieldset>
 
             <fieldset class="mb-3">

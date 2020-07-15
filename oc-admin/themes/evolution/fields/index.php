@@ -103,6 +103,8 @@
     $categories = __get('categories');
     $selected   = __get('default_selected');
 
+    $field = '';
+
     $csrf_token = osc_csrf_token_url();
 
     if(Params::getParam('action') == 'field_add') {
@@ -338,7 +340,7 @@
 
                                 <div class="col-lg-9">
                                     <div class="form-group">
-                                        <input id="field_slug" type="text" class="form-control" name="field_slug" value="<?php echo $field['s_slug']; ?>" />
+                                        <input id="field_slug" type="text" class="form-control" name="field_slug" value="<?php if(isset($field['s_slug'])) echo $field['s_slug']; ?>" />
                                         <small class="form-text text-muted"><?php _e('Only alphanumeric characters are allowed [a-z0-9_-]'); ?></small>
                                     </div>
                                 </div>

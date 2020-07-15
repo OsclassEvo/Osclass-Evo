@@ -37,6 +37,10 @@ var seq2 = 0,
     durations2 = 500;
 
 $(document).ready(function () {
+    if($('.plugin-error-reporting').attr('data-url')) {
+        $('.plugin-error-reporting').load($('.plugin-error-reporting').attr('data-url'));
+    }
+
     setTimeout(function () {
         $('.main-panel').removeClass('loading');
         $('.wait').hide();
@@ -414,8 +418,9 @@ $(document).ready(function () {
     }
 
     //  Activate the tooltips
-    $('table [rel="tooltip"]').tooltip({trigger: 'hover', container: '.main-panel'});
-    $('.themes-list [rel="tooltip"]').tooltip({trigger: 'hover', container: 'body'});
+    if($('[rel="tooltip"]').length) {
+        new $.Zebra_Tooltips($('[rel="tooltip"]'));
+    }
 
     // Activate Popovers
     $('[data-toggle="popover"]').popover();

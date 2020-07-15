@@ -1,3 +1,44 @@
+Osclass Evo 4.1.0 2020-07-15
+------------------------
+- Added the ability to disable preload pages in the admin panel
+- Added WYSIWYG-Editor on the listings adding page in the admin panel (It can be disabled on the listings settings page)
+- Added Google reCaptcha v.3 (reCaptcha v.1 is deprecated and has been removed)
+- Fixed: Deprecated: Function get_magic_quotes_gpc() is deprecated
+- Fixed: Deprecated: Array and string offset access syntax with curly braces is deprecated
+- Fixed a bug the menu disappears when you install some plugins
+- Fixed a bug when it was not possible to change category icons in some paid templates
+- Fixed errors that occurred when editing categories in the admin panel
+- Multiple minor fixes and improvements
+
+Osclass Evo 4.0.0 2020-06-24
+------------------------
+- hThemes function osc_print_bulk_actions () - added ability to pass attributes for select
+- ManageItemsForm :: category_select () - added ability to pass class and attributes for select
+- ManageItemsForm :: country_text () - added ability to pass a class
+- ManageItemsForm :: region_text () - added ability to pass a class
+- ManageItemsForm :: city_text () - added ability to pass a class
+- Form :: generic_input_text () - added ability to pass a class
+- Form :: generic_input_checkbox () - added ability to pass a class
+- FieldForm :: name_input_text () - added ability to pass a class
+- FieldForm :: options_input_text () - added ability to pass a class
+- FieldForm :: type_select () - added ability to pass class and attributes for select
+- FieldForm :: required_checkbox () - added ability to pass a class
+- FieldForm :: searchable_checkbox () - added ability to pass a class
+- fn_alert_email_hourly (),
+fn_alert_email_daily (),
+fn_alert_email_weekly (),
+fn_alert_email_instant () - fixed errors due to which for registered users in the letter instead of the username came his E-mail
+- function osc_csrfguard_replace_forms ($ form_data_html) - now generated CSRF tokens are substituted before the </form> tag, and not after the <form>.
+
+- Added the ability to change the admin theme in the main settings (Admin Theme).
+- findAllSubcategories () - a new method has been added to the Category class, listing all nested subcategories to the last level
+- findParentCategory () - a new method has been added to the Category class that displays data of the parent category
+- Fixed a bug due to which the admin panel had the ability to activate / deactivate only subcategories of the first level
+- Added the possibility of an unlimited level of nesting of subcategories (instead of 4)
+- osc_load_style (),
+osc_load_script () - two functions have been added that allow you to output a CSS file and a JS script anywhere, not just at the top.
+- Multiple minor fixes and improvements
+
 Osclass 3.8.0 2018-07-25
 ------------------------
 

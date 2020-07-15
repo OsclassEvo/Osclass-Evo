@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-osc_enqueue_script('tiny_mce');
+osc_enqueue_script('tiny_mce5');
 
 function customPageTitle($string) {
     return sprintf(__('Appearance &raquo; %s'), $string);
@@ -55,24 +55,49 @@ function customHead() {
 
         tinyMCE.init({
             mode : "textareas",
+            skin: 'custom',
+            mobile: {
+                // theme: 'mobile',
+                menubar: 'edit view insert format table'
+            },
+            menu: {
+                edit: {title: 'Edit', items: 'undo redo | selectall'}
+            },
+            menubar: 'edit view insert format table',
             width: mce_width,
             height: "340px",
-            theme_advanced_buttons3 : "",
-            theme_advanced_toolbar_align : "left",
-            theme_advanced_toolbar_location : "top",
-            plugins : [
-                "advlist autolink lists link image charmap preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
-            ],
+            language: 'en',
+            branding: false,
+            plugins : 'advlist autolink lists link image imagetools media charmap preview anchor searchreplace visualblocks code codesample fullscreen insertdatetime media table contextmenu',
+            toolbar: 'undo redo | styleselect bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | codesample code',
             entity_encoding : "raw",
-            theme_advanced_buttons1_add : "forecolorpicker,fontsizeselect",
-            theme_advanced_buttons2_add: "media",
-            theme_advanced_disable : "styleselect",
-            extended_valid_elements : "script[type|src|charset|defer]",
-            relative_urls : false,
-            remove_script_host : false,
-            convert_urls : false
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: false,
+            media_live_embeds: true,
+            image_advtab: true,
+            paste_data_images: true,
+            link_assume_external_targets: true,
+            link_quicklink: true,
+            file_picker_types: 'image media',
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype == 'image') {
+                    $('#upload').trigger('click');
+
+                    $('#upload').on('change', function() {
+                        var file = this.files[0];
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            callback(e.target.result, {
+                                alt: ''
+                            });
+                        };
+
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
         });
 
         $(document).ready(function(){
@@ -136,6 +161,7 @@ if(Params::getParam('action') == 'edit_widget') {
         <form class="has-form-actions form-horizontal" name="widget_form" action="<?php echo osc_admin_base_url(true); ?>" method="post">
             <input type="hidden" name="action" value="<?php echo ( $edit ? 'edit_widget_post' : 'add_widget_post' ); ?>" />
             <input type="hidden" name="page" value="appearance" />
+            <input id="upload" class="fc-limited" type="file" name="image" >
 
             <?php if($edit): ?>
                 <input type="hidden" name="id" value="<?php echo Params::getParam('id', true); ?>" />

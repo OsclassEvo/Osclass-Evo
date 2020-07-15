@@ -16,15 +16,13 @@
  */
 
     osc_add_hook('admin_page_header','customPageHeader');
-    function customPageHeader(){ ?>
-        <h1><?php printf(__('Osclass %s'), OSCLASS_VERSION); ?>
-            <a href="#" class="btn ico ico-32 ico-help float-right"></a>
-        </h1>
-    <?php
+
+    function customPageHeader() {
+        printf(__('Osclass Evolution %s'), OSCLASS_VERSION);
     }
 
     function customPageTitle($string) {
-        return sprintf(__('Osclass %s &raquo; %s'), OSCLASS_VERSION, $string);
+        return sprintf(__('Osclass Evolution %s &raquo; %s'), OSCLASS_VERSION, $string);
     }
     osc_add_filter('admin_title', 'customPageTitle');
     osc_current_admin_theme_path( 'parts/header.php' );

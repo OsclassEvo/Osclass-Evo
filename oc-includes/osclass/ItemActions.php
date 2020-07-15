@@ -330,9 +330,11 @@
                     break;
                 }
 
-                $desc_message .=
-                    (!osc_validate_text($value, 3) ? _m("Description too short.") . PHP_EOL : '' ) .
-                    (!osc_validate_max($value, osc_max_characters_per_description()) ? _m("Description too long."). PHP_EOL : '' );
+                if(!$this->is_admin || !osc_editor_enabled_at_items()) {
+                    $desc_message .=
+                        (!osc_validate_text($value, 3) ? _m("Description too short.") . PHP_EOL : '' ) .
+                        (!osc_validate_max($value, osc_max_characters_per_description()) ? _m("Description too long."). PHP_EOL : '' );
+                }
             }
             $flash_error .= $desc_message;
 
@@ -1159,7 +1161,12 @@
             $aItem['currency']      = Params::getParam('currency');
             $aItem['showEmail']     = (Params::getParam('showEmail') != '') ? 1 : 0;
             $aItem['title']         = Params::getParam('title');
-            $aItem['description']   = Params::getParam('description');
+            if($this->is_admin && osc_editor_enabled_at_items()) {
+                $aItem['description']   = Params::getParam('description', false, false, false);
+            } else {
+                $aItem['description']   = Params::getParam('description');
+            }
+
             $aItem['photos']        = Params::getFiles('photos');
             $ajax_photos            = Params::getParam('ajax_photos');
             $aItem['s_ip']          = get_ip();

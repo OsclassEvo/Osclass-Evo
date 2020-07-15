@@ -62,6 +62,10 @@ function customHead() {
 
                     if(JSON.stringify(list) != JSON.stringify(list_original)) {
                         var plist = list.reduce(function ( total, current, index ) {
+                            if(current.parentId === undefined) {
+                                current.parentId = 'root';
+                            }
+
                             total[index] = {'c' : current.id, 'p' : current.parentId};
                             return total;
                         }, {});
@@ -71,6 +75,7 @@ function customHead() {
                             url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=categories_order&" . osc_csrf_token_url(); ?>",
                             data: {'list' : JSON.stringify(plist)},
                             success: function(res){
+                                console.log(res);
                                 var ret = eval("(" + res + ")");
 
                                 if(ret.ok) {
@@ -277,13 +282,19 @@ function drawCategories($categories, $level = 0) {
 }
 
 function drawEditCategories($categories, $level = 0) {
-    foreach($categories as $i => $category) {
+    foreach($categories as $i => $cat) {
+        $category = Category::newInstance()->findByPrimaryKey($cat['pk_i_id'], 'all');
+
+        if(isset($cat['categories'])) {
+            $category['categories'] = $cat['categories'];
+        }
+
         require osc_admin_base_path() . 'themes/evolution/categories/iframe.php';
 
-        if(count($category['categories']) > 0) {
+        if(count($cat['categories']) > 0) {
             $level++;
 
-            drawEditCategories($category['categories'], $level);
+            drawEditCategories($cat['categories'], $level);
         }
     }
 }
@@ -445,6 +456,17 @@ if(Params::getParam('action') == 'category_edit') {
 
 <?php osc_current_admin_theme_path( 'parts/header.php' ); ?>
 
+<style>
+    .category-preloading {
+        background: #fff url('<?php echo osc_current_admin_theme_url(); ?>img/category-preloader.gif') no-repeat center center;
+        width: 100%;
+        min-height: 350px;
+    }
+    .category-preloading #sortable-categories {
+        display: none;
+    }
+</style>
+
 <div class="modal fade" id="fieldModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -586,7 +608,7 @@ if(Params::getParam('action') == 'category_edit') {
     <div class="col-md-12 text-right"><?php echo $header_menu; ?></div>
 </div>
 
-<div class="card">
+<div class="card <?php if(!osc_admin_pages_preloading()) echo 'category-preloading'; ?>">
     <div class="card-header card-header-rose card-header-icon">
         <div class="card-icon">
             <i class="material-icons">vertical_split</i>
@@ -604,5 +626,13 @@ if(Params::getParam('action') == 'category_edit') {
         <?php } ?>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        setTimeout(function() {
+            $('.category-preloading').removeClass('category-preloading')
+        }, 1000);
+    });
+</script>
 
 <?php osc_current_admin_theme_path( 'parts/footer.php' ); ?>

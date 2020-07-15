@@ -57,6 +57,7 @@
                     $sNumRssItems      = Params::getParam('num_rss_items');
                     $maxLatestItems    = Params::getParam('max_latest_items_at_home');
                     $numItemsSearch    = Params::getParam('default_results_per_page');
+                    $adminPagesPreloading = Params::getParam('enabled_admin_pages_preloading');
                     $contactAttachment = Params::getParam('enabled_attachment');
                     $selectableParent  = Params::getParam('selectable_parent_categories');
                     $bAutoCron         = Params::getParam('auto_cron');
@@ -76,6 +77,7 @@
                     $sNumRssItems      = (int) trim(strip_tags($sNumRssItems));
                     $maxLatestItems    = (int) trim(strip_tags($maxLatestItems));
                     $numItemsSearch    = (int) $numItemsSearch;
+                    $adminPagesPreloading = ($adminPagesPreloading != '' ? true : false);
                     $contactAttachment = ($contactAttachment != '' ? true : false);
                     $bAutoCron         = ($bAutoCron != '' ? true : false);
                     $error = "";
@@ -132,6 +134,7 @@
                     }
 
                     $iUpdated += osc_set_preference('defaultResultsPerPage@search', $numItemsSearch);
+                    $iUpdated += osc_set_preference('admin_pages_preloading', $adminPagesPreloading);
                     $iUpdated += osc_set_preference('contact_attachment', $contactAttachment);
                     $iUpdated += osc_set_preference('auto_cron', $bAutoCron);
                     $iUpdated += osc_set_preference('selectable_parent_categories', $selectableParent);

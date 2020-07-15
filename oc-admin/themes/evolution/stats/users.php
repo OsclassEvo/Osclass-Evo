@@ -33,6 +33,11 @@ function customHead() {
     $users_by_region  = __get("users_by_region");
 
     if(count($users) > 0) {
+        $user_date = '';
+        $user_num = '';
+        $user_country_num = '';
+        $user_region_num = '';
+
         foreach($users as $date => $num) {
             $user_date .= "'". $date . "',";
             $user_num .= $num . ",";
@@ -148,6 +153,10 @@ osc_add_hook('admin_page_header','customPageHeader');
 osc_add_hook('admin_header','customHead', 10);
 
 $type = Params::getParam('type_stat');
+
+$is_day = '';
+$is_week = '';
+$is_month = '';
 
 switch($type){
     case 'week':

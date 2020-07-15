@@ -106,14 +106,16 @@ function osc_show_widgets_by_description($description) {
  * @return void
  */
 function osc_show_recaptcha($section = '') {
-    if( osc_recaptcha_public_key() ) {
-        if(osc_recaptcha_version()=="2") {
+    if(osc_recaptcha_public_key()) {
+        if(osc_recaptcha_version() == '2' || osc_recaptcha_version() == '3') {
             switch($section) {
                 case('recover_password'):
-                    Session::newInstance()->_set('recover_captcha_not_set',0);
+                    Session::newInstance()->_set('recover_captcha_not_set', 0);
+
                     $time  = Session::newInstance()->_get('recover_time');
-                    if((time()-$time)<=1200) {
-                        echo _osc_recaptcha_get_html(osc_recaptcha_public_key(), substr(osc_language(), 0, 2))."<br />";
+
+                    if((time() - $time) <= 1200) {
+                        echo _osc_recaptcha_get_html(osc_recaptcha_public_key(), substr(osc_language(), 0, 2), osc_recaptcha_version())."<br />";
                     }
                     else{
                         Session::newInstance()->_set('recover_captcha_not_set',1);
@@ -121,30 +123,42 @@ function osc_show_recaptcha($section = '') {
                     break;
 
                 default:
-                    echo _osc_recaptcha_get_html(osc_recaptcha_public_key(), substr(osc_language(), 0, 2))."<br />";
-                    break;
-            }
-        } else {
-            require_once osc_lib_path() . 'recaptchalib.php';
-            switch($section) {
-                case('recover_password'):
-                    $time  = Session::newInstance()->_get('recover_time');
-                    if((time()-$time)<=1200) {
-                        echo recaptcha_get_html( osc_recaptcha_public_key(), null, osc_is_ssl() )."<br />";
-                    }
-                    break;
-
-                default:
-                    echo recaptcha_get_html( osc_recaptcha_public_key(), null, osc_is_ssl() );
+                    echo _osc_recaptcha_get_html(osc_recaptcha_public_key(), substr(osc_language(), 0, 2), osc_recaptcha_version())."<br />";
                     break;
             }
         }
     }
 }
 
-function _osc_recaptcha_get_html($siteKey, $lang) {
-    echo '<div class="g-recaptcha" data-sitekey="' . $siteKey . '"></div>';
-    echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . $lang . '"></script>';
+function _osc_recaptcha_get_html($siteKey, $lang, $version = '2') {
+    if($version == '2') {
+        echo '<div class="g-recaptcha" data-sitekey="' . $siteKey . '"></div>';
+        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . $lang . '"></script>';
+    } else if($version == '3') {
+        echo '<input id="recaptchaResponse" type="hidden" name="g-recaptcha-response">';
+        echo '<script src="https://www.google.com/recaptcha/api.js?render=' . $siteKey . '"></script>';
+        echo '<script>grecaptcha.ready(function() {grecaptcha.execute("' . $siteKey . '", {action: "recaptchaVirify"}).then(function (token) {var recaptchaResponse = document.getElementById("recaptchaResponse"); recaptchaResponse.value = token;});})</script>';
+    }
+}
+
+/**
+ * Validate Google reCAPTCHA v.3
+ *
+ * @param string $token
+ * @return boolean
+ */
+function osc_recaptcha3_validate($token) {
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptcha_secret = osc_recaptcha_private_key();
+
+    $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $token);
+    $recaptcha = json_decode($recaptcha);
+
+    if ($recaptcha->score >= 0.7) {
+        return true;
+    }
+
+    return false;
 }
 
 /**

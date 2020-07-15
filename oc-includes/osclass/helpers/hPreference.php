@@ -267,6 +267,15 @@
     }
 
     /**
+     * Gets if description editor is o not enabled in admin panel item's form
+     *
+     * @return boolean
+     */
+    function osc_editor_enabled_at_items() {
+        return (getBoolPreference('enableField#editor@items'));
+    }
+
+    /**
      * Gets if the prices are o not enabled on the item's form
      *
      * @return boolean
@@ -933,6 +942,15 @@
      */
     function osc_selectable_parent_categories() {
         return(getPreference('selectable_parent_categories'));
+    }
+
+    /**
+     * Gets if preloading pages in tha admin panel are enabled or not
+     *
+     * @return boolean
+     */
+    function osc_admin_pages_preloading() {
+        return(getPreference('admin_pages_preloading'));
     }
 
     /**

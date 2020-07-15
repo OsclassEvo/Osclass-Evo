@@ -31,6 +31,13 @@ function customHead() {
     $reports = __get("reports");
 
     if(count($reports) > 0) {
+        $report_date = '';
+        $report_spam = '';
+        $report_repeated = '';
+        $report_classified = '';
+        $report_offensive = '';
+        $report_expired = '';
+
         foreach($reports as $date => $data) {
             $report_date .= "'". $date . "',";
             $report_spam .= $data['spam'] . ",";
@@ -98,7 +105,11 @@ osc_add_hook('help_box','addHelp');
 osc_add_hook('admin_page_header','customPageHeader');
 osc_add_hook('admin_header','customHead', 10);
 
-$type         = Params::getParam('type_stat');
+$type = Params::getParam('type_stat');
+
+$is_day = '';
+$is_week = '';
+$is_month = '';
 
 switch($type){
     case 'week':

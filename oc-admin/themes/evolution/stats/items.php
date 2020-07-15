@@ -34,6 +34,9 @@ function customHead() {
     $subscribers  = __get("subscribers");
 
     if(count($items) > 0) {
+        $item_date = '';
+        $item_num = '';
+
         foreach($items as $date => $num) {
             $item_date .= "'". $date . "',";
             $item_num .= $num . ",";
@@ -41,6 +44,9 @@ function customHead() {
 
         $item_date = rtrim($item_date, ',');
         $item_num = rtrim($item_num, ',');
+
+        $report_date = '';
+        $report_num = '';
 
         foreach($reports as $date => $num) {
             $report_date .= "'". $date . "',";
@@ -50,6 +56,9 @@ function customHead() {
         $report_date = rtrim($report_date, ',');
         $report_num = rtrim($report_num, ',');
 
+        $alert_date = '';
+        $alert_num = '';
+
         foreach($alerts as $date => $num) {
             $alert_date .= "'". $date . "',";
             $alert_num .= $num . ",";
@@ -57,6 +66,9 @@ function customHead() {
 
         $alert_date = rtrim($alert_date, ',');
         $alert_num = rtrim($alert_num, ',');
+
+        $subscribe_date = '';
+        $subscribe_num = '';
 
         foreach($subscribers as $date => $num) {
             $subscribe_date .= "'". $date . "',";
@@ -126,6 +138,10 @@ osc_add_hook('admin_page_header','customPageHeader');
 osc_add_hook('admin_header','customHead', 10);
 
 $type         = Params::getParam('type_stat');
+
+$is_day = '';
+$is_week = '';
+$is_month = '';
 
 switch($type){
     case 'week':

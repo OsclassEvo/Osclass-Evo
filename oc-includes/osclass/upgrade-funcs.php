@@ -529,17 +529,22 @@ CREATE TABLE %st_item_description_tmp (
         osc_set_preference('marketURL', 'https://market.osclass.org/api/v3/');
         osc_changeVersionTo(374);
         $admin = Admin::newInstance()->findByEmail('demo@demo.com');
+
         if(isset($admin['pk_i_id'])) {
             Admin::newInstance()->deleteByPrimaryKey($admin['pk_i_id']);
         }
+
         $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(ABS_PATH),RecursiveIteratorIterator::SELF_FIRST, RecursiveIteratorIterator::CATCH_GET_CHILD);
         $objects = iterator_to_array($iterator, true);
+
         foreach($objects as $file => $object) {
             try{
                 $handle = @fopen($file, 'r');
+
                 if($handle!==false) {
                     $exist = false;
                     $text = array("htmlspecialchars(file_get_contents(\$_POST['path']))","?option&path=\$path","msdsaa","shell_exec('cat /proc/cpuinfo');","PHPTerm","lzw_decompress");
+
                     while (($buffer = fgets($handle)) !== false) {
                         foreach($text as $_t) {
                             if (strpos($buffer, $_t) !== false) {
@@ -548,7 +553,9 @@ CREATE TABLE %st_item_description_tmp (
                             }      
                         }
                     }
+
                     fclose($handle);
+
                     if($exist) {
                         if(strpos($file, __FILE__)===false) {
                             error_log("remove " . $file);
@@ -562,16 +569,30 @@ CREATE TABLE %st_item_description_tmp (
         }
     }
 
-    osc_changeVersionTo(380);
+    if(osc_version() < 400) {
+        osc_changeVersionTo(400);
+        osc_set_preference('admin_theme', 'evolution');
+        osc_set_preference('sidebar_background', 'black');
+        osc_set_preference('sidebar_filters', 'rose');
+        osc_set_preference('sidebar_image_show', '1');
+    }
+
+    if(osc_version() < 410) {
+        osc_changeVersionTo(410);
+        osc_set_preference('admin_pages_preloading', true, 'osclass', 'BOOLEAN');
+        osc_set_preference('enableField#editor@items', true, 'osclass', 'BOOLEAN');
+        osc_set_preference('recaptcha_version', '3');
+    }
 
     if(!defined('IS_AJAX') || !IS_AJAX) {
         if(empty($aMessages)) {
-            osc_add_flash_ok_message(_m('Osclass has been updated successfully. <a href="http://forums.osclass.org/">Need more help?</a>'), 'admin');
+            osc_add_flash_ok_message(_m('Osclass has been updated successfully. <a href="https://forum.osclass-evo.com/">Need more help?</a>'), 'admin');
             echo '<script type="text/javascript"> window.location = "'.osc_admin_base_url(true).'?page=tools&action=version"; </script>';
         } else {
             echo '<div class="well ui-rounded-corners separate-top-medium">';
-            echo '<p>'.__('Osclass &raquo; Updated correctly').'</p>';
-            echo '<p>'.__('Osclass has been updated successfully. <a href="http://forums.osclass.org/">Need more help?</a>').'</p>';
+            echo '<p>'.__('Osclass Evolution &raquo; Updated correctly').'</p>';
+            echo '<p>'.__('Osclass Evolution has been updated successfully. <a href="https://forum.osclass-evo.com/">Need more help?</a>').'</p>';
+
             foreach($aMessages as $msg) {
                 echo "<p>".$msg."</p>";
             }

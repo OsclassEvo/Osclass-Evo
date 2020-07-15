@@ -171,6 +171,8 @@
         }
 
         static public function evolution_category_multiple_selects($categories = null, $item = null, $default_item = null, $parent_selectable = false) {
+            $categoryID = null;
+
             if (osc_item_category_id() != null) {
                 $categoryID = osc_item_category_id();
             }

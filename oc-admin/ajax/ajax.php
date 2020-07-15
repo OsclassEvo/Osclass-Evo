@@ -88,7 +88,6 @@
                     $aIds        = json_decode(Params::getParam('list'), true);
                     $order       = array();
                     $error       = 0;
-
                     $catManager  = Category::newInstance();
                     $aRecountCat = array();
 
@@ -99,17 +98,19 @@
 
                         $res = $catManager->update(
                             array(
-                                'fk_i_parent_id' => ($cat['p']=='root'?NULL:$cat['p']),
+                                'fk_i_parent_id' => ($cat['p'] == 'root' ? NULL : $cat['p']),
                                 'i_position' => $order[$cat['p']]
                             ),
                             array('pk_i_id' => $cat['c'])
                         );
+
                         if( is_bool($res) && !$res ) {
                             $error = 1;
-                        } else if($res==1) {
+                        } else if($res == 1) {
                             $aRecountCat[] = $cat['c'];
                         }
-                        $order[$cat['p']] = $order[$cat['p']]+1;
+
+                        $order[$cat['p']] = $order[$cat['p']] + 1;
                     }
 
                     // update category stats

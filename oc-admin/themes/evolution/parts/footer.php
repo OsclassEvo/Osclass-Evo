@@ -426,10 +426,13 @@ $(document).ready(function() {
 
 <?php osc_run_hook('admin_footer'); ?>
 
-<div class="wait">
-    <div class="preloader">
-        <img src="<?php echo osc_current_admin_theme_url(); ?>img/page-preloader.gif?v=<?php echo time(); ?>" alt="loading">
+<?php if(osc_admin_pages_preloading()): ?>
+    <div class="wait">
+        <div class="preloader">
+            <img src="<?php echo osc_current_admin_theme_url(); ?>img/page-preloader.gif?v=<?php echo time(); ?>" alt="loading">
+        </div>
     </div>
-</div>
+<?php endif; ?>
+
 </body>
 </html>          

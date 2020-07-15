@@ -14974,12 +14974,14 @@ label {
   color: #ffffff;
 }
 
-.alert.alert-info {
+.alert.alert-info,
+.flashmessage.flashmessage-info {
   background-color: #2CA8FF;
   color: #ffffff;
 }
 
 .alert.alert-info a,
+.flashmessage.flashmessage-info a,
 .alert.alert-info .alert-link {
   color: #ffffff;
 }
@@ -16261,10 +16263,6 @@ thead.thead-inverse th,
 
 .card .card-header {
   /*z-index: 3;*/
-}
-
-.waitMe_container .card .card-header {
-  opacity: 0.7;
 }
 
 .card .card-header .card-title {

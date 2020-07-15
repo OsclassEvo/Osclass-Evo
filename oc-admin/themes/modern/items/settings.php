@@ -73,7 +73,7 @@
                             <div class="form-controls">
                                 <div class="form-label-checkbox">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_reg_user_post() ? 'checked="checked"' : ''); ?> name="reg_user_post" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_reg_user_post() ? 'checked' : ''); ?> name="reg_user_post" value="1" />
                                         <?php _e('Only logged in users can post listings'); ?>
                                     </label>
                                 </div>
@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="separate-top-medium">
                                     <label>
-                                        <input type="checkbox" <?php echo ( ( osc_moderate_items() == -1 ) ? '' : 'checked="checked"' ); ?> name="moderate_items" value="1" />
+                                        <input type="checkbox" <?php echo ( ( osc_moderate_items() == -1 ) ? '' : 'checked' ); ?> name="moderate_items" value="1" />
                                         <?php _e('Users have to validate their listings'); ?>
                                     </label>
                                 </div>
@@ -98,14 +98,14 @@
                                     </div>
                                     <div class="separate-top-medium">
                                         <label>
-                                            <input type="checkbox" <?php echo ( osc_logged_user_item_validation() ? 'checked="checked"' : '' ); ?> name="logged_user_item_validation" value="1" />
+                                            <input type="checkbox" <?php echo ( osc_logged_user_item_validation() ? 'checked' : '' ); ?> name="logged_user_item_validation" value="1" />
                                             <?php _e("Logged in users don't need to validate their listings"); ?>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="separate-top-medium">
                                     <label>
-                                        <input type="checkbox" <?php echo ( ( osc_recaptcha_items_enabled() == '0' ) ? '' : 'checked="checked"' ); ?> name="enabled_recaptcha_items" value="1" />
+                                        <input type="checkbox" <?php echo ( ( osc_recaptcha_items_enabled() == '0' ) ? '' : 'checked' ); ?> name="enabled_recaptcha_items" value="1" />
                                         <?php _e('Show reCAPTCHA in add/edit listing form'); ?>
                                     </label>
                                     <div class="help-box"><?php _e('<strong>Remember</strong> that you must configure reCAPTCHA first'); ?></div>
@@ -117,13 +117,13 @@
                             <div class="form-controls">
                                 <div class="form-label-checkbox">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_reg_user_can_contact() ? 'checked="checked"' : '' ); ?> name="reg_user_can_contact" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_reg_user_can_contact() ? 'checked' : '' ); ?> name="reg_user_can_contact" value="1" />
                                         <?php _e('Only allow registered users to contact publisher'); ?>
                                     </label>
                                 </div>
                                 <div class="separate-top-medium">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_item_attachment() ? 'checked="checked"' : '' ); ?> name="item_attachment" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_item_attachment() ? 'checked' : '' ); ?> name="item_attachment" value="1" />
                                         <?php _e('Allow attached files in contact publisher form'); ?>
                                     </label>
                                 </div>
@@ -134,19 +134,19 @@
                             <div class="form-controls">
                                 <div class="form-label-checkbox">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_notify_new_item() ? 'checked="checked"' : ''); ?> name="notify_new_item" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_notify_new_item() ? 'checked' : ''); ?> name="notify_new_item" value="1" />
                                         <?php _e('Notify admin when a new listing is added'); ?>
                                     </label>
                                 </div>
                                 <div class="separate-top-medium">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_notify_contact_item() ? 'checked="checked"' : '' ); ?> name="notify_contact_item" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_notify_contact_item() ? 'checked' : '' ); ?> name="notify_contact_item" value="1" />
                                         <?php _e('Send admin a copy of the "contact publisher" email'); ?>
                                     </label>
                                 </div>
                                 <div class="separate-top-medium">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_notify_contact_friends() ? 'checked="checked"' : '' ); ?> name="notify_contact_friends" value="1" />
+                                        <input type="checkbox" <?php echo ( osc_notify_contact_friends() ? 'checked' : '' ); ?> name="notify_contact_friends" value="1" />
                                         <?php _e('Send admin a copy to "share listing" email'); ?>
                                     </label>
                                 </div>
@@ -181,12 +181,18 @@
                             <div class="form-controls">
                                 <div class="form-label-checkbox">
                                     <label>
-                                        <input type="checkbox" <?php echo ( osc_price_enabled_at_items() ? 'checked="checked"' : '' ); ?> name="enableField#f_price@items" value="1"  />
-                                        <?php _e('Price'); ?>
+                                        <input id="editor" class="form-check-input" type="checkbox" <?php echo (osc_editor_enabled_at_items() ? 'checked' : ''); ?> name="enableField#editor@items" value="1">
+                                        <?php _e('Admin panel description editor'); ?>
                                     </label>
                                     <div class="separate-top-medium">
                                         <label>
-                                            <input type="checkbox" <?php echo ( osc_images_enabled_at_items() ? 'checked="checked"' : '' ); ?> name="enableField#images@items" value="1" />
+                                            <input type="checkbox" <?php echo ( osc_price_enabled_at_items() ? 'checked' : '' ); ?> name="enableField#f_price@items" value="1"  />
+                                            <?php _e('Price'); ?>
+                                        </label>
+                                    </div>
+                                    <div class="separate-top-medium">
+                                        <label>
+                                            <input type="checkbox" <?php echo ( osc_images_enabled_at_items() ? 'checked' : '' ); ?> name="enableField#images@items" value="1" />
                                             <?php _e('Attach images'); ?>
                                         </label>
                                     </div>

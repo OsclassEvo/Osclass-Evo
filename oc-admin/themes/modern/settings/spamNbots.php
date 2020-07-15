@@ -91,40 +91,42 @@
             <input type="hidden" name="action" value="recaptcha_post" />
             <fieldset>
                 <div class="form-horizontal">
-                <div class="form-row">
-                    <div class="form-label"><?php _e('Use reCaptcha v2'); ?></div>
-                    <div class="form-controls">
-                        <div class="form-label-checkbox">
-                            <input type="checkbox" id="recaptchaVersion" name="recaptchaVersion" value="2" <?php echo ( osc_recaptcha_version()=="2" ? 'checked="checked"' : '' ); ?> />
-                            <label for="recaptchaVersion"><?php _e('Use reCaptcha v2.'); ?></label>
-                            <span class="help-box"><?php printf(__('If you were using v1, you need to <a href="%s">re-generate your reCaptcha keys</a>.'), 'https://www.google.com/recaptcha/admin'); ?></span>
+                    <div class="form-row">
+                        <div class="form-label"><?php _e('ReCAPTCHA Version'); ?></div>
+                        <div class="form-controls">
+                            <select name="recaptchaVersion">
+                                <option value="2" <?php echo (osc_recaptcha_version() == '2' ? 'selected' : ''); ?>><?php _e('reCAPTCHA v.2'); ?></option>
+                                <option value="3" <?php echo (osc_recaptcha_version() == '3' ? 'selected' : ''); ?>><?php _e('reCAPTCHA v.3'); ?></option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-label"><?php _e('Site key'); ?></div>
-                    <div class="form-controls">
-                        <input type="text" class="input-large" name="recaptchaPubKey" value="<?php echo (osc_recaptcha_public_key() ? osc_esc_html( osc_recaptcha_public_key() ) : ''); ?>" />
+
+                    <div class="form-row">
+                        <div class="form-label"><?php _e('Site key'); ?></div>
+                        <div class="form-controls">
+                            <input type="text" class="input-large" name="recaptchaPubKey" value="<?php echo (osc_recaptcha_public_key() ? osc_esc_html( osc_recaptcha_public_key() ) : ''); ?>" />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-label"><?php _e('Secret key'); ?></div>
+                        <div class="form-controls">
+                            <input type="text" class="input-large" name="recaptchaPrivKey" value="<?php echo (osc_recaptcha_private_key() ? osc_esc_html( osc_recaptcha_private_key() ) : ''); ?>" />
+                        </div>
+                    </div>
+
+                    <?php if(osc_recaptcha_public_key()) { ?>
+                        <div class="form-row">
+                            <div class="form-label"><?php _e('If you see the reCAPTCHA form it means that you have correctly entered the public key'); ?></div>
+                            <div class="form-controls">
+                                <?php osc_show_recaptcha(); ?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <div class="form-actions">
+                        <input type="submit" id="submit_recaptcha" value="<?php echo osc_esc_html( __('Save changes') ); ?>" class="btn btn-submit" />
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-label"><?php _e('Secret key'); ?></div>
-                    <div class="form-controls">
-                        <input type="text" class="input-large" name="recaptchaPrivKey" value="<?php echo (osc_recaptcha_private_key() ? osc_esc_html( osc_recaptcha_private_key() ) : ''); ?>" />
-                    </div>
-                </div>
-                <?php if( osc_recaptcha_public_key() != '' ) { ?>
-                <div class="form-row">
-                    <div class="form-label"><?php _e('If you see the reCAPTCHA form it means that you have correctly entered the public key'); ?></div>
-                    <div class="form-controls">
-                        <?php osc_show_recaptcha(); ?>
-                    </div>
-                </div>
-                <?php }; ?>
-                <div class="form-actions">
-                    <input type="submit" id="submit_recaptcha" value="<?php echo osc_esc_html( __('Save changes') ); ?>" class="btn btn-submit" />
-                </div>
-            </div>
             </fieldset>
         </form>
     </div>

@@ -15,60 +15,83 @@
  * limitations under the License.
  */
 
-    osc_enqueue_script('tiny_mce');
+osc_enqueue_script('tiny_mce5');
 
-    function customPageHeader(){ ?>
-        <h1><?php _e('Settings'); ?></h1>
-<?php
-    }
-    osc_add_hook('admin_page_header','customPageHeader');
-    //customize Head
-    function customHead() { ?>
-        <script type="text/javascript">
-            tinyMCE.init({
-                mode : "textareas",
-                width: "100%",
-                height: "440px",
-                language: 'en',
-                theme_advanced_toolbar_align : "left",
-                theme_advanced_toolbar_location : "top",
-                plugins : [
-                    "advlist autolink lists link image charmap preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table contextmenu paste"
-                ],
-                entity_encoding : "raw",
-                theme_advanced_buttons1_add : "forecolorpicker,fontsizeselect",
-                theme_advanced_buttons2_add: "media",
-                theme_advanced_buttons3: "",
-                theme_advanced_disable : "styleselect,anchor",
-                relative_urls : false,
-                remove_script_host : false,
-                convert_urls : false
+function customPageHeader(){ ?>
+    <h1><?php _e('Settings'); ?></h1>
+    <?php
+}
+osc_add_hook('admin_page_header','customPageHeader');
+//customize Head
+function customHead() { ?>
+    <script type="text/javascript">
+        tinyMCE.init({
+            mode : "textareas",
+            mobile: {
+                // theme: 'mobile',
+                menubar: 'edit view insert format table'
+            },
+            menu: {
+                edit: {title: 'Edit', items: 'undo redo | selectall'}
+            },
+            menubar: 'edit view insert format table',
+            width: "100%",
+            height: "440px",
+            language: 'en',
+            branding: false,
+            plugins : 'advlist autolink lists link image imagetools media charmap preview anchor searchreplace visualblocks code codesample fullscreen insertdatetime media table contextmenu',
+            toolbar: 'undo redo | styleselect bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | codesample code',
+            entity_encoding : "raw",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: false,
+            media_live_embeds: true,
+            image_advtab: true,
+            paste_data_images: true,
+            link_assume_external_targets: true,
+            link_quicklink: true,
+            file_picker_types: 'image media',
+            file_picker_callback: function(callback, value, meta) {
+                if (meta.filetype == 'image') {
+                    $('#upload').trigger('click');
+
+                    $('#upload').on('change', function() {
+                        var file = this.files[0];
+                        var reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            callback(e.target.result, {
+                                alt: ''
+                            });
+                        };
+
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+        });
+
+        $(document).ready(function(){
+            // dialog filters
+            $('#dialog-test-it').dialog({
+                autoOpen: false,
+                modal: true,
+                width: 360,
+                minHeight: 42,
+                title: '<?php echo osc_esc_js( __('Send email') ); ?>'
+            });
+            $('#btn-display-test-it').click(function(){
+                $('#dialog-test-it').dialog('open');
+                return false;
             });
 
+            $('#btn-test-it').click(function() {
+                var name   = $('input[name*="#s_title"]:visible').attr('name');
+                var locale = name.replace("#s_title","");
 
-            $(document).ready(function(){
-                // dialog filters
-                $('#dialog-test-it').dialog({
-                    autoOpen: false,
-                    modal: true,
-                    width: 360,
-                    minHeight: 42,
-                    title: '<?php echo osc_esc_js( __('Send email') ); ?>'
-                });
-                $('#btn-display-test-it').click(function(){
-                    $('#dialog-test-it').dialog('open');
-                    return false;
-                });
+                var idTinymce = locale+"#s_text";
 
-                $('#btn-test-it').click(function() {
-                    var name   = $('input[name*="#s_title"]:visible').attr('name');
-                    var locale = name.replace("#s_title","");
-
-                    var idTinymce = locale+"#s_text";
-
-                    $.post('<?php echo osc_admin_base_url(true); ?>',
+                $.post('<?php echo osc_admin_base_url(true); ?>',
                     {
                         page: 'ajax',
                         action: 'test_mail_template',
@@ -79,26 +102,26 @@
                     function(data) {
                         alert(data.html);
                     }, 'json');
-                    return false;
-                });
+                return false;
             });
+        });
 
-        </script>
-        <?php
-    }
-    osc_add_hook('admin_header','customHead', 10);
+    </script>
+    <?php
+}
+osc_add_hook('admin_header','customHead', 10);
 
-    function customPageTitle($string) {
-        return sprintf(__('Edit email template &raquo; %s'), $string);
-    }
-    osc_add_filter('admin_title', 'customPageTitle');
+function customPageTitle($string) {
+    return sprintf(__('Edit email template &raquo; %s'), $string);
+}
+osc_add_filter('admin_title', 'customPageTitle');
 
-    $email      = __get("email");
-    $aEmailVars = EmailVariables::newInstance()->getVariables( $email );
+$email      = __get("email");
+$aEmailVars = EmailVariables::newInstance()->getVariables( $email );
 
-    $locales = OSCLocale::newInstance()->listAllEnabled();
+$locales = OSCLocale::newInstance()->listAllEnabled();
 
-    osc_current_admin_theme_path('parts/header.php'); ?>
+osc_current_admin_theme_path('parts/header.php'); ?>
 
 <div class="grid-row no-bottom-margin">
     <div class="row-wrapper">
@@ -112,9 +135,10 @@
                 <div id="left-side">
 
                     <?php printLocaleTabs(); ?>
-                     <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
+                    <form action="<?php echo osc_admin_base_url(true); ?>" method="post">
                         <input type="hidden" name="page" value="emails" />
                         <input type="hidden" name="action" value="edit_post" />
+                        <input id="upload" class="hide" type="file" name="image" >
                         <?php PageForm::primary_input_hidden($email); ?>
                         <div id="left-side">
                             <?php printLocaleTitlePage($locales, $email); ?>
@@ -140,7 +164,7 @@
                     <div class="well ui-rounded-corners">
                         <h3 style="margin: 0;margin-bottom: 10px;text-align: center; color: #616161;"><?php _e('Legend'); ?></h3>
                         <?php foreach($aEmailVars as $key => $value) { ?>
-                        <label><b><?php echo $key; ?></b><br/><?php echo $value;?></label><hr/>
+                            <label><b><?php echo $key; ?></b><br/><?php echo $value;?></label><hr/>
                         <?php } ?>
                     </div>
                 </div>

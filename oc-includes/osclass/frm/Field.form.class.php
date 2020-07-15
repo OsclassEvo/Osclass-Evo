@@ -122,14 +122,14 @@ FB;
         static public function type_select($field = null, $class = '', $attr = '') {
             ?>
             <select name="field_type" <?php echo $class != '' ? 'class="' . $class . '"' : ''; ?> <?php echo  $attr; ?> id="field_type">
-                <option value="TEXT" <?php if($field['e_type']=="TEXT") { echo 'selected="selected"';};?>><?php _e('TEXT'); ?></option>
-                <option value="TEXTAREA" <?php if($field['e_type']=="TEXTAREA") { echo 'selected="selected"';};?>><?php _e('TEXTAREA'); ?></option>
-                <option value="DROPDOWN" <?php if($field['e_type']=="DROPDOWN") { echo 'selected="selected"';};?>><?php _e('DROPDOWN'); ?></option>
-                <option value="RADIO" <?php if($field['e_type']=="RADIO") { echo 'selected="selected"';};?>><?php _e('RADIO'); ?></option>
-                <option value="CHECKBOX" <?php if($field['e_type']=="CHECKBOX") { echo 'selected="selected"';};?>><?php _e('CHECKBOX'); ?></option>
-                <option value="URL" <?php if($field['e_type']=="URL") { echo 'selected="selected"';};?>><?php _e('URL'); ?></option>
-                <option value="DATE" <?php if($field['e_type']=="DATE") { echo 'selected="selected"';};?>><?php _e('DATE'); ?></option>
-                <option value="DATEINTERVAL" <?php if($field['e_type']=="DATEINTERVAL") { echo 'selected="selected"';};?>><?php _e('DATE INTERVAL'); ?></option>
+                <option value="TEXT" <?php if($field != null && $field['e_type'] == "TEXT") { echo 'selected="selected"';};?>><?php _e('TEXT'); ?></option>
+                <option value="TEXTAREA" <?php if($field != null && $field['e_type'] == "TEXTAREA") { echo 'selected="selected"';};?>><?php _e('TEXTAREA'); ?></option>
+                <option value="DROPDOWN" <?php if($field != null && $field['e_type'] == "DROPDOWN") { echo 'selected="selected"';};?>><?php _e('DROPDOWN'); ?></option>
+                <option value="RADIO" <?php if($field != null && $field['e_type'] == "RADIO") { echo 'selected="selected"';};?>><?php _e('RADIO'); ?></option>
+                <option value="CHECKBOX" <?php if($field != null && $field['e_type'] == "CHECKBOX") { echo 'selected="selected"';};?>><?php _e('CHECKBOX'); ?></option>
+                <option value="URL" <?php if($field != null && $field['e_type'] == "URL") { echo 'selected="selected"';};?>><?php _e('URL'); ?></option>
+                <option value="DATE" <?php if($field != null && $field['e_type'] == "DATE") { echo 'selected="selected"';};?>><?php _e('DATE'); ?></option>
+                <option value="DATEINTERVAL" <?php if($field != null && $field['e_type'] == "DATEINTERVAL") { echo 'selected="selected"';};?>><?php _e('DATE INTERVAL'); ?></option>
             </select>
             <?php
             return true;
@@ -137,7 +137,7 @@ FB;
 
         static public function meta($field = null, $search = false) {
 
-            if($field!=null) {
+            if($field != null) {
                 // date interval
                 if($field['e_type']=='DATEINTERVAL') {
                     $field['s_value'] = array();

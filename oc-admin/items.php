@@ -51,7 +51,9 @@ class CAdminItems extends AdminSecBaseModel
         switch ($this->action) {
             case 'bulk_actions':
                 osc_csrf_check();
+
                 $mItems = new ItemActions(true);
+
                 switch (Params::getParam('bulk_actions')) {
                     case 'enable_all':
                         $id = Params::getParam('id');
@@ -130,7 +132,7 @@ class CAdminItems extends AdminSecBaseModel
                             }
                             osc_add_flash_ok_message(
                                 sprintf(
-                                    _m(
+                                    _mn(
                                         '%d listing has been deactivated',
                                         '%d listings have been deactivated',
                                         $numSuccess
@@ -708,11 +710,14 @@ class CAdminItems extends AdminSecBaseModel
                 $id = Params::getParam('id');
 
                 $item = Item::newInstance()->findByPrimaryKey($id);
+
                 if (count($item) <= 0) {
                     $this->redirectTo(osc_admin_base_url(true) . "?page=items");
                 }
 
                 $csrf_token = osc_csrf_token_url();
+
+                $float_class = '';
 
                 if(osc_get_preference('admin_theme') == 'modern') {
                     $float_class = 'float-left';
@@ -831,6 +836,7 @@ class CAdminItems extends AdminSecBaseModel
 
                 if (Params::getParam('data')) {
                     $params = array();
+
                     parse_str(
                         Params::getParam('data', false, false, false),
                         $params
@@ -1063,6 +1069,11 @@ class CAdminItems extends AdminSecBaseModel
                 );
                 $notifyContactFriends     = (($notifyContactFriends != '')
                     ? true : false);
+                $enabledFieldEditorItems   = Params::getParam(
+                    'enableField#editor@items'
+                );
+                $enabledFieldEditorItems   = (($enabledFieldEditorItems != '')
+                    ? true : false);
                 $enabledFieldPriceItems   = Params::getParam(
                     'enableField#f_price@items'
                 );
@@ -1163,6 +1174,10 @@ class CAdminItems extends AdminSecBaseModel
                 $iUpdated += osc_set_preference(
                     'notify_contact_friends',
                     $notifyContactFriends
+                );
+                $iUpdated += osc_set_preference(
+                    'enableField#editor@items',
+                    $enabledFieldEditorItems
                 );
                 $iUpdated += osc_set_preference(
                     'enableField#f_price@items',
