@@ -561,12 +561,10 @@
                     foreach($subCategories as $key => $subCategory) {
                         $this->_subCategories[$subCategory['pk_i_id']] = $subCategory;
 
-                        if(count($subCategories) == $key + 1) {
-                            $checkSubCategories = $this->findSubcategories($subCategory['pk_i_id']);
+                        $checkSubCategories = $this->findSubcategories($subCategory['pk_i_id']);
 
-                            if(count($checkSubCategories)) {
-                                $this->findAllSubcategories($subCategory['pk_i_id']);
-                            }
+                        if(count($checkSubCategories)) {
+                            $this->findAllSubcategories($subCategory['pk_i_id']);
                         }
                     }
 
