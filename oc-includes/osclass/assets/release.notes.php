@@ -6,18 +6,19 @@
                     <div class="col-md-12">
                         <div class="release-block w-50 m-auto pt-5 pb-5 bg-info rounded">
                             <div class="release-block w-75 m-auto bg-light p-4 rounded">
-                                <h3 class="text-center mt-0"><a class="text-dark font-weight-bold" href="https://osclass-evo.com/" target="_blank">Osclass Evolution 4.1.0 highlights</a></h3>
+                                <h3 class="text-center mt-0"><a class="text-dark font-weight-bold" href="https://osclass-evo.com/" target="_blank">Osclass Evolution 4.3.0 highlights</a></h3>
 
                                 <ul class="text-dark" style="list-style-type: disc!important;">
-                                    <li>Added the ability to <a href="<?php echo osc_admin_base_url(true); ?>?page=settings" target="_blank">disable</a> preload pages in the admin panel</li>
-                                    <li>Added WYSIWYG-Editor on the listings adding page in the admin panel (It can be <a href="<?php echo osc_admin_base_url(true); ?>?page=items&action=settings" target="_blank">disabled</a> on the listings settings page)</li>
-                                    <li>Updated TinyMCE HTML Editor to 5.4.1</li>
-                                    <li>Added Google reCaptcha v.3 (reCaptcha v.1 is deprecated and has been removed)</li>
-                                    <li>Fixed: <strong>Deprecated: Function get_magic_quotes_gpc() is deprecated</strong></li>
-                                    <li>Fixed: <strong>Deprecated: Array and string offset access syntax with curly braces is deprecated</strong></li>
-                                    <li>Fixed a bug the menu disappears when you install some plugins</li>
-                                    <li>Fixed a bug when it was not possible to change category icons in some paid templates</li>
-                                    <li>Fixed errors that occurred when editing categories in the admin panel</li>
+                                    <li><strongs>Added:</strongs> the ability to check for Osclass Evolution upgrades.</li>
+                                    <li><strongs>Added:</strongs> the ability to install Osсlass Evolution upgrades via the REST API.</li>
+                                    <li><strongs>Added:</strongs> the ability to scroll the page by dragging the mouse (to activate this feature, you must enable it in the settings: "Scrolling dragging mouse").</li>
+                                    <li><strongs>Improved:</strongs> and changed the interface for changing category positions by dragging them.</li>
+                                    <li><strongs>Improved:</strongs> some interface elements: sidebar menu, button for uploading files, etc.</li>
+                                    <li><strongs>Improved:</strongs> the database dump function has been completely redesigned (previously, it did not work correctly when installing some plugins).</li>
+                                    <li><strongs>Fixed:</strongs> the time of the last user visit is now displayed in the admin panel.</li>
+                                    <li><strongs>Fixed:</strongs> a bug related to the "date" field in Custom fields.</li>
+                                    <li><strongs>Fixed:</strongs> a bug due to which it was impossible to edit some Custom fields.</li>
+                                    <li><strongs>Fixed:</strongs> some bugs in the layout for the mobile version of the site.</li>
                                     <li>Multiple minor fixes and improvements</li>
                                 </ul>
                             </div>

@@ -109,7 +109,7 @@
                             <input type="hidden" name="cmd" value="_donations">
                             <input type="hidden" name="business" value="donate@osclass.market">
                             <input type="hidden" name="item_name" value="Osclass Evolution">
-                            <input type="hidden" name="return" value="<?php echo osc_admin_base_url(); ?>">
+                            <input type="hidden" name="return" value="<?php echo osc_get_absolute_url(); ?>oc-admin/">
                             <input type="hidden" name="currency_code" value="USD">
                             <input type="hidden" name="lc" value="US" />
                         </form>
@@ -159,22 +159,9 @@
             }
         }
 
-        if(get_magic_quotes_gpc()) {
-            $value = strip_slashes_extended_e($value);
-        }
-
         return ($value);
     }
-    function strip_slashes_extended_e($array) {
-        if(is_array($array)) {
-            foreach($array as $k => &$v) {
-                $v = strip_slashes_extended_e($v);
-            }
-        } else {
-            $array = stripslashes($array);
-        }
-        return $array;
-    }
+
     function osc_get_absolute_url() {
         $protocol = (getErrorParam('HTTPS') == 'on'  || getErrorParam('HTTPS') == 1  || getErrorParam('HTTP_X_FORWARDED_PROTO')=='https')? 'https' : 'http';
         return $protocol . '://' . getErrorParam('HTTP_HOST') . preg_replace('/((oc-admin)|(oc-includes)|(oc-content)|([a-z]+\.php)|(\?.*)).*/i', '', getErrorParam('REQUEST_URI', false, false));

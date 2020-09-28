@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+
+    osc_enqueue_script('core-upgrade');
     $perms = osc_save_permissions();
     $ok    = osc_change_permissions();
 
@@ -22,50 +24,161 @@
     function customHead(){
         ?>
         <script type="text/javascript">
+            var upgrade_translation = {
+                wait: '<?php _e('Please wait...'); ?>',
+                completed: '<?php _e('Completed Successfully'); ?>',
+                task_completed: '<?php _e('Task completed successfully'); ?>',
+                next: '<?php _e('Next'); ?>',
+                records: '<?php _e('Records'); ?>',
+                files: '<?php _e('Files'); ?>',
+                file_size: '<?php _e('File size'); ?>',
+                progress: '<?php _e('Progress'); ?>',
+                _of: '<?php _e('of'); ?>',
+                archive_file: '<?php _e('Archiving a file'); ?>',
+                download: '<?php _e('Downloading upgrades'); ?>',
+                download_completed: '<?php _e('Download completed! File size:'); ?>',
+                unpacking: '<?php _e('Extracting upgrades has started'); ?>',
+                unpacking_completed: '<?php _e('Extracting completed!'); ?>',
+                installation: '<?php _e('Upgrades installation started'); ?>',
+                installation_completed: '<?php _e('Installation completed!'); ?>'
+            };
+
             $(document).ready(function() {
-                $("#steps_div").hide();
-            });
-        <?php
-        $perms = osc_save_permissions();
-        $ok    = osc_change_permissions();
-        foreach($perms as $k => $v) {
-            @chmod($k, $v);
-        }
-        if( $ok ) {
-        ?>
-            $(function() {
-                var steps_div = document.getElementById('steps_div');
-                steps_div.style.display = '';
-                var steps = document.getElementById('steps');
-                var version = <?php echo osc_version(); ?>;
-                var fileToUnzip = '';
-                steps.innerHTML += '<?php echo osc_esc_js( sprintf( __('Checking for updates (Current version %s)'), osc_version() )); ?> ';
+                $("#bulk-actions-submit").click(function() {
+                    $('#dialog-bulk-actions').dialog('close');
+                    downloadUpgrades();
+                });
 
-                $.getJSON("https://osclass.org/latest_version_v1.php?callback=?", function(data) {
-                    if(data.version <= version) {
-                        steps.innerHTML += '<?php echo osc_esc_js( __('Congratulations! Your Osclass installation is up to date!')); ?>';
+                $("#dialog-bulk-actions").dialog({
+                    autoOpen: false,
+                    modal: true
+                });
+
+                $("#bulk-actions-cancel").click(function() {
+                    // $("#datatablesForm").attr('data-dialog-open', 'false');
+                    $('#dialog-bulk-actions').dialog('close');
+                });
+
+                $('body').on('click', '#upgrade-btn[upgrade-type="start"]', function() {
+                    var is_backup = $('#backup').is(':checked');
+
+                    if(is_backup) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=db_backup&" . osc_csrf_token_url(); ?>",
+                            success: function(res) {
+                                showDumpLogs(res);
+                            }
+                        });
                     } else {
-                        steps.innerHTML += '<?php echo osc_esc_js( __('New version to update:')); ?> ' + oscEscapeHTML(data.version); + "<br />";
-                        <?php if(Params::getParam('confirm')=='true') {?>
-                            steps.innerHTML += '<img id="loading_image" src="<?php echo osc_current_admin_theme_url('images/loading.gif'); ?>" /><?php echo osc_esc_js(__('Upgrading your Osclass installation (this could take a while):')); ?>';
+                        $("#dialog-bulk-actions").dialog('open');
 
-                            var tempAr = data.url.split('/');
-                            fileToUnzip = tempAr.pop();
-                            $.getJSON('<?php echo osc_admin_base_url(true); ?>?page=ajax&action=upgrade&<?php echo osc_csrf_token_url(); ?>' , function(data) {
-                                if(data.error==0 || data.error==6) {
-                                    window.location = "<?php echo osc_admin_base_url(true); ?>?page=tools&action=version";
-                                }
-                                var loading_image = document.getElementById('loading_image');
-                                loading_image.style.display = "none";
-                                steps.innerHTML += $("<div>").text(data.message).html();+"<br />";
-                            });
-                        <?php } else { ?>
-                            steps.innerHTML += '<input type="button" value="<?php echo osc_esc_html( __('Upgrade')); ?>" onclick="window.location.href=\'<?php echo osc_admin_base_url(true); ?>?page=tools&action=upgrade&confirm=true\';" />';
-                        <?php } ?>
+                        // Swal.fire({
+                        //     title: osc.translations.msg_confirm_action,
+                        //     text: 'Are you sure you want to start upgrading the system without backing up your data?',
+                        //     type: 'warning',
+                        //     buttonsStyling: false,
+                        //     showCancelButton: true,
+                        //     confirmButtonClass: "btn btn-success",
+                        //     cancelButtonClass: "btn btn-danger",
+                        //     confirmButtonText: osc.translations.msg_confirm,
+                        //     cancelButtonText: osc.translations.msg_cancel,
+                        // }).then((result) => {
+                        //     if (result.value) {
+                        //         downloadUpgrades();
+                        //     }
+                        // });
                     }
                 });
+
+                $('body').on('click', '#upgrade-btn[upgrade-type="backup"]', function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=script_informer&" . osc_csrf_token_url(); ?>",
+                        success: function(res) {
+                            var json = JSON.parse(res);
+                            var files = eval(json.files);
+                            var total = json.total_files;
+                            var file_size;
+
+                            $('#upgrade-btn').text(upgrade_translation.wait)
+                                .attr('disabled', true);
+
+                            $('#upgrade-processing-block').show();
+
+                            setTimeout(function() {
+                                file_size = archiveScript();
+                            }, 2000);
+
+                            oscUpgrade.log.processing(files, 25, total, upgrade_translation.archive_file + ':');
+
+                            setTimeout(function() {
+                                oscUpgrade.log.finished('download', upgrade_translation.files, total, file_size.responseText);
+                            }, total * 25 + 1000);
+                        }
+                    });
+                });
+
+                $('body').on('click', '#upgrade-btn[upgrade-type="download"]', function() {
+                    downloadUpgrades();
+                });
+
+                function showDumpLogs(dump_log) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=db_informer&" . osc_csrf_token_url(); ?>",
+                        data: {'log' : dump_log},
+                        success: function(res) {
+                            var json = JSON.parse(res);
+                            var logs = eval(json.logs);
+                            var total = json.rows_count;
+
+                            $('#backup').attr('disabled', true);
+                            $('#upgrade-btn').text(upgrade_translation.wait)
+                                .attr('disabled', true);
+
+                            $('#upgrade-processing-block').show();
+
+                            oscUpgrade.log.processing(logs, 500, total);
+
+                            setTimeout(function() {
+                                oscUpgrade.log.finished('backup', upgrade_translation.records, json.records, json.file_size,);
+                            }, total * 500 + 1000);
+                        }
+                    });
+                }
+
+                function archiveScript() {
+                    return $.ajax({
+                        type: 'POST',
+                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=script_backup&" . osc_csrf_token_url(); ?>",
+                    });
+                }
+
+                function downloadUpgrades() {
+                    var table = oscUpgrade.el('upgrade-processing-block table');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=core-upgrade&" . osc_csrf_token_url(); ?>",
+                        beforeSend: function() {
+                            $('#backup').attr('disabled', true);
+                            $('#upgrade-btn').text(upgrade_translation.wait)
+                                .attr('disabled', true);
+
+                            $('#upgrade-processing-block').show();
+                            oscUpgrade.log.clear();
+                            oscUpgrade.progressBar.hide();
+                            table.append(oscUpgrade.log.row(oscUpgrade.preloader.show(upgrade_translation.download), oscUpgrade.strDate()));
+                        },
+                        success: function(res) {
+                            var json = JSON.parse(res);
+
+                            oscUpgrade.upgrade.download(json);
+                        }
+                    });
+                }
             });
-        <?php } ?>
         </script>
         <?php
     }
@@ -94,35 +207,92 @@
     osc_add_filter('admin_title', 'customPageTitle');
 
     osc_current_admin_theme_path( 'parts/header.php' ); ?>
-<div id="backup-setting">
-    <!-- settings form -->
-                    <div id="backup-settings">
-                        <h2 class="render-title"><?php _e('Upgrade'); ?></h2>
-                        <form>
-                            <fieldset>
-                            <div class="form-horizontal">
-                            <div class="form-row">
-                                <div class="tools upgrade">
-                                <?php if( $ok ) { ?>
-                                    <p class="text">
-                                        <?php printf( __('Your Osclass installation can be auto-upgraded. Please, back up your database and the folder oc-content before attempting to upgrade your Osclass installation. You can also upgrade Osclass manually, more information in the %s'), '<a href="http://doc.osclass.org/">Wiki</a>'); ?>
-                                    </p>
-                                <?php } else { ?>
-                                    <p class="text">
-                                        <?php _e("Your Osclass installation can't be auto-upgraded. Files and folders need to be writable. You can apply write permissions via SSH with the command \"chmod -R a+w *\" (without quotes) or via an FTP client, it depends on the program so we can not provide more information. You can also upgrade Osclass by downloading the upgrade package, unzipping it and replacing the files on your server with the ones in the package."); ?>
-                                    </p>
-                                <?php } ?>
-                                    <div id="steps_div">
-                                        <div id="steps">
+<div>
+    <div id="backup-settings" class="form-horizontal">
+        <h2 class="render-title"><?php _e('Upgrade'); ?></h2>
 
+        <?php if(osc_need_core_update(false)): ?>
+            <div class="form-row row-offset">
+                <div class="col-12">
+                    <div class="alert flashmessage flashmessage-warning" style="display:block;">
+                        <h2><?php _e('System upgrade required!'); ?></h2>
+                        <?php printf(__('A new version of <strong>Osclass Evolution v.%s</strong> is available NOW!'), osc_get_latest_core_version(false)); ?>
+                    </div>
+                </div>
+            </div>
+
+            <form class="has-form-actions">
+                <div class="form-row row-offset">
+                    <div class="col-md-12">
+                        <div class="form-row">
+                            <div class="col-md-12 mt-2">
+                                <fieldset>
+                                    <h2 class="render-title"><?php _e('Upgrading the system core'); ?></h2>
+
+                                    <div id="upgrade-processing-block" class="hide">
+                                        <div class="form-row row-offset">
+                                            <div class="grid-60">
+                                                <div id="logs-block" class="mark pre-scrollable">
+                                                    <table class="table table-logs">
+                                                        <thead class="text-muted">
+                                                            <th class="grid-25"><?php _e('Date\Time'); ?></th>
+                                                            <th><?php _e('Action'); ?></th>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row row-offset">
+                                            <div class="grid-60">
+                                                <strong><?php _e('Status:'); ?></strong>
+                                                <div id="progress-bar" class="progress progress-line-info"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                    <div class="grid-60 make-backup">
+                                        <div class="separate-top-medium">
+                                            <label>
+                                                <input id="backup" class="form-check-input" type="checkbox" name="backup_system" value="1">
+                                                <?php _e('Make a backup of files and database before upgrading the system core'); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
+
+                            <div class="separate-top">
+                                <button id="upgrade-btn" upgrade-type="start" type="button" class="btn btn-submit">
+                                    <?php echo osc_esc_html( __('Start process') ); ?>
+                                </button>
                             </div>
-                        </fieldset>
-                    </form>
+                        </div>
+                    </div>
                 </div>
-                <!-- /settings form -->
+            </form>
+        <?php else: ?>
+            <div class="form-horizontal">
+                <div class="form-row">
+                    <?php _e("You are using the latest version of Osclass Evolution. The update is not required."); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div id="dialog-bulk-actions" title="<?php _e('Confirm action'); ?>" class="has-form-actions hide">
+    <div class="form-horizontal">
+        <div class="form-row">
+            <?php _e('Are you sure you want to start upgrading the system without backing up your data?'); ?>
+        </div>
+        <div class="form-actions">
+            <div class="wrapper">
+                <a id="bulk-actions-submit" href="javascript:void(0);" class="btn btn-red" ><?php echo osc_esc_html( __('Confirm') ); ?></a>
+                <a id="bulk-actions-cancel" class="btn" href="javascript:void(0);"><?php _e('Cancel'); ?></a>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
 </div>
 <?php osc_current_admin_theme_path( 'parts/footer.php' ); ?>

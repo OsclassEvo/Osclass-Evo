@@ -23,6 +23,7 @@
         {
             switch($this->action) {
                 case('check_updates'):
+                    osc_admin_toolbar_update_core(true);
                     osc_admin_toolbar_update_themes(true);
                     osc_admin_toolbar_update_plugins(true);
 
@@ -58,6 +59,7 @@
                     $maxLatestItems    = Params::getParam('max_latest_items_at_home');
                     $numItemsSearch    = Params::getParam('default_results_per_page');
                     $adminPagesPreloading = Params::getParam('enabled_admin_pages_preloading');
+                    $adminScrollingDraggingMouse = Params::getParam('enabled_admin_scrolling_mouse');
                     $contactAttachment = Params::getParam('enabled_attachment');
                     $selectableParent  = Params::getParam('selectable_parent_categories');
                     $bAutoCron         = Params::getParam('auto_cron');
@@ -78,6 +80,7 @@
                     $maxLatestItems    = (int) trim(strip_tags($maxLatestItems));
                     $numItemsSearch    = (int) $numItemsSearch;
                     $adminPagesPreloading = ($adminPagesPreloading != '' ? true : false);
+                    $adminScrollingDraggingMouse = ($adminScrollingDraggingMouse != '' ? true : false);
                     $contactAttachment = ($contactAttachment != '' ? true : false);
                     $bAutoCron         = ($bAutoCron != '' ? true : false);
                     $error = "";
@@ -135,6 +138,7 @@
 
                     $iUpdated += osc_set_preference('defaultResultsPerPage@search', $numItemsSearch);
                     $iUpdated += osc_set_preference('admin_pages_preloading', $adminPagesPreloading);
+                    $iUpdated += osc_set_preference('admin_scrolling_mouse', $adminScrollingDraggingMouse);
                     $iUpdated += osc_set_preference('contact_attachment', $contactAttachment);
                     $iUpdated += osc_set_preference('auto_cron', $bAutoCron);
                     $iUpdated += osc_set_preference('selectable_parent_categories', $selectableParent);

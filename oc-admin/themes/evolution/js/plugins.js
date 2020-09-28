@@ -12,6 +12,14 @@ $('select:not(.cs-select):not([multiple])').selectpicker({
 });
 
 $(document).ready(function() {
-    $('ul#plugin_tree').addClass('hummingbird-base').parent().addClass('hummingbird-treeview');
-    $('ul#plugin_tree').hummingbird();
+    $('#plugin_tree').addClass('hummingbird-base').parent().addClass('hummingbird-treeview');
+    $('#plugin_tree, #category_tree').hummingbird();
+
+    $("a#categories-check_all").click(function () {
+        $("#category_tree").hummingbird("checkAll");
+    });
+
+    $("a#categories-uncheck_all").click(function () {
+        $("#category_tree").hummingbird("uncheckAll");
+    });
 });

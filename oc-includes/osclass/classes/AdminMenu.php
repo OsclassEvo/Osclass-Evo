@@ -49,8 +49,6 @@
         {
             $this->add_menu( __('Dashboard'), osc_admin_base_url(), 'dash', 'moderator');
 
-
-
             $this->add_menu( __('Listings'), osc_admin_base_url(true).'?page=items', 'items', 'moderator');
             $this->add_submenu( 'items', __('Manage listings'), osc_admin_base_url(true).'?page=items', 'items_manage', 'moderator');
             $this->add_submenu( 'items', __('Reported listings'), osc_admin_base_url(true).'?page=items&action=items_reported', 'items_reported', 'moderator');

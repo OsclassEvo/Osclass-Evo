@@ -103,7 +103,7 @@
             }
         }
 
-        static public function categories_custom_field_tree($categories = null, $selected = null, $field_id = null, $depth = 0)
+        static public function categories_custom_field_tree($categories = null, $selected = null, $field_id = 'new', $depth = 0)
         {
             if(($categories != null) && is_array($categories)) {
                 if($depth) echo '<ul>';
@@ -117,7 +117,7 @@
 
                     echo '<div class="form-check">
                                 <label class="form-check-label">
-                                <input id="' . $c['pk_i_id'] . $field_id . '" data-id="' . ($c['fk_i_parent_id'] ? $c['fk_i_parent_id'] : $c['pk_i_id']) . '" type="checkbox" class="form-check-input" name="categories[]" value="' . $c['pk_i_id'] . '" ' . ( in_array($c['pk_i_id'], $selected) ? 'checked="checked"' : '' ) . '>
+                                <input id="category-' . $c['pk_i_id'] . '-field-' . $field_id . '" data-id="' . ($c['fk_i_parent_id'] ? $c['fk_i_parent_id'] : $c['pk_i_id']) . '" type="checkbox" class="form-check-input" name="categories[]" value="' . $c['pk_i_id'] . '" ' . ( in_array($c['pk_i_id'], $selected) ? 'checked="checked"' : '' ) . '>
                                     <span class="form-check-sign">
                                         ' . $c['s_name'] . '
                                         <span class="check"></span>

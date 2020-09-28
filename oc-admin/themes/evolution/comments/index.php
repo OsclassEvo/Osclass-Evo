@@ -100,9 +100,9 @@
     <div class="card-body">
         <div class="table-responsive">
             <form id="bulk-actions-form" class="form-inline" method="post"  style="display: inline!important;" action="<?php echo osc_admin_base_url(true); ?>">
-                <input type="hidden" name="page" value="items" />
+                <input type="hidden" name="page" value="comments" />
                 <input type="hidden" name="action" value="bulk_actions" />
-                <input type="hidden" name="bulk_actions" value="" />
+                <input id="bulk_actions" type="hidden" name="bulk_actions" value="" />
                 
                 <table class="table table-striped table-shopping">
                     <thead class="text-muted">
@@ -161,6 +161,6 @@
 <form id="item-delete-form" method="get" action="<?php echo osc_admin_base_url(true); ?>">
     <input type="hidden" name="page" value="comments" />
     <input type="hidden" name="action" value="delete" />
-    <input type="hidden" name="id[]" value="" />
+    <input type="hidden" name="id" value="" />
 </form>
 <?php osc_current_admin_theme_path( 'parts/footer.php' ); ?>

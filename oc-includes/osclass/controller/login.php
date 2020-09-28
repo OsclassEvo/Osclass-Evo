@@ -44,14 +44,17 @@
 										$wrongCredentials = false;
 										$email = trim(Params::getParam('email'));
 										$password = Params::getParam('password', false, false);
+
 										if ( $email == '' ) {
 											osc_add_flash_error_message( _m('Please provide an email address') );
 											$wrongCredentials = true;
 										}
+
 										if ( $password == '' ) {
 											osc_add_flash_error_message( _m('Empty passwords are not allowed. Please provide a password') );
 											$wrongCredentials = true;
 										}
+
 										if ( $wrongCredentials ) {
 											$this->redirectTo( osc_user_login_url() );
 										}
@@ -59,13 +62,16 @@
                                         if(osc_validate_email($email)) {
 										    $user = User::newInstance()->findByEmail( $email );
                                         }
+
 									    if ( empty($user) ) {
 										    $user = User::newInstance()->findByUsername( $email );
                                         }
+
 										if ( empty($user) ) {
 											osc_add_flash_error_message(_m("The user doesn't exist"));
 											$this->redirectTo( osc_user_login_url() );
 										}
+
 										if ( ! osc_verify_password($password, (isset($user['s_password'])?$user['s_password']:'') )) {
 											osc_add_flash_error_message( _m('The password is incorrect'));
 											$this->redirectTo( osc_user_login_url() ); // @TODO if valid user, send email parameter back to the login form
@@ -124,20 +130,26 @@
 										}
 
                                         require_once LIB_PATH . 'osclass/UserActions.php';
+
 										$uActions = new UserActions(false);
 										$logged = $uActions->bootstrap_login($user['pk_i_id']);
 
-										if($logged==0) {
+										if($logged == 0) {
 											osc_add_flash_error_message(_m("The user doesn't exist"));
-										} else if($logged==1) {
+										} else if($logged == 1) {
 											if((time()-strtotime($user['dt_access_date']))>1200) { // EACH 20 MINUTES
 												osc_add_flash_error_message(sprintf(_m('The user has not been validated yet. Would you like to re-send your <a href="%s">activation?</a>'), osc_user_resend_activation_link($user['pk_i_id'], $user['s_email'])));
 											} else {
 												osc_add_flash_error_message(_m('The user has not been validated yet'));
 											}
-										} else if($logged==2) {
+										} else if($logged == 2) {
 											osc_add_flash_error_message(_m('The user has been suspended'));
-										} else if($logged==3) {
+										} else if($logged == 3) {
+                                            User::newInstance()->update(
+                                                array('dt_mod_date' => date('Y-m-d H:i:s')),
+                                                array('pk_i_id' => $user['pk_i_id'])
+                                            );
+
 											if ( Params::getParam('remember') == 1 ) {
 
 												//this include contains de osc_genRandomPassword function
@@ -145,8 +157,8 @@
 												$secret = osc_genRandomPassword();
 
 												User::newInstance()->update(
-													array('s_secret' => $secret)
-													,array('pk_i_id' => $user['pk_i_id'])
+													array('s_secret' => $secret),
+                                                    array('pk_i_id' => $user['pk_i_id'])
 												);
 
 												Cookie::newInstance()->set_expires( osc_time_cookie() );
@@ -155,7 +167,7 @@
 												Cookie::newInstance()->set();
 											}
 
-											if($url_redirect=='') {
+											if($url_redirect == '') {
 												$url_redirect = osc_user_dashboard_url();
 											}
 

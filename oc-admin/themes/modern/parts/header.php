@@ -27,6 +27,11 @@
         $codes[] = '\''. osc_esc_js($locale['pk_c_code']) . '\'';
     }
 ?>
+        osc.ajax_url = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=runhook&hook=';
+        osc.base_ajax_url = '<?php echo osc_base_url(true); ?>?page=ajax&action=';
+        osc.adm_base_ajax_url = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=';
+        osc.adm_base_url = '<?php echo osc_admin_base_url(true); ?>';
+
         osc.locales = {};
         osc.locales._default = '<?php echo osc_language(); ?>';
         osc.locales.current = '<?php echo osc_current_admin_locale(); ?>';
@@ -49,6 +54,18 @@
                 <a href="#" class="btn ico ico-20 ico-close">x</a>
                 <?php osc_run_hook('help_box'); ?>
             </div>
+
+            <?php if(osc_need_core_update()): ?>
+                <div id="core-upgrade-notification" class="alert flashmessage flashmessage-warning" style="display:block;">
+                    <?php printf(__('A new version of <strong>Osclass Evolution v.%s</strong> is available NOW!'), osc_get_latest_core_version(false)); ?>
+
+                    <div class="separate-top-medium">
+                        <a href="<?php echo osc_admin_base_url(true); ?>?page=tools&action=upgrade" class="btn btn-mini"><?php _e('Go to Upgrade page'); ?></a>
+                        <a id="upgrade-remind-later" class="btn-mini" style="margin-top: 3px; display: inline-block;"><?php _e('Remind me later'); ?></a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <?php osc_show_flash_message('admin'); ?>
             <div class="jsMessage flashmessage flashmessage-info hide">
                 <a class="btn ico btn-mini ico-close">×</a>

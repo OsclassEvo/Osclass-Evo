@@ -80,6 +80,14 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                 <legend><?php _e('Settings'); ?></legend>
 
                                 <div class="col-md-12 mb-2">
+                                    <label class="form-label text-left font-weight-normal"><?php _e('Redirect after item posted'); ?></label>
+                                    <select class="selectpicker show-tick w-100 w-xl-25" name="item_posted_redirect" data-dropup-auto="false" data-size="7" data-style="btn btn-info btn-sm">
+                                        <option value="category" <?php if(osc_item_posted_redirect() == 'category') echo 'selected'; ?>><?php _e('Category Page'); ?></option>
+                                        <option value="item" <?php if(osc_item_posted_redirect() == 'item') echo 'selected'; ?>><?php _e('Item Page'); ?></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12 mb-2">
                                     <?php _e('Warn about expiration'); ?>
                                     <input type="text" class="form-control w-25 w-xl-5 text-center d-inline" name="warn_expiration" value="<?php echo osc_esc_html(osc_warn_expiration()); ?>" />
                                     <?php _e('days'); ?>
@@ -102,6 +110,32 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                                         <label class="form-check-label">
                                             <input id="editor" class="form-check-input" type="checkbox" <?php echo (osc_editor_enabled_at_items() ? 'checked' : ''); ?> name="enableField#editor@items" value="1">
                                             <?php _e('Admin panel description editor'); ?>
+
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="items-posted-moderation" class="form-check-input" type="checkbox" <?php echo (osc_items_posted_moderation_enabled() ? 'checked' : ''); ?> name="enableField#listingsPostedModeration@items" value="1">
+                                            <?php _e('Listings posted moderation'); ?>
+
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="items-edited-moderation" class="form-check-input" type="checkbox" <?php echo (osc_items_edited_moderation_enabled() ? 'checked' : ''); ?> name="enableField#listingsEditedModeration@items" value="1">
+                                            <?php _e('Listings edited moderation'); ?>
 
                                             <span class="form-check-sign">
                                                 <span class="check"></span>
@@ -288,7 +322,6 @@ $header_menu  = '<a id="help" href="javascript:;" class="btn btn-info btn-fab"><
                         <div class="col-md-12 mt-4">
                             <button type="submit" class="btn btn-info">
                                 <?php echo osc_esc_html( __('Save changes') ); ?>
-                                <div class="ripple-container"></div>
                             </button>
                         </div>
                     </div>

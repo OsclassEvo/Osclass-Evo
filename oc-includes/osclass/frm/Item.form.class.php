@@ -1410,130 +1410,137 @@
                 url: url,
                 data: 'page=ajax&action=runhook&hook=item_<?php echo $case;?>&catId=' + cat_id,
                 dataType: 'html',
-                success: function(data){
+                success: function(data) {
                     $("#plugin-hook").html(data);
 
                     <?php if(osc_get_preference('admin_theme') == 'evolution'): ?>
+                        if ($('.card-body').length) {
+                            String.prototype.toMoment = function () {
+                                var conversions = {
+                                    'd': 'DD',
+                                    'D': 'ddd',
+                                    'j': 'D',
+                                    'l': 'dddd',
+                                    'N': 'E',
+                                    'S': 'o',
+                                    'w': 'e',
+                                    'z': 'DDD',
+                                    'W': 'W',
+                                    'F': 'MMMM',
+                                    'm': 'MM',
+                                    'M': 'MMM',
+                                    'n': 'M',
+                                    't': '',
+                                    'L': '',
+                                    'o': 'YYYY',
+                                    'Y': 'YYYY',
+                                    'y': 'YY',
+                                    'a': 'a',
+                                    'A': 'A',
+                                    'B': '',
+                                    'g': 'h',
+                                    'G': 'H',
+                                    'h': 'hh',
+                                    'H': 'HH',
+                                    'i': 'mm',
+                                    's': 'ss',
+                                    'u': 'SSS',
+                                    'e': 'zz',
+                                    'I': '',
+                                    'O': '',
+                                    'P': '',
+                                    'T': '',
+                                    'Z': '',
+                                    'c': '',
+                                    'r': '',
+                                    'U': 'X',
+                                };
 
-                    String.prototype.toMoment = function() {
-                        var conversions = {
-                            'd': 'DD',
-                            'D': 'ddd',
-                            'j': 'D',
-                            'l': 'dddd',
-                            'N': 'E',
-                            'S': 'o',
-                            'w': 'e',
-                            'z': 'DDD',
-                            'W': 'W',
-                            'F': 'MMMM',
-                            'm': 'MM',
-                            'M': 'MMM',
-                            'n': 'M',
-                            't': '',
-                            'L': '',
-                            'o': 'YYYY',
-                            'Y': 'YYYY',
-                            'y': 'YY',
-                            'a': 'a',
-                            'A': 'A',
-                            'B': '',
-                            'g': 'h',
-                            'G': 'H',
-                            'h': 'hh',
-                            'H': 'HH',
-                            'i': 'mm',
-                            's': 'ss',
-                            'u': 'SSS',
-                            'e': 'zz',
-                            'I': '',
-                            'O': '',
-                            'P': '',
-                            'T': '',
-                            'Z': '',
-                            'c': '',
-                            'r': '',
-                            'U': 'X',
-                        };
+                                return this.replace(/[A-Za-z]+/g, function (match) {
+                                    return conversions[match] || match;
+                                });
+                            }
 
-                        return this.replace(/[A-Za-z]+/g, function(match) {
-                            return conversions[match] || match;
-                        });
-                    }
+                            if ($.fn.selectpicker) {
+                                $('select').selectpicker({
+                                    style: "btn btn-info btn-sm",
+                                    dropupAuto: false,
+                                    size: 7,
+                                    with: "50%",
+                                    showTick: true
+                                });
+                            }
 
-                    $('select').selectpicker({
-                        style: "btn btn-info btn-sm",
-                        dropupAuto: false,
-                        size: 7,
-                        with: "50%",
-                        showTick: true
-                    });
 
-                    $('input[type="text"]:not([class*="cf_date_interval"]), textarea').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('bmd-label-floating');
+                            $('input[type="text"]:not([class*="cf_date_interval"]), textarea').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('bmd-label-floating');
 
-                    $('input.cf_date_interval').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('col-form-label form-label date-interval-label');
+                            $('input.cf_date_interval').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('col-form-label form-label date-interval-label');
 
-                    $('input[type="radio"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-3').find('li').addClass('form-check-label').append('<span class="circle"><span class="check"></span></span>');
+                            $('input[type="radio"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-3').find('li').addClass('form-check-label').append('<span class="circle"><span class="check"></span></span>');
 
-                    $('input[type="checkbox"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-4').find('label.form-check-label').append('<span class="form-check-sign"><span class="check"></span></span>');
+                            $('input[type="checkbox"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-4').find('label.form-check-label').append('<span class="form-check-sign"><span class="check"></span></span>');
 
-                    $('textarea').addClass('h-75');
+                            $('textarea').addClass('h-75');
 
-                    $('.cf_date, .cf_date_interval').datetimepicker({
-                        format: '<?php echo osc_date_format(); ?>'.toMoment(),
-                        useCurrent: false,
-                        icons: {
-                            time: "fa fa-clock-o",
-                            date: "fa fa-calendar",
-                            up: "fa fa-chevron-up",
-                            down: "fa fa-chevron-down",
-                            previous: 'fa fa-chevron-left',
-                            next: 'fa fa-chevron-right',
-                            today: 'fa fa-screenshot',
-                            clear: 'fa fa-trash',
-                            close: 'fa fa-remove'
+                            if ($.fn.datetimepicker) {
+                                $('.cf_date, .cf_date_interval').datetimepicker({
+                                    format: '<?php echo osc_date_format(); ?>'.toMoment(),
+                                    useCurrent: false,
+                                    icons: {
+                                        time: "fa fa-clock-o",
+                                        date: "fa fa-calendar",
+                                        up: "fa fa-chevron-up",
+                                        down: "fa fa-chevron-down",
+                                        previous: 'fa fa-chevron-left',
+                                        next: 'fa fa-chevron-right',
+                                        today: 'fa fa-screenshot',
+                                        clear: 'fa fa-trash',
+                                        close: 'fa fa-remove'
+                                    }
+                                });
+
+                                $('.cf_date').on('dp.change', function (e) {
+                                    var id = $(this).attr('id');
+                                    var date_time = e.date.unix();
+
+                                    $('#' + id + '-hidden').val(date_time);
+                                });
+
+
+                                $('.cf_date_interval').on('dp.change', function (e) {
+                                    var id = $(this).attr('id'),
+                                        slug = $(this).attr('data-slug'),
+                                        type = $(this).attr('data-type');
+
+                                    var date_time = e.date.unix();
+
+                                    $('#' + id + '-hidden').val(date_time);
+
+                                    if (type == 'from') {
+                                        $('#meta_' + slug + '_to').data("DateTimePicker").minDate(e.date);
+                                    } else {
+                                        $('#meta_' + slug + '_from').data("DateTimePicker").maxDate(e.date);
+                                    }
+                                });
+                            }
+
+
+                            $('input[type="text"], textarea').each(function () {
+                                if ($(this).val()) {
+                                    $(this).parent(".form-group").addClass("is-filled");
+                                }
+                            });
+
+                            $('input[type="text"], textarea').on("focus", function () {
+                                $(this).parent('.form-group').addClass("is-focused");
+                            }).on("blur", function () {
+                                if ($(this).val()) {
+                                    $(this).parent(".form-group").removeClass("is-focused").addClass("is-filled");
+                                } else {
+                                    $(this).parent(".form-group").removeClass("is-focused");
+                                }
+                            });
                         }
-                    });
-
-                    $('.cf_date').on('dp.change', function (e) {
-                        var id = $(this).attr('id');
-                        var date_time = e.date.unix();
-
-                        $('#' + id + '-hidden').val(date_time);
-                    });
-
-
-                    $('.cf_date_interval').on('dp.change', function (e) {
-                        var id = $(this).attr('id'),
-                            slug = $(this).attr('data-slug'),
-                            type = $(this).attr('data-type');
-
-                        var date_time = e.date.unix();
-
-                        $('#' + id + '-hidden').val(date_time);
-
-                        if(type == 'from') {
-                            $('#meta_' + slug + '_to').data("DateTimePicker").minDate(e.date);
-                        } else {
-                            $('#meta_' + slug + '_from').data("DateTimePicker").maxDate(e.date);
-                        }
-                    });
-
-                    $('input[type="text"], textarea').each(function() {
-                        if($(this).val()) {
-                            $(this).parent(".form-group").addClass("is-filled");
-                        }
-                    });
-
-                    $('input[type="text"], textarea').on("focus", function() {
-                        $(this).parent('.form-group').addClass("is-focused");
-                    }).on("blur", function() {
-                        if($(this).val()) {
-                            $(this).parent(".form-group").removeClass("is-focused").addClass("is-filled");
-                        } else {
-                            $(this).parent(".form-group").removeClass("is-focused");
-                        }
-                    });
                     <?php endif; ?>
                 }
             });
@@ -1566,133 +1573,138 @@
                     $("#plugin-hook").html(data);
 
                     <?php if(osc_get_preference('admin_theme') == 'evolution'): ?>
+                        if ($('.card-body').length) {
+                            String.prototype.toMoment = function() {
+                                var conversions = {
+                                    'd': 'DD',
+                                    'D': 'ddd',
+                                    'j': 'D',
+                                    'l': 'dddd',
+                                    'N': 'E',
+                                    'S': 'o',
+                                    'w': 'e',
+                                    'z': 'DDD',
+                                    'W': 'W',
+                                    'F': 'MMMM',
+                                    'm': 'MM',
+                                    'M': 'MMM',
+                                    'n': 'M',
+                                    't': '',
+                                    'L': '',
+                                    'o': 'YYYY',
+                                    'Y': 'YYYY',
+                                    'y': 'YY',
+                                    'a': 'a',
+                                    'A': 'A',
+                                    'B': '',
+                                    'g': 'h',
+                                    'G': 'H',
+                                    'h': 'hh',
+                                    'H': 'HH',
+                                    'i': 'mm',
+                                    's': 'ss',
+                                    'u': 'SSS',
+                                    'e': 'zz',
+                                    'I': '',
+                                    'O': '',
+                                    'P': '',
+                                    'T': '',
+                                    'Z': '',
+                                    'c': '',
+                                    'r': '',
+                                    'U': 'X',
+                                };
 
-                    String.prototype.toMoment = function() {
-                        var conversions = {
-                            'd': 'DD',
-                            'D': 'ddd',
-                            'j': 'D',
-                            'l': 'dddd',
-                            'N': 'E',
-                            'S': 'o',
-                            'w': 'e',
-                            'z': 'DDD',
-                            'W': 'W',
-                            'F': 'MMMM',
-                            'm': 'MM',
-                            'M': 'MMM',
-                            'n': 'M',
-                            't': '',
-                            'L': '',
-                            'o': 'YYYY',
-                            'Y': 'YYYY',
-                            'y': 'YY',
-                            'a': 'a',
-                            'A': 'A',
-                            'B': '',
-                            'g': 'h',
-                            'G': 'H',
-                            'h': 'hh',
-                            'H': 'HH',
-                            'i': 'mm',
-                            's': 'ss',
-                            'u': 'SSS',
-                            'e': 'zz',
-                            'I': '',
-                            'O': '',
-                            'P': '',
-                            'T': '',
-                            'Z': '',
-                            'c': '',
-                            'r': '',
-                            'U': 'X',
-                        };
+                                return this.replace(/[A-Za-z]+/g, function(match) {
+                                    return conversions[match] || match;
+                                });
+                            }
 
-                        return this.replace(/[A-Za-z]+/g, function(match) {
-                            return conversions[match] || match;
-                        });
-                    }
+                            if($.fn.selectpicker) {
+                                $('select').selectpicker({
+                                    style: "btn btn-info btn-sm",
+                                    dropupAuto: false,
+                                    size: 7,
+                                    with: "50%",
+                                    showTick: true
+                                });
+                            }
 
-                    $('select').selectpicker({
-                        style: "btn btn-info btn-sm",
-                        dropupAuto: false,
-                        size: 7,
-                        with: "50%",
-                        showTick: true
-                    });
+                            $('input[type="text"]:not([class*="cf_date_interval"]), textarea').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('bmd-label-floating');
 
-                    $('input[type="text"]:not([class*="cf_date_interval"]), textarea').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('bmd-label-floating');
+                            $('input.cf_date_interval').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('col-form-label form-label date-interval-label');
 
-                    $('input.cf_date_interval').addClass('form-control').parents('div.meta').addClass('form-group bmd-form-group mb-3').find('label').addClass('col-form-label form-label date-interval-label');
+                            $('input[type="radio"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-3').find('li').addClass('form-check-label').append('<span class="circle"><span class="check"></span></span>');
 
-                    $('input[type="radio"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-3').find('li').addClass('form-check-label').append('<span class="circle"><span class="check"></span></span>');
+                            $('input[type="checkbox"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-4').find('label.form-check-label').append('<span class="form-check-sign"><span class="check"></span></span>');
 
-                    $('input[type="checkbox"]').addClass('form-check-input').parents('div.meta').addClass('form-check mb-4').find('label.form-check-label').append('<span class="form-check-sign"><span class="check"></span></span>');
+                            $('textarea').addClass('h-75');
 
-                    $('textarea').addClass('h-75');
+                            if($.fn.datetimepicker) {
+                                $('.cf_date, .cf_date_interval').datetimepicker({
+                                    format: '<?php echo osc_date_format(); ?>'.toMoment(),
+                                    useCurrent: false,
+                                    icons: {
+                                        time: "fa fa-clock-o",
+                                        date: "fa fa-calendar",
+                                        up: "fa fa-chevron-up",
+                                        down: "fa fa-chevron-down",
+                                        previous: 'fa fa-chevron-left',
+                                        next: 'fa fa-chevron-right',
+                                        today: 'fa fa-screenshot',
+                                        clear: 'fa fa-trash',
+                                        close: 'fa fa-remove'
+                                    }
+                                });
 
-                    $('.cf_date, .cf_date_interval').datetimepicker({
-                        format: '<?php echo osc_date_format(); ?>'.toMoment(),
-                        useCurrent: false,
-                        icons: {
-                            time: "fa fa-clock-o",
-                            date: "fa fa-calendar",
-                            up: "fa fa-chevron-up",
-                            down: "fa fa-chevron-down",
-                            previous: 'fa fa-chevron-left',
-                            next: 'fa fa-chevron-right',
-                            today: 'fa fa-screenshot',
-                            clear: 'fa fa-trash',
-                            close: 'fa fa-remove'
+                                $('.cf_date').on('dp.change', function (e) {
+                                    var id = $(this).attr('id');
+                                    var date_time = e.date.unix();
+
+                                    $('#' + id + '-hidden').val(date_time);
+                                });
+
+
+                                $('.cf_date_interval').on('dp.change', function (e) {
+                                    var id = $(this).attr('id'),
+                                        slug = $(this).attr('data-slug'),
+                                        type = $(this).attr('data-type');
+
+                                    var date_time = e.date.unix();
+
+                                    $('#' + id + '-hidden').val(date_time);
+
+                                    if(type == 'from') {
+                                        $('#meta_' + slug + '_to').data("DateTimePicker").minDate(e.date);
+                                    } else {
+                                        $('#meta_' + slug + '_from').data("DateTimePicker").maxDate(e.date);
+                                    }
+                                });
+                            }
+
+                            $('.meta_date').each(function() {
+                                var slug = $(this).attr('data-slug'),
+                                    unix_time = $(this).val();
+
+                                $('#' + slug).val(date('<?php echo osc_date_format(); ?>', unix_time));
+                            });
+
+                            $('input[type="text"], textarea').each(function() {
+                                if($(this).val()) {
+                                    $(this).parent(".form-group").addClass("is-filled");
+                                }
+                            });
+
+                            $('input[type="text"], textarea').on("focus", function() {
+                                $(this).parent('.form-group').addClass("is-focused");
+                            }).on("blur", function() {
+                                if($(this).val()) {
+                                    $(this).parent(".form-group").removeClass("is-focused").addClass("is-filled");
+                                } else {
+                                    $(this).parent(".form-group").removeClass("is-focused");
+                                }
+                            });
                         }
-                    });
-
-                    $('.cf_date').on('dp.change', function (e) {
-                        var id = $(this).attr('id');
-                        var date_time = e.date.unix();
-
-                        $('#' + id + '-hidden').val(date_time);
-                    });
-
-
-                    $('.cf_date_interval').on('dp.change', function (e) {
-                        var id = $(this).attr('id'),
-                            slug = $(this).attr('data-slug'),
-                            type = $(this).attr('data-type');
-
-                        var date_time = e.date.unix();
-
-                        $('#' + id + '-hidden').val(date_time);
-
-                        if(type == 'from') {
-                            $('#meta_' + slug + '_to').data("DateTimePicker").minDate(e.date);
-                        } else {
-                            $('#meta_' + slug + '_from').data("DateTimePicker").maxDate(e.date);
-                        }
-                    });
-
-                    $('.meta_date').each(function() {
-                        var slug = $(this).attr('data-slug'),
-                            unix_time = $(this).val();
-
-                        $('#' + slug).val(date('<?php echo osc_date_format(); ?>', unix_time));
-                    });
-
-                    $('input[type="text"], textarea').each(function() {
-                        if($(this).val()) {
-                            $(this).parent(".form-group").addClass("is-filled");
-                        }
-                    });
-
-                    $('input[type="text"], textarea').on("focus", function() {
-                        $(this).parent('.form-group').addClass("is-focused");
-                    }).on("blur", function() {
-                        if($(this).val()) {
-                            $(this).parent(".form-group").removeClass("is-focused").addClass("is-filled");
-                        } else {
-                            $(this).parent(".form-group").removeClass("is-focused");
-                        }
-                    });
                     <?php endif; ?>
                 }
             });
@@ -1709,149 +1721,226 @@
 
 
         static public function ajax_photos($resources = null) {
-            if($resources==null) { $resources = osc_get_item_resources(); };
+            if($resources==null) {
+                $resources = osc_get_item_resources();
+            }
+
             $aImages = array();
+
             if( Session::newInstance()->_getForm('photos') != '' ) {
                 $aImages = Session::newInstance()->_getForm('photos');
+
                 if (isset($aImages['name'])) {
                     $aImages = $aImages['name'];
                 } else {
                     $aImages = array();
                 }
+
                 Session::newInstance()->_drop('photos');
                 Session::newInstance()->_dropKeepForm('photos');
             }
 
-            ?>
-            <div id="restricted-fine-uploader"></div>
-            <div style="clear:both;"></div>
-            <?php if(count($aImages)>0 || ($resources!=null && is_array($resources) && count($resources)>0)) { ?>
-                <h3><?php _e('Images already uploaded');?></h3>
-                <ul class="qq-upload-list">
-                    <?php foreach($resources as $_r) {
-                        $img = $_r['pk_i_id'].'.'.$_r['s_extension']; ?>
-                        <li class=" qq-upload-success">
-                            <span class="qq-upload-file"><?php echo $img; ?></span>
-                            <a class="qq-upload-delete" href="#" photoid="<?php echo $_r['pk_i_id']; ?>" itemid="<?php echo $_r['fk_i_item_id']; ?>" photoname="<?php echo $_r['s_name']; ?>" photosecret="<?php echo Params::getParam('secret'); ?>" style="display: inline; cursor:pointer;"><?php _e('Delete'); ?></a>
-                            <div class="ajax_preview_img"><img src="<?php echo osc_apply_filter('resource_path', osc_base_url().$_r['s_path']).$_r['pk_i_id'].'_thumbnail.'.$_r['s_extension']; ?>" alt="<?php echo osc_esc_html($img); ?>"></div>
-                        </li>
-                    <?php }; ?>
-                    <?php foreach($aImages as $img){ ?>
-                        <li class=" qq-upload-success">
-                            <span class="qq-upload-file"><?php echo $img; $img = osc_esc_html($img); ?></span>
-                            <a class="qq-upload-delete" href="#" ajaxfile="<?php echo $img; ?>" style="display: inline; cursor:pointer;"><?php _e('Delete'); ?></a>
-                            <div class="ajax_preview_img"><img src="<?php echo osc_base_url(); ?>oc-content/uploads/temp/<?php echo $img; ?>" alt="<?php echo $img; ?>"></div>
-                            <input type="hidden" name="ajax_photos[]" value="<?php echo $img; ?>">
-                        </li>
-                    <?php } ?>
-                </ul>
-            <?php } ?>
-            <div style="clear:both;"></div>
-            <?php
-
-
             $aExt = explode(',',osc_allowed_extension());
+
             foreach($aExt as $key => $value) {
-                $aExt[$key] = "'".$value."'";
+                $aExt[$key] = "'" . $value . "'";
             }
 
             $allowedExtensions = join(',', $aExt);
             $maxSize    = (int) osc_max_size_kb()*1024;
             $maxImages  = (int) osc_max_images_per_item();
-            ?>
+        ?>
+
+            <link rel="stylesheet" href="<?php echo osc_assets_url('js/fineuploader/fineuploader.css?v=5.16.2'); ?>">
+            <script src="<?php echo osc_assets_url('js/fineuploader/jquery.fineuploader.min.js?v=5.16.2'); ?>"></script>
+
+            <script type="text/template" id="qq-template-gallery">
+                <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
+                    <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container qq-hide">
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+                    </div>
+
+                    <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+                        <span class="qq-upload-drop-area-text-selector"></span>
+                    </div>
+
+                    <div class="qq-upload-button-selector qq-upload-button">
+                        <div><?php echo osc_esc_js(__('Upload a file')); ?></div>
+                    </div>
+                    <span class="qq-drop-processing-selector qq-drop-processing">
+                        <span><?php echo osc_esc_js(__('Processing...')); ?></span>
+                        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+                    </span>
+
+                    <ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">
+                        <li>
+                            <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+                            <div class="qq-progress-bar-container-selector qq-progress-bar-container">
+                                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                            </div>
+                            <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                            <div class="qq-thumbnail-wrapper">
+                                <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>
+                            </div>
+                            <button type="button" class="qq-upload-cancel-selector qq-upload-cancel">X</button>
+                            <button type="button" class="qq-upload-retry-selector qq-upload-retry">
+                                <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
+                                <?php echo osc_esc_js(__('Retry')); ?>
+                            </button>
+
+                            <div class="qq-file-info">
+                                <div class="qq-file-name">
+                                    <span class="qq-upload-file-selector qq-upload-file"></span>
+                                </div>
+                                <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                                <span class="qq-upload-size-selector qq-upload-size"></span>
+                                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">
+                                    <span class="qq-btn qq-delete-icon" aria-label="<?php echo osc_esc_js(__('Delete')); ?>"></span>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <dialog class="qq-alert-dialog-selector">
+                        <div class="qq-dialog-message-selector"></div>
+                        <div class="qq-dialog-buttons">
+                            <button type="button" class="qq-cancel-button-selector">Close</button>
+                        </div>
+                    </dialog>
+
+                    <dialog class="qq-confirm-dialog-selector">
+                        <div class="qq-dialog-message-selector"></div>
+                        <div class="qq-dialog-buttons">
+                            <button type="button" class="qq-cancel-button-selector">No</button>
+                            <button type="button" class="qq-ok-button-selector">Yes</button>
+                        </div>
+                    </dialog>
+
+                    <dialog class="qq-prompt-dialog-selector">
+                        <div class="qq-dialog-message-selector"></div>
+                        <input type="text">
+                        <div class="qq-dialog-buttons">
+                            <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                            <button type="button" class="qq-ok-button-selector">Ok</button>
+                        </div>
+                    </dialog>
+                </div>
+            </script>
+
+            <div id="restricted-fine-uploader"></div>
+
+            <?php if(count($aImages)>0 || ($resources!=null && is_array($resources) && count($resources) > 0)): ?>
+                <h3 class="qq-uploaded-files-header"><?php _e('Images already uploaded');?></h3>
+
+                <div class="qq-uploader-selector qq-uploader qq-gallery qq-uploaded-files">
+                    <ul class="qq-upload-list-selector qq-upload-list" role="region" aria-live="polite" aria-relevant="additions removals">
+                        <?php foreach($resources as $_r) {
+                            $img = $_r['pk_i_id'] . '.' . $_r['s_extension']; ?>
+                            <li class="qq-upload-success">
+                                <div class="qq-thumbnail-wrapper">
+                                    <img class="qq-thumbnail-selector" qq-max-size="150" qq-server-scale="" src="<?php echo osc_apply_filter('resource_path', osc_base_url() . $_r['s_path']) . $_r['pk_i_id'] . '_thumbnail.' . $_r['s_extension']; ?>" alt="<?php echo osc_esc_html($img); ?>">
+                                </div>
+
+                                <div class="qq-file-info">
+                                    <div class="qq-file-name">
+                                        <span class="qq-upload-file-selector qq-upload-file" title="<?php echo $img; ?>"><?php echo $img; ?></span>
+                                    </div>
+                                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete" photoid="<?php echo $_r['pk_i_id']; ?>" itemid="<?php echo $_r['fk_i_item_id']; ?>" photoname="<?php echo $_r['s_name']; ?>" photosecret="<?php echo Params::getParam('secret'); ?>">
+                                        <span class="qq-btn qq-delete-icon" aria-label="<?php _e('Delete'); ?>"></span>
+                                    </button>
+                                </div>
+                            </li>
+                        <?php } ?>
+
+                        <?php foreach($aImages as $img) { ?>
+                            <li class="qq-upload-success">
+                                <div class="qq-thumbnail-wrapper">
+                                    <img class="qq-thumbnail-selector" qq-max-size="150" qq-server-scale="" src="<?php echo osc_base_url(); ?>oc-content/uploads/temp/<?php echo $img; ?>">
+                                </div>
+
+                                <div class="qq-file-info">
+                                    <div class="qq-file-name">
+                                        <span class="qq-upload-file-selector qq-upload-file" title="<?php echo $img; $img = osc_esc_html($img); ?>"><?php echo $img; ?></span>
+                                    </div>
+                                    <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
+                                    <span class="qq-upload-size-selector qq-upload-size"></span>
+                                    <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete" ajaxfile="<?php echo $img; ?>">
+                                        <span class="qq-btn qq-delete-icon" aria-label="<?php _e('Delete'); ?>"></span>
+                                    </button>
+                                </div>
+
+                                <input type="hidden" name="ajax_photos[]" value="<?php echo $img; ?>">
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
 
             <script>
                 $(document).ready(function() {
+                    window.removed_images = 0;
 
                     $('.qq-upload-delete').on('click', function(evt) {
                         evt.preventDefault();
-                        var parent = $(this).parent()
+                        var parent = $(this).parents('.qq-upload-success');
                         var result = confirm('<?php echo osc_esc_js( __("This action can't be undone. Are you sure you want to continue?") ); ?>');
                         var urlrequest = '';
-                        if($(this).attr('ajaxfile')!=undefined) {
-                            urlrequest = 'ajax_photo='+$(this).attr('ajaxfile');
+
+                        if($(this).attr('ajaxfile') != undefined) {
+                            urlrequest = 'ajax_photo=' + $(this).attr('ajaxfile');
                         } else {
-                            urlrequest = 'id='+$(this).attr('photoid')+'&item='+$(this).attr('itemid')+'&code='+$(this).attr('photoname')+'&secret='+$(this).attr('photosecret');
+                            urlrequest = 'id=' + $(this).attr('photoid') + '&item=' + $(this).attr('itemid') + '&code=' + $(this).attr('photoname') + '&secret=' + $(this).attr('photosecret');
                         }
+
                         if(result) {
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo osc_base_url(true); ?>?page=ajax&action=delete_image&'+urlrequest,
+                                url: '<?php echo osc_base_url(true); ?>?page=ajax&action=delete_image&' + urlrequest,
                                 dataType: 'json',
                                 success: function(data){
-                                    parent.remove();
+                                    parent.slideUp();
                                 }
                             });
                         }
                     });
 
-                    $('#restricted-fine-uploader').on('click','.primary_image', function(event){
-                        if(parseInt($("div.primary_image").index(this))>0){
+                    $('#restricted-fine-uploader').on('click', 'button.qq-upload-delete', function(event) {
+                        window.removed_images = window.removed_images + 1;
 
-                            var a_src   = $(this).parent().find('.ajax_preview_img img').attr('src');
-                            var a_title = $(this).parent().find('.ajax_preview_img img').attr('alt');
-                            var a_input = $(this).parent().find('input').attr('value');
-                            // info
-                            var a1 = $(this).parent().find('span.qq-upload-file').text();
-                            var a2 = $(this).parent().find('span.qq-upload-size').text();
-
-                            var li_first =  $('ul.qq-upload-list li').get(0);
-
-                            var b_src   = $(li_first).find('.ajax_preview_img img').attr('src');
-                            var b_title = $(li_first).find('.ajax_preview_img img').attr('alt');
-                            var b_input = $(li_first).find('input').attr('value');
-                            var b1      = $(li_first).find('span.qq-upload-file').text();
-                            var b2      = $(li_first).find('span.qq-upload-size').text();
-
-                            $(li_first).find('.ajax_preview_img img').attr('src', a_src);
-                            $(li_first).find('.ajax_preview_img img').attr('alt', a_title);
-                            $(li_first).find('input').attr('value', a_input);
-                            $(li_first).find('span.qq-upload-file').text(a1);
-                            $(li_first).find('span.qq-upload-size').text(a2);
-
-                            $(this).parent().find('.ajax_preview_img img').attr('src', b_src);
-                            $(this).parent().find('.ajax_preview_img img').attr('alt', b_title);
-                            $(this).parent().find('input').attr('value', b_input);
-                            $(this).parent().find('span.qq-upload-file').text(b1);
-                            $(this).parent().find('span.qq-upload-file').text(b2);
-                        }
-                    });
-
-                    $('#restricted-fine-uploader').on('click','.primary_image', function(event){
-                        $(this).addClass('over primary');
-                    });
-
-                    $('#restricted-fine-uploader').on('mouseenter mouseleave','.primary_image', function(event){
-                        if(event.type=='mouseenter') {
-                            if(!$(this).hasClass('primary')) {
-                                $(this).addClass('primary');
-                            }
-                        } else {
-                            if(parseInt($("div.primary_image").index(this))>0){
-                                $(this).removeClass('primary');
-                            }
-                        }
-                    });
-
-
-                    $('#restricted-fine-uploader').on('mouseenter mouseleave','li.qq-upload-success', function(event){
-                        if(parseInt($("li.qq-upload-success").index(this))>0){
-
-                            if(event.type=='mouseenter') {
-                                $(this).find('div.primary_image').addClass('over');
-                            } else {
-                                $(this).find('div.primary_image').removeClass('over');
-                            }
-                        }
-                    });
-
-                    window.removed_images = 0;
-                    $('#restricted-fine-uploader').on('click', 'a.qq-upload-delete', function(event) {
-                        window.removed_images = window.removed_images+1;
                         $('#restricted-fine-uploader .flashmessage-error').remove();
                     });
 
-                    $('#restricted-fine-uploader').fineUploader({
+                    $('#restricted-fine-uploader').on('click','.make_primary', function(event){
+                        if(parseInt($("a.primary_image").index(this)) > 0) {
+                            var a_src   = $(this).parents('.qq-upload-success').find('.qq-thumbnail-wrapper img').attr('src');
+                            var a_input = $(this).parents('.qq-upload-success').find('input[name="ajax_photos[]"]').val();
+                            var a1 = $(this).parents('.qq-upload-success').find('span.qq-upload-file').text();
+                            var a2 = $(this).parents('.qq-upload-success').find('span.qq-upload-size').text();
+
+                            var li_first =  $('ul.qq-upload-list li').get(0);
+
+                            var b_src   = $(li_first).find('.qq-thumbnail-wrapper img').attr('src');
+                            var b_input = $(li_first).find('input[name="ajax_photos[]"]').val();
+                            var b1      = $(li_first).find('span.qq-upload-file').text();
+                            var b2      = $(li_first).find('span.qq-upload-size').text();
+
+                            $(li_first).find('.qq-thumbnail-wrapper img').attr('src', a_src);
+                            $(li_first).find('input[name="ajax_photos[]"]').val(a_input);
+                            $(li_first).find('span.qq-upload-file').text(a1);
+                            $(li_first).find('span.qq-upload-size').text(a2);
+
+                            $(this).parents('.qq-upload-success').find('.qq-thumbnail-wrapper img').attr('src', b_src);
+                            $(this).parents('.qq-upload-success').find('input[name="ajax_photos[]"]').val(b_input);
+                            $(this).parents('.qq-upload-success').find('span.qq-upload-file').text(b1);
+                            $(this).parents('.qq-upload-success').find('span.qq-upload-size').text(b2);
+                        }
+                    });
+
+                    new qq.FineUploader({
+                        element: document.getElementById("restricted-fine-uploader"),
+                        template: 'qq-template-gallery',
                         request: {
                             endpoint: '<?php echo osc_base_url(true)."?page=ajax&action=ajax_upload"; ?>'
                         },
@@ -1887,77 +1976,97 @@
                             deleteButton: '<?php echo osc_esc_js(__('Delete')); ?>',
                             deletingStatusText: '<?php echo osc_esc_js(__('Deleting...')); ?>',
                             formatProgress: '<?php echo osc_esc_js(__('{percent}% of {total_size}')); ?>'
-                        }
-                    }).on('error', function (event, id, name, errorReason, xhrOrXdr) {
-                            $('#restricted-fine-uploader .flashmessage-error').remove();
-                            $('#restricted-fine-uploader').append('<div class="flashmessage flashmessage-error">' + errorReason + '<a class="close" onclick="javascript:$(\'.flashmessage-error\').remove();" >X</a></div>');
-                    }).on('statusChange', function(event, id, old_status, new_status) {
-                        $(".alert.alert-error").remove();
-                    }).on('complete', function(event, id, fileName, responseJSON) {
-                        if (responseJSON.success) {
-                            var new_id = id - removed_images;
-                            var li = $('.qq-upload-list li')[new_id];
-                            <?php if(Params::getParam('action')=='item_add') { ?>
-                            if(parseInt(new_id)==0) {
-                                $(li).append('<div class="primary_image primary"></div>');
-                            } else {
-                                $(li).append('<div class="primary_image"><a title="<?php echo osc_esc_js(osc_esc_html(__('Make primary image'))); ?>"></a></div>');
+                        },
+                        callbacks: {
+                            onTotalProgress: function(totalUploadedBytes, totalBytes) {
+                                $('.qq-total-progress-bar-container-selector, .qq-drop-processing-selector').removeClass('qq-hide');
+                                $('.qq-total-progress-bar-container-selector div').width((totalUploadedBytes / totalBytes) * 100);
+                            },
+                            onStatusChange: function() {
+                                setTimeout(function() {
+                                    $(".flashmessage.flashmessage-error").remove();
+                                }, 2500);
+                            },
+                            onComplete: function(id, name, responseJSON, xhr) {
+                                if (responseJSON.success) {
+                                    var new_id = id - removed_images;
+                                    var li = $('.qq-upload-list li')[new_id];
+                                    <?php if(Params::getParam('action')=='item_add') { ?>
+                                    if(parseInt(new_id)==0) {
+                                        $(li).find('.qq-file-info').append('<a class="qq-btn primary_image primary" title="<?php echo osc_esc_js(osc_esc_html(__('Primary image'))); ?>"></a>');
+                                    } else {
+                                        $(li).find('.qq-file-info').append('<a class="qq-btn primary_image make_primary" title="<?php echo osc_esc_js(osc_esc_html(__('Make primary image'))); ?>"></a>');
+                                    }
+                                    <?php }
+
+                                    // @TOFIX @FIXME escape $responseJSON_uploadName below
+                                    // need a js function similar to osc_esc_js(osc_esc_html()) ?>
+                                    $(li).append('<input type="hidden" name="ajax_photos[]" value="'+responseJSON.uploadName+'"></input>');
+                                }
+
+                                $('.qq-drop-processing-selector').addClass('qq-hide');
+                            },
+                            onDeleteComplete: function() {
+                                var imgCount = $('.qq-upload-list li.qq-upload-success').length;
+
+                                if(imgCount == 0) {
+                                    $('.qq-uploader-selector').attr('qq-drop-area-text', '<?php echo osc_esc_js(osc_esc_html(__('Drop files here'))); ?>')
+                                }
+                            },
+                            <?php if(Params::getParam('action') == 'item_edit'): ?>
+                            onValidateBatch: function(fileOrBlobDataArray, buttonContainer) {
+                                var len = fileOrBlobDataArray.length;
+                                var result = canContinue(len);
+
+                                return result.success;
+                            },
+                            <?php endif; ?>
+                            onError: function() {
+                                setTimeout(function() {
+                                    $('.qq-total-progress-bar-container').addClass('qq-hide');
+                                    $('.qq-drop-processing-selector').addClass('qq-hide');
+                                }, 1);
                             }
-                            <?php }
-                            // @TOFIX @FIXME escape $responseJSON_uploadName below
-                            // need a js function similar to osc_esc_js(osc_esc_html()) ?>
-                            $(li).append('<div class="ajax_preview_img"><img src="<?php echo osc_base_url(); ?>oc-content/uploads/temp/'+responseJSON.uploadName+'" alt="' + responseJSON.uploadName + '"></div>');
-                            $(li).append('<input type="hidden" name="ajax_photos[]" value="'+responseJSON.uploadName+'"></input>');
                         }
-                        <?php if(Params::getParam('action')=='item_edit') { ?>
-                    }).on('validateBatch', function(event, fileOrBlobDataArray) {
-                        // clear alert messages
-                        if($('#restricted-fine-uploader .alert-error').size()>0) {
-                            $('#restricted-fine-uploader .alert-error').remove();
-                        }
+                    });
+                });
 
-                        var len = fileOrBlobDataArray.length;
-                        var result = canContinue(len);
-                        return result.success;
+                function canContinue(numUpload) {
+                    // strUrl is whatever URL you need to call
+                    var strUrl      = "<?php echo osc_base_url(true)."?page=ajax&action=ajax_validate&id=".osc_item_id()."&secret=".osc_item_secret(); ?>";
+                    var strReturn   = {};
 
+                    jQuery.ajax({
+                        url: strUrl,
+                        success: function(html) {
+                            strReturn = html;
+                        },
+                        async: false
                     });
 
-                    function canContinue(numUpload) {
-                        // strUrl is whatever URL you need to call
-                        var strUrl      = "<?php echo osc_base_url(true)."?page=ajax&action=ajax_validate&id=".osc_item_id()."&secret=".osc_item_secret(); ?>";
-                        var strReturn   = {};
+                    var json  = JSON.parse(strReturn);
+                    var total = parseInt(json.count) + $("#restricted-fine-uploader input[name='ajax_photos[]']").size() + (numUpload);
 
-                        jQuery.ajax({
-                            url: strUrl,
-                            success: function(html) {
-                                strReturn = html;
-                            },
-                            async:false
-                        });
-                        var json  = JSON.parse(strReturn);
-                        var total = parseInt(json.count) + $("#restricted-fine-uploader input[name='ajax_photos[]']").size() + (numUpload);
-                        <?php if($maxImages>0) { ?>
-                            if(total<=<?php echo $maxImages;?>) {
-                                json.success = true;
-                            } else {
-                                json.success = false;
-                                $('#restricted-fine-uploader .qq-uploader').after($('<div class="alert alert-error"><?php echo osc_esc_js(sprintf(__('Too many items were uploaded. Item limit is %d.'), $maxImages)); ?></div>'));
-                            }
-                        <?php } else { ?>
+                    <?php if($maxImages > 0) { ?>
+                        if(total <= <?php echo $maxImages;?>) {
                             json.success = true;
-                        <?php }; ?>
-                        return json;
-                    }
+                        } else {
+                            json.success = false;
 
+                            $('#restricted-fine-uploader .qq-total-progress-bar-container').remove();
+                            $('#restricted-fine-uploader .qq-drop-processing-selector').remove();
+
+                            $('#restricted-fine-uploader .qq-uploader').after($('<div class="flashmessage flashmessage-error"><?php echo osc_esc_js(sprintf(__('Too many items were uploaded. Item limit is %d.'), $maxImages)); ?></div>'));
+                        }
                     <?php } else { ?>
-                });
-                <?php } ?>
-                });
+                        json.success = true;
+                    <?php } ?>
 
+                    return json;
+                }
             </script>
-        <?php
-        }
 
+        <?php }
     }
 
 ?>

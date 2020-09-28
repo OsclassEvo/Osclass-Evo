@@ -28,8 +28,8 @@ Cookie::newInstance()->push('Set-Cookie', 'HttpOnly;Secure;SameSite=Strict');
 
 if(osc_get_preference('admin_theme') == 'evolution') {
     // evolution admin scripts
-    osc_register_script('jquery', 'https://code.jquery.com/jquery-1.12.4.min.js');
-    osc_register_script('jquery-ui', osc_current_admin_theme_js_url('plugins/jquery.autocomplete.js'), 'jquery');
+    osc_register_script('jquery', '//code.jquery.com/jquery-1.12.4.min.js');
+    osc_register_script('jquery-ui', osc_current_admin_theme_js_url('plugins/jquery-ui.min.js'), 'jquery');
     osc_register_script('admin-autocomplete', osc_current_admin_theme_js_url('plugins/jquery-ui.min.js'), 'jquery');
     osc_register_script('admin-popper', osc_current_admin_theme_js_url('core/popper.min.js'), 'jquery');
     osc_register_script('admin-moment', osc_current_admin_theme_js_url('plugins/moment.min.js'), 'jquery');
@@ -49,7 +49,11 @@ if(osc_get_preference('admin_theme') == 'evolution') {
     osc_register_script('admin-sortable_lists-mobile', osc_current_admin_theme_js_url('plugins/jquery-sortable-lists-mobile.js'), 'jquery');
     osc_register_script('admin-dropzone', osc_current_admin_theme_js_url('plugins/dropzone.js'), 'jquery');
     osc_register_script('admin-equalize', osc_current_admin_theme_js_url('plugins/equalize.min.js'), 'jquery');
+    osc_register_script('admin-fileinput', osc_current_admin_theme_js_url('plugins/jasny-fileinput.min.js'), 'jquery');
+    osc_register_script('admin-fileinput-auto', osc_current_admin_theme_js_url('plugins/jasny-fileinput.auto.min.js'), 'jquery');
     osc_register_script('admin-tooltip', osc_current_admin_theme_js_url('plugins/zebra_tooltips.min.js'), 'jquery');
+    osc_register_script('admin-osc', osc_current_admin_theme_js_url('osc.js'), 'jquery');
+    osc_register_script('core-upgrade', osc_current_admin_theme_js_url('upgrade.js'), 'jquery');
 
     // enqueue scripts
     osc_enqueue_script('jquery');
@@ -73,7 +77,10 @@ if(osc_get_preference('admin_theme') == 'evolution') {
     osc_enqueue_script('admin-sortable_lists-mobile');
     osc_enqueue_script('admin-dropzone');
     osc_enqueue_script('admin-equalize');
+    osc_enqueue_script('admin-fileinput');
+    osc_enqueue_script('admin-fileinput-auto');
     osc_enqueue_script('admin-tooltip');
+    osc_enqueue_script('admin-osc');
 
     // evolution css styles
     osc_enqueue_style('admin-fonts', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons');
@@ -82,6 +89,7 @@ if(osc_get_preference('admin_theme') == 'evolution') {
     osc_enqueue_style('admin-bs_treeview', osc_current_admin_theme_styles_url('hummingbird-treeview.css?v=' . time()));
     osc_enqueue_style('admin-dropzone', osc_current_admin_theme_styles_url('dropzone.css?v=' . time()));
     osc_enqueue_style('admin-tooltip', osc_current_admin_theme_styles_url('zebra_tooltips.css?v=' . time()));
+    osc_enqueue_style('admin-sortable', osc_current_admin_theme_styles_url('sortable.css?v=' . time()));
     osc_enqueue_style('admin-dashboard', osc_current_admin_theme_styles_url('dashboard.css?v=' . time()));
 } else {
     osc_enqueue_script('jquery');
@@ -89,6 +97,7 @@ if(osc_get_preference('admin_theme') == 'evolution') {
     osc_register_script('admin-osc', osc_current_admin_theme_js_url('osc.js'), 'jquery');
     osc_register_script('admin-ui-osc', osc_current_admin_theme_js_url('ui-osc.js'), 'jquery');
     osc_register_script('admin-location', osc_current_admin_theme_js_url('location.js'), 'jquery');
+    osc_register_script('core-upgrade', osc_current_admin_theme_js_url('upgrade.js'), 'jquery');
 
     // enqueue scripts
     osc_enqueue_script('jquery-ui');

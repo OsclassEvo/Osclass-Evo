@@ -179,7 +179,7 @@
      * @return string
      */
     function osc_current_admin_theme_path($file = '') {
-        require AdminThemes::newInstance()->getCurrentThemePath() . $file;
+        require_once AdminThemes::newInstance()->getCurrentThemePath() . $file;
     }
 
     /**
@@ -208,7 +208,7 @@
      * @return string
      */
     function osc_current_web_theme() {
-        return WebThemes::newInstance()->getCurrentTheme();
+        return getPreference('theme');
     }
 
     /**
@@ -222,6 +222,7 @@
         if (!file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) && $info['template'] != ''){
             WebThemes::newInstance()->setParentTheme();
         }
+
         return WebThemes::newInstance()->getCurrentThemeUrl() . $file;
     }
 
@@ -235,21 +236,21 @@
 		$info = WebThemes::newInstance()->loadThemeInfo(WebThemes::newInstance()->getCurrentTheme());
 
         if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ){
-            require WebThemes::newInstance()->getCurrentThemePath() . $file;
+            require_once WebThemes::newInstance()->getCurrentThemePath() . $file;
         } elseif($info['template'] != '') {
 			WebThemes::newInstance()->setParentTheme();
             if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ) {
-              require WebThemes::newInstance()->getCurrentThemePath() . $file;
+                require_once WebThemes::newInstance()->getCurrentThemePath() . $file;
             } else {
 				WebThemes::newInstance()->setGuiTheme();
 	            if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ) {
-	                require WebThemes::newInstance()->getCurrentThemePath() . $file;
+                    require_once WebThemes::newInstance()->getCurrentThemePath() . $file;
 	            }
 			}
         } else {
             WebThemes::newInstance()->setGuiTheme();
             if( file_exists(WebThemes::newInstance()->getCurrentThemePath() . $file) ) {
-                require WebThemes::newInstance()->getCurrentThemePath() . $file;
+                require_once WebThemes::newInstance()->getCurrentThemePath() . $file;
             }
         }
     }
@@ -798,6 +799,16 @@
         } else {
             return osc_base_url(true) . '?page=item&action=activate&id=' . $id . ($secret != '' ? '&secret=' . $secret : '');
         }
+    }
+
+    /**
+     * Gets url for approve an item
+     *
+     * @param int $id
+     * @return string
+     */
+    function osc_item_approve_url($id = '') {
+        return osc_admin_base_url(true) . '?page=items&action=status&id=' . $id . '&' . osc_csrf_token_url() . '&value=APPROVE';
     }
 
     /**

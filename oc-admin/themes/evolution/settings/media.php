@@ -406,11 +406,7 @@ $freeType      = array_key_exists('FreeType Support', $aGD);
                 <div class="row no-gutters">
                     <label class="col-12 col-xl-1 col-form-label form-label text-left text-xl-right"><?php _e('Image'); ?></label>
                     <div class="col-xl-5">
-                        <span class="btn btn-round btn-success btn-file mt-3">
-                            <span class="fileinput-new" input-file-id="watermark_image_file"><?php _e('Choose File'); ?></span>
-                            <input id="watermark_image_file" type="file" name="watermark_image" onchange="getFileName('watermark_image_file');">
-                            <div class="ripple-container"></div>
-                        </span>
+                        <input id="watermark_image_file" type="file" name="watermark_image">
 
 						<?php if(osc_is_watermark_image()): ?>
                             <div class="form-text text-muted">
@@ -426,7 +422,7 @@ $freeType      = array_key_exists('FreeType Support', $aGD);
                 <div class="row no-gutters">
                     <label class="col-12 col-xl-1 col-form-label form-label text-left text-xl-right"><?php _e('Position'); ?></label>
                     <div class="col-xl-5">
-                        <select class="selectpicker show-tick w-100 w-xl-25 pt-3" name="watermark_image_place" data-dropup-auto="false" data-size="7" data-style="btn btn-info btn-sm">
+                        <select class="selectpicker show-tick w-100 w-xl-25" name="watermark_image_place" data-dropup-auto="false" data-size="7" data-style="btn btn-info btn-sm">
                             <option value="centre" <?php echo (osc_watermark_place() == 'centre') ? 'selected' : ''; ?>><?php _e('Centre'); ?></option>
                             <option value="tl" <?php echo (osc_watermark_place() == 'tl') ? 'selected' : ''; ?>><?php _e('Top Left'); ?></option>
                             <option value="tr" <?php echo (osc_watermark_place() == 'tr') ? 'selected' : ''; ?>><?php _e('Top Right'); ?></option>

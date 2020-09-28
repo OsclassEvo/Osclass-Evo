@@ -289,6 +289,36 @@ function osc_highlight($txt, $len = 300, $start_tag = '<strong>', $end_tag = '</
     return $txt;
 }
 
+/**
+ * Gets and count files in the current directory:
+ *
+ * @since Osclass Evolution 4.3.0
+ *
+ * @param string $dir
+ * @return array
+ */
+
+function osc_scan_dir($dir, &$files = array(), &$count = 1) {
+    if($d = opendir($dir)) {
+        while(false !== ($file = readdir($d))) {
+            if ($file == '.' || $file == '..')
+                continue;
+
+            if(is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
+                osc_scan_dir($dir . DIRECTORY_SEPARATOR . $file, $files, $count);
+            } else {
+                $file_path = str_replace(osc_base_path(), '', $dir . DIRECTORY_SEPARATOR);
+
+                $files['files'][] = $file_path . $file;
+                $files['total_files'] = $count++;
+            }
+        }
+
+        closedir($d);
+    }
+
+    return $files;
+}
 
 /**
  *
@@ -335,6 +365,35 @@ function osc_get_subdomain_params() {
     }
     return $options;
 }
+
+/**
+ * Get an url to download the core upgrade
+ */
+function osc_get_upgrade_download_url() {
+    $json = osc_file_get_contents('https://api.osclass.market/updates/core/download');
+    $url = json_decode($json, true);
+
+    return $url['download_url'];
+}
+
+function osc_upgrade_download_completed() {
+    osc_file_get_contents('https://api.osclass.market/updates/core/download_completed');
+}
+
+/**
+ * Get the current up-to-date core version
+ */
+function osc_get_latest_core_version($digitally = true) {
+    $json = osc_file_get_contents('https://api.osclass.market/updates/core/latest_version');
+    $version = json_decode($json, true);
+
+    if($digitally) {
+        return preg_replace('#(\.)#', '', $version['version']);
+    }
+
+    return $version['version'];
+}
+
 /**
  * Get countries list
  */

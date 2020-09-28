@@ -376,7 +376,23 @@ $aCurrencies = __get('aCurrencies');
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input id="admin_pages_preloading" class="form-check-input" type="checkbox" <?php echo (osc_admin_pages_preloading() ? 'checked' : ''); ?> name="enabled_admin_pages_preloading" value="1">
-                                <?php _e('Set up preloading pages in the admin panel'); ?>
+                                <?php _e('Enable preloading pages in the admin panel'); ?>
+
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters">
+                    <label class="col-md-1 col-form-label form-label text-left text-xl-right"><?php _e('Scrolling dragging mouse'); ?></label>
+                    <div class="col-md-8 col-xl-5 checkbox-radios">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input id="admin_scrolling_mouse" class="form-check-input" type="checkbox" <?php echo (osc_admin_scrolling_mouse() ? 'checked' : ''); ?> name="enabled_admin_scrolling_mouse" value="1">
+                                <?php _e('Enable pages scrolling by dragging the scrollbar in the admin panel'); ?>
 
                                 <span class="form-check-sign">
                                     <span class="check"></span>
@@ -473,9 +489,7 @@ $aCurrencies = __get('aCurrencies');
                     <div class="col-xl-5">
                         <select class="selectpicker show-tick w-100 w-xl-50" name="auto_update[]" data-dropup-auto="false" data-size="7" data-style="btn btn-info btn-sm">
                             <option value="disabled"><?php _e('Disabled'); ?></option>
-                            <option value="branch" <?php if(strpos(osc_auto_update(),'branch') !== false) echo 'selected'; ?>><?php _e('Branch - big changes'); ?></option>
-                            <option value="major" <?php if(strpos(osc_auto_update(),'major') !== false) echo 'selected'; ?>><?php _e('Major - new features'); ?></option>
-                            <option value="minor" <?php if(strpos(osc_auto_update(),'minor') !== false) echo 'selected'; ?>><?php _e('Minor - bug fixes'); ?></option>
+                            <option value="core" <?php if(strpos(osc_auto_update(),'core') !== false) echo 'selected'; ?>><?php _e('Enabled'); ?></option>
                         </select>
                     </div>
                 </div>
@@ -550,7 +564,7 @@ $aCurrencies = __get('aCurrencies');
                         <span class="form-text text-muted">
                             <?php printf(__('Last checked on %s'), osc_format_date(date('d-m-Y h:i:s', osc_get_preference('themes_last_version_check')))); ?>
 
-                            <a class="btn btn-info btn-sm" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=check_updates"><?php _e('Check updates');?></a>
+                            <a id="check-updates" class="btn btn-info btn-sm" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=check_updates"><?php _e('Check updates');?></a>
                         </span>
                     </div>
                 </div>

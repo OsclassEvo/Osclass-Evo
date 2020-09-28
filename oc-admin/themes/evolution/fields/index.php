@@ -158,6 +158,8 @@
                     }
                 }
 
+                $options = Params::getParam("s_options");
+
                 // trim options
                 $trim_options = '';
                 $aOptions = explode(',', $options);
@@ -403,9 +405,9 @@
                             <td><?php echo $field['s_name']; ?></td>
 
                             <td style="width: 200px;" class="col-actions">
-                                <a href="javascript:;" rel="tooltip" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#fieldEditModal<?php echo $field['pk_i_id']; ?>" data-original-title="Edit"><i class="material-icons">edit</i><div class="ripple-container"></div><div class="ripple-container"></div></a>
+                                <a href="javascript:;" rel="tooltip" class="btn btn-warning" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#fieldEditModal<?php echo $field['pk_i_id']; ?>" title="<?php _e('Edit'); ?>"><i class="material-icons">edit</i><div class="ripple-container"></div><div class="ripple-container"></div></a>
 
-                                <a id="listing-delete" data-delete-type="field" data-listing-id="<?php echo $field['pk_i_id']; ?>" href="<?php echo osc_admin_base_url(true); ?>?page=ajax&action=delete_field&<?php echo $csrf_token; ?>&id=<?php echo $field['pk_i_id']; ?>" rel="tooltip" class="btn btn-danger" data-original-title="Delete"><i class="material-icons">delete</i><div class="ripple-container"></div></a>
+                                <a id="listing-delete" data-delete-type="field" data-listing-id="<?php echo $field['pk_i_id']; ?>" href="<?php echo osc_admin_base_url(true); ?>?page=ajax&action=delete_field&<?php echo $csrf_token; ?>&id=<?php echo $field['pk_i_id']; ?>" rel="tooltip" class="btn btn-danger" title="<?php _e('Delete'); ?>"><i class="material-icons">delete</i><div class="ripple-container"></div></a>
                             </td>
                         </tr>
                     <?php }; ?>
@@ -418,14 +420,14 @@
                 <?php } ?>
                 </tbody>
             </table>
-
-            <?php if(count($fields) > 0): ?>
-                <?php foreach($fields as $field): ?>
-                    <?php require osc_admin_base_path() . 'themes/evolution/fields/iframe.php'; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
         </div>
     </div>
 </div>
+
+<?php if(count($fields) > 0): ?>
+    <?php foreach($fields as $field): ?>
+        <?php require osc_admin_base_path() . 'themes/evolution/fields/iframe.php'; ?>
+    <?php endforeach; ?>
+<?php endif; ?>
 
 <?php osc_current_admin_theme_path( 'parts/footer.php' ); ?>

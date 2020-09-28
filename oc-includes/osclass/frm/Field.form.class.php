@@ -243,8 +243,14 @@ FB;
                         echo '<label for="meta_'.$field['s_slug'].'">'.$field['s_name'].': </label>';
                     }
                     // timestamp/1000 (javascript timestamp)
-                    echo '<input type="hidden" id="meta_' . $field['s_slug'] . '-hidden" class="meta_date" data-slug="meta_' . $field['s_slug'] . '" name="meta['.$field['pk_i_id'].']" value="' . $field['s_value'] . '" />';
-                    echo '<input type="text" id="meta_' . $field['s_slug'] . '" class="meta_' . $field['s_slug'] . ' cf_date" value="" />';
+
+                    if(osc_get_preference('admin_theme') == 'evolution' && OC_ADMIN) {
+                        echo '<input type="hidden" id="meta_' . $field['s_slug'] . '-hidden" class="meta_date" data-slug="meta_' . $field['s_slug'] . '" name="meta['.$field['pk_i_id'].']" value="' . $field['s_value'] . '" />';
+                        echo '<input type="text" id="meta_' . $field['s_slug'] . '" class="meta_' . $field['s_slug'] . ' cf_date" value="" />';
+                    } else {
+                        echo '<input type="hidden" id="meta_'.$field['s_slug'].'" name="meta['.$field['pk_i_id'].']" value="" />';
+                        echo '<input type="text" id="" class="meta_'.$field['s_slug'].' cf_date" value="" />';
+                    }
 
                     FieldForm::initDatePicker('meta_'.$field['s_slug'], osc_date_format(), $field['s_value']);
 

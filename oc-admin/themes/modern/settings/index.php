@@ -353,9 +353,7 @@
                         <div class="form-controls">
                             <select name="auto_update[]" id="auto_update_core">
                                 <option value="disabled" ><?php _e('Disabled'); ?></option>
-                                <option value="branch" <?php if(strpos(osc_auto_update(),'branch')!==false) { ?>selected="selected"<?php } ?>><?php _e('Branch - big changes'); ?></option>
-                                <option value="major" <?php if(strpos(osc_auto_update(),'major')!==false) { ?>selected="selected"<?php } ?>><?php _e('Major - new features'); ?></option>
-                                <option value="minor" <?php if(strpos(osc_auto_update(),'minor')!==false) { ?>selected="selected"<?php } ?>><?php _e('Minor - bug fixes'); ?></option>
+                                <option value="core" <?php if(strpos(osc_auto_update(),'core') !== false) echo 'selected'; ?>><?php _e('Enabled'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -406,7 +404,7 @@
                     <div class="form-row">
                         <div class="form-label"></div>
                         <div class="form-controls">
-                            <?php printf(__('Last checked on %s'), osc_format_date( date('d-m-Y h:i:s', osc_get_preference('themes_last_version_check')) )); ?> <a class="btn btn-mini" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=check_updates"><?php _e('Check updates');?></a>
+                            <?php printf(__('Last checked on %s'), osc_format_date( date('d-m-Y h:i:s', osc_get_preference('themes_last_version_check')) )); ?> <a id="check-updates" class="btn btn-mini" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=check_updates"><?php _e('Check updates');?></a>
                         </div>
                     </div>
                     <div class="clear"></div>

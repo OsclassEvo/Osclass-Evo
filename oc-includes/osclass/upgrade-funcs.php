@@ -40,10 +40,11 @@
         if( Params::getParam('skipdb') == '' ){
             if(!$error_queries[0]) {
                 $skip_db_link = osc_admin_base_url(true) . "?page=upgrade&action=upgrade-funcs&skipdb=true";
-                $title    = __('Osclass &raquo; Has some errors');
+                $title    = __('Osclass Evolution &raquo; Has some errors');
                 $message  = __("We've encountered some problems while updating the database structure. The following queries failed:");
                 $message .= "<br/><br/>" . implode("<br>", $error_queries[2]);
-                $message .= "<br/><br/>" . sprintf(__("These errors could be false-positive errors. If you're sure that is the case, you can <a href=\"%s\">continue with the upgrade</a>, or <a href=\"http://forums.osclass.org/\">ask in our forums</a>."), $skip_db_link);
+                $message .= "<br/><br/>" . sprintf(__("These errors could be false-positive errors. If you're sure that is the case, you can <a href=\"%s\">continue with the upgrade</a>, or <a href=\"https://forum.osclass-evo.com/\">ask in our forums</a>."), $skip_db_link);
+
                 osc_die($title, $message);
             }
         }
@@ -582,6 +583,48 @@ CREATE TABLE %st_item_description_tmp (
         osc_set_preference('admin_pages_preloading', true, 'osclass', 'BOOLEAN');
         osc_set_preference('enableField#editor@items', true, 'osclass', 'BOOLEAN');
         osc_set_preference('recaptcha_version', '3');
+    }
+
+    if(osc_version() < 420) {
+        osc_changeVersionTo(420);
+
+        $item_moderated[osc_language()]['s_title'] = '{WEB_TITLE} - Listing has been moderated';
+        $item_moderated[osc_language()]['s_text']  = '<p>Hi {USER_NAME},</p><p>Your listing "{ITEM_LINK}" has passed moderation and is published on the site now!</p><p>Regards,</p><p>{WEB_LINK}</p>';
+
+        $res = Page::newInstance()->insert(
+            array('s_internal_name' => 'email_item_moderated', 'b_indelible' => '1'),
+            $item_moderated
+        );
+
+        $admin_item_moderation[osc_language()]['s_title'] = '{WEB_TITLE} - A new listing requiring moderation is published';
+        $admin_item_moderation[osc_language()]['s_text'] = "<p>Dear {WEB_TITLE} admin,</p><p>You're receiving this email because a listing has been {ITEM_ACTION_TYPE} at {WEB_LINK}.</p><p>Listing details:</p><p>Contact name: {USER_NAME}<br />Contact email: {USER_EMAIL}</p><p>{ITEM_DESCRIPTION}</p><p>Url: {ITEM_LINK}</p><p>You can view and approve this listing by clicking on the following link: {ITEM_EDIT_LINK}</p><p>Regards,</p><p>{WEB_LINK}</p>";
+
+        $res = Page::newInstance()->insert(
+            array('s_internal_name' => 'email_admin_item_moderation', 'b_indelible' => '1'),
+            $admin_item_moderation
+        );
+
+        $comm->query(sprintf("ALTER TABLE  %st_item ADD  `b_blocked` TINYINT(1) NOT NULL DEFAULT 0 AFTER `b_enabled`", DB_TABLE_PREFIX));
+
+        osc_set_preference('item_posted_redirect', 'category', 'osclass', 'STRING');
+        osc_set_preference('enableField#listingsPostedModeration@items', 0, 'osclass', 'BOOLEAN');
+        osc_set_preference('enableField#listingsEditedModeration@items', 0, 'osclass', 'BOOLEAN');
+
+        $result   = $comm->query(sprintf("SELECT * FROM %st_item WHERE `b_enabled` = 0", DB_TABLE_PREFIX));
+        $items = $result->result();
+
+        foreach($items as $item) {
+            Item::newInstance()->update(array('b_blocked' => 1),
+                array('pk_i_id'  => $item['pk_i_id']));
+        }
+
+        unset($items);
+    }
+
+    if(osc_version() < 430) {
+        osc_changeVersionTo(430);
+
+        osc_set_preference('auto_update', 'core');
     }
 
     if(!defined('IS_AJAX') || !IS_AJAX) {

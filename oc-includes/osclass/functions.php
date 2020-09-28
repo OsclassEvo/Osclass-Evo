@@ -481,7 +481,7 @@ function osc_admin_toolbar_update_core($force = false)
             AdminToolbar::newInstance()->remove_menu('update_core');
         }
         if(isset($data['version']) && $data['version'] > 0) {
-            $title = sprintf(__('Osclass %s is available'), $data['s_name']);
+            $title = sprintf(__('Osclass Evolution %s is available'), $data['version']);
             AdminToolbar::newInstance()->add_menu(
                 array('id'    => 'update_core',
                     'title' => $title,

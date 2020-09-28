@@ -34,9 +34,12 @@
                         osc_add_flash_warning_message( _m("This action cannot be done because it is a demo site"), 'admin');
                         $this->redirectTo(osc_admin_base_url(true));
                     }
+
+                    define('AUTO_UPGRADE', true);
                     require(LIB_PATH.'osclass/upgrade-funcs.php');
                 break;
-                default:                $this->doView('upgrade/index.php');
+                default:
+                    $this->doView('upgrade/index.php');
             }
         }
 

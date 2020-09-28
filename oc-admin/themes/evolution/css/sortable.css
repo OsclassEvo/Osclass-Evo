@@ -1,0 +1,122 @@
+#sortableListsBase {
+    color: #fff;
+}
+.nestable-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.nestable-item-handle {
+    padding: 0 0 0 41px;
+}
+.nestable-item, .nestable-empty, .nestable-placeholder {
+    display: block;
+    position: relative;
+}
+.nestable-item-handle .nestable-handle {
+    cursor: move;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    background: #2ca8ff;
+    line-height: 42px;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 6px;
+    padding: 0;
+    text-align: center;
+}
+.nestable-item-handle .nestable-handle span {
+    position: relative;
+    top: 7px;
+    color: #fff;
+}
+.nestable-item > span.sortableListsOpener {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    float: left;
+    width: 25px;
+    height: 42px;
+    line-height: 42px;
+    padding: 0;
+    white-space: nowrap;
+    border: 0;
+    background: transparent;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+.nestable-item > span.sortableListsOpener i {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #fff;
+    z-index: 2;
+}
+.nestable-handle, .nestable-content, .nestable-placeholder {
+    padding: 10px 10px 10px 20px;
+    background-color: #2CA8FF;
+    margin-bottom: 7.5px;
+    border-radius: 4px;
+}
+.nestable-placeholder {
+    width: 100%;
+    background-color: #d5dde0;
+    border-color: #c9d4d7;
+}
+.nestable-drag {
+    pointer-events: none;
+    list-style: none;
+}
+.nestable-drag .nestable-item {
+    color: #fff;
+    padding-left: 50px;
+    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);
+}
+.nestable-drag .nestable-item.nestable-item-handle {
+    box-shadow: none;
+}
+#sortable-categories {
+    padding: 0;
+    margin: 10px auto;
+}
+#sortable-categories li,
+#sortableListsBase li {
+    list-style: none;
+    padding-left: 50px;
+}
+#sortable-categories li div.list-category-name {
+    padding: 10px 10px 10px 20px;
+    background-color: #2CA8FF;
+    color: #fff;
+}
+#sortable-categories ul {
+    padding: 0;
+}
+#sortable-categories .nestable-hint {
+    background: #97d4ff;
+    margin-bottom: 7.5px;
+}
+.nestable-collapse-btn {
+    position: relative;
+    cursor: pointer;
+    float: left;
+    width: 35px;
+    height: 25px;
+    line-height: 35px;
+    padding: 0;
+    margin-left: -15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+/*body.body-list-drag {*/
+/*    overflow-y: scroll;*/
+/*}*/
+/*.wrapper.list-drag {*/
+/*    height: 100%!important;*/
+/*}*/

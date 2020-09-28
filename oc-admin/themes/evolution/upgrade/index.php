@@ -31,11 +31,11 @@ function customHead() { ?>
                 $('textarea, button,select, input:file').uniform();
             }
 
-            <?php if(Params::getParam('confirm')=='true'): ?>
+            <?php if(Params::getParam('confirm') == 'true'): ?>
                 $('#output').show();
                 $('#to-hide').hide();
 
-                $.get('<?php echo osc_admin_base_url(true); ?>?page=upgrade&action=upgrade-funcs' , function(data) {
+                $.get('<?php echo osc_admin_base_url(true); ?>?page=upgrade&action=upgrade-funcs' , function() {
                     setTimeout(function() {
                         window.location = "<?php echo osc_admin_base_url(true); ?>?page=tools&action=version";
                     }, 3000);

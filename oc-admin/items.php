@@ -502,15 +502,11 @@ class CAdminItems extends AdminSecBaseModel
 
                 $id = (int)$id;
 
-                if ( ! is_numeric($id)) {
+                if (! is_numeric($id)) {
                     return false;
                 }
 
-                if ( ! in_array(
-                    $value,
-                    array('ACTIVE', 'INACTIVE', 'ENABLE', 'DISABLE')
-                )
-                ) {
+                if ( !in_array($value, array('ACTIVE', 'INACTIVE', 'ENABLE', 'DISABLE', 'APPROVE')) ) {
                     return false;
                 }
 
@@ -518,9 +514,25 @@ class CAdminItems extends AdminSecBaseModel
                 $mItems = new ItemActions(true);
 
                 switch ($value) {
-                    case 'ACTIVE':
+                    case 'APPROVE':
+                        $success = $mItems->approve($id);
 
+                        if ($success && $success > 0) {
+                            osc_add_flash_ok_message(
+                                _m('The listing has been approved'),
+                                'admin'
+                            );
+                        } else {
+                            osc_add_flash_error_message(
+                                _m('An error has occurred'),
+                                'admin'
+                            );
+                        }
+
+                        break;
+                    case 'ACTIVE':
                         $success = $mItems->activate($id);
+
                         if ($success && $success > 0) {
                             osc_add_flash_ok_message(
                                 _m('The listing has been activated'),
@@ -542,8 +554,8 @@ class CAdminItems extends AdminSecBaseModel
 
                         break;
                     case 'INACTIVE':
-
                         $success = $mItems->deactivate($id);
+
                         if ($success && $success > 0) {
                             osc_add_flash_ok_message(
                                 _m('The listing has been deactivated'),
@@ -558,8 +570,8 @@ class CAdminItems extends AdminSecBaseModel
 
                         break;
                     case 'ENABLE':
-
                         $success = $mItems->enable($id);
+
                         if ($success && $success > 0) {
                             osc_add_flash_ok_message(
                                 _m('The listing has been enabled'),
@@ -574,8 +586,8 @@ class CAdminItems extends AdminSecBaseModel
 
                         break;
                     case 'DISABLE':
-
                         $success = $mItems->disable($id);
+
                         if ($success && $success > 0) {
                             osc_add_flash_ok_message(
                                 _m('The listing has been disabled'),
@@ -723,6 +735,12 @@ class CAdminItems extends AdminSecBaseModel
                     $float_class = 'float-left';
                 }
 
+                if (!$item['b_enabled'] && !$item['b_blocked']) {
+                    $actions[] = '<a class="btn btn-success ' . $float_class . ' btn-sm" href="'
+                                 . osc_item_approve_url($item['pk_i_id']) . '">' . __('Approve')
+                                 . '</a>';
+                }
+
                 if ($item['b_active']) {
                     $actions[] = '<a class="btn ' . $float_class . ' btn-sm" href="'
                                  . osc_admin_base_url(true)
@@ -738,7 +756,7 @@ class CAdminItems extends AdminSecBaseModel
                                  . '&amp;value=ACTIVE">' . __('Activate')
                                  . '</a>';
                 }
-                if ($item['b_enabled']) {
+                if (!$item['b_blocked']) {
                     $actions[] = '<a class="btn ' . $float_class . ' btn-sm" href="'
                                  . osc_admin_base_url(true)
                                  . '?page=items&amp;action=status&amp;id='
@@ -1036,6 +1054,9 @@ class CAdminItems extends AdminSecBaseModel
             case('settings_post'):     // update item settings
                 osc_csrf_check();
                 $iUpdated                 = 0;
+                $redirectAfterItemPosted    = Params::getParam(
+                    'item_posted_redirect'
+                );
                 $enabledRecaptchaItems    = Params::getParam(
                     'enabled_recaptcha_items'
                 );
@@ -1073,6 +1094,16 @@ class CAdminItems extends AdminSecBaseModel
                     'enableField#editor@items'
                 );
                 $enabledFieldEditorItems   = (($enabledFieldEditorItems != '')
+                    ? true : false);
+                $enabledFieldItemsPostedModeration   = Params::getParam(
+                'enableField#listingsPostedModeration@items'
+            );
+                $enabledFieldItemsPostedModeration   = (($enabledFieldItemsPostedModeration != '')
+                    ? true : false);
+                $enabledFieldItemsEditedModeration   = Params::getParam(
+                    'enableField#listingsEditedModeration@items'
+                );
+                $enabledFieldItemsEditedModeration   = (($enabledFieldItemsEditedModeration != '')
                     ? true : false);
                 $enabledFieldPriceItems   = Params::getParam(
                     'enableField#f_price@items'
@@ -1147,6 +1178,10 @@ class CAdminItems extends AdminSecBaseModel
 
 
                 $iUpdated += osc_set_preference(
+                    'item_posted_redirect',
+                    $redirectAfterItemPosted
+                );
+                $iUpdated += osc_set_preference(
                     'enabled_recaptcha_items',
                     $enabledRecaptchaItems
                 );
@@ -1178,6 +1213,14 @@ class CAdminItems extends AdminSecBaseModel
                 $iUpdated += osc_set_preference(
                     'enableField#editor@items',
                     $enabledFieldEditorItems
+                );
+                $iUpdated += osc_set_preference(
+                    'enableField#listingsPostedModeration@items',
+                    $enabledFieldItemsPostedModeration
+                );
+                $iUpdated += osc_set_preference(
+                    'enableField#listingsEditedModeration@items',
+                    $enabledFieldItemsEditedModeration
                 );
                 $iUpdated += osc_set_preference(
                     'enableField#f_price@items',
@@ -1319,8 +1362,7 @@ class CAdminItems extends AdminSecBaseModel
                 break;
             default:                // default
 
-                require_once osc_lib_path()
-                             . "osclass/classes/datatables/ItemsDataTable.php";
+                require_once osc_lib_path() . "osclass/classes/datatables/ItemsDataTable.php";
 
                 // set default iDisplayLength
                 if (Params::getParam('iDisplayLength') != '') {

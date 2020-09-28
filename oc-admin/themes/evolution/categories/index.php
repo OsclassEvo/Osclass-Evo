@@ -34,20 +34,21 @@ function customHead() {
     <script type="text/javascript">
         $(document).ready(function(){
             var list_original = '';
+
             var options = {
-                currElClass: 'list-draggable',
-                placeholderClass: 'list-placeholder',
-                hintClass: 'list-hint',
+                currElClass: 'nestable-drag',
+                placeholderClass: 'nestable-placeholder',
+                hintClass: 'nestable-hint',
                 ignoreClass: 'clickable',
-                //insertZonePlus: true,
-                insertZone: 200,
+                insertZonePlus: false,
+                insertZone: 50,
                 scroll: 20,
                 opener: {
                     active: true,
                     as: 'html',
-                    close: '<i class="material-icons">remove</i></i>',
-                    open: '<i class="material-icons">add</i>',
-                    openerClass: 'list-collapse-ico'
+                    close: '<i class="material-icons">keyboard_arrow_down</i>',
+                    open: '<i class="material-icons">keyboard_arrow_right</i>',
+                    openerClass: 'nestable-collapse-btn'
                 },
                 onDragStart: function(e, el) {
                     $('body').addClass('body-list-drag');
@@ -75,7 +76,6 @@ function customHead() {
                             url: "<?php echo osc_admin_base_url(true) . "?page=ajax&action=categories_order&" . osc_csrf_token_url(); ?>",
                             data: {'list' : JSON.stringify(plist)},
                             success: function(res){
-                                console.log(res);
                                 var ret = eval("(" + res + ")");
 
                                 if(ret.ok) {
@@ -86,9 +86,7 @@ function customHead() {
                                         showConfirmButton: false,
                                         timer: 1000
                                     });
-                                }
-
-                                if(ret.error) {
+                                } else {
                                     Swal.fire({
                                         position: 'top-end',
                                         type: 'error',
@@ -190,66 +188,10 @@ function customHead() {
         });
     </script>
 
-    <style>
-        #sortable-categories {
-            padding: 0;
-            margin: 10px auto;
-        }
-        #sortable-categories li,
-        #sortableListsBase li {
-            cursor: move;
-            list-style: none;
-            background-color: #f9f9f9;
-            padding-left: 50px;
-            border: 1px solid #f9f9f9;
-            border-bottom: none;
-        }
-        #sortable-categories li:last-child {
-            border-bottom: 1px solid #f9f9f9;
-        }
-        #sortable-categories li div.list-category-name {
-            position: relative;
-            padding: 10px;
-            background-color: #2CA8FF;
-            color: #fff;
-        }
-        #sortable-categories ul {
-            padding: 0;
-        }
-        .list-collapse-ico {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            color: #333;
-            margin-left: -47px;
-            margin-right: 5px;
-            background-position: center center;
-            background-repeat: no-repeat;
-            cursor: pointer;
-        }
-        .list-draggable {
-            padding: 10px;
-            background-color: #2CA8FF!important;
-            color: #fff!important;
-        }
-        #sortable-categories .list-placeholder {
-            background: linear-gradient(60deg, #ec407a, #d81b60);
-            color: #fff;
-        }
-        #sortable-categories .list-hint {
-            background: #4caf50;
-        }
-        body.body-list-drag {
-            overflow-y: scroll;
-        }
-        .wrapper.list-drag {
-            height: 100%!important;
-        }
-    </style>
     <?php
 }
 
-function drawCategories($categories, $level = 0) {
+function drawAdminCategories($categories, $level = 0) {
     if($level) echo '<ul>';
 
     foreach($categories as $i => $category) {
@@ -259,7 +201,7 @@ function drawCategories($categories, $level = 0) {
             $status_btn = '<a id="category-change_status" data-status="1" data-category-id="' . $category['pk_i_id'] . '" href="javascript:void(0);" class="btn btn-just-icon btn-link btn-category" title="' . __('Enable') . '"><i class="material-icons clickable">play_arrow</i></a>';
         }
 
-        echo '<li id="' . $category['pk_i_id'] . '"><div class="list-category-name">' . $category['s_name'];
+        echo '<li id="' . $category['pk_i_id'] . '" class="nestable-item nestable-item-handle"><div class="list-category-name nestable-content clickable"><p class="nestable-handle"><span class="material-icons">swap_vert</span></p>' . $category['s_name'];
         echo '<span class="category-action_block">';
         echo '<a href="javascript:;" class="btn btn-just-icon btn-link btn-category" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#categoryEditModal' . $category['pk_i_id'] . '" title="Edit"><i class="material-icons clickable">edit</i></a>';
         echo $status_btn;
@@ -270,7 +212,7 @@ function drawCategories($categories, $level = 0) {
         if(count($category['categories']) > 0) {
             $level++;
 
-            drawCategories($category['categories'], $level);
+            drawAdminCategories($category['categories'], $level);
         } else {
             echo '</li>';
         }
@@ -618,8 +560,8 @@ if(Params::getParam('action') == 'category_edit') {
 
     <div class="card-body">
         <?php if(count($categories) > 0) { ?>
-            <ul id="sortable-categories">
-                <?php drawCategories($categories); ?>
+            <ul id="sortable-categories" class="nestable-list">
+                <?php drawAdminCategories($categories); ?>
             </ul>
         <?php } else { ?>
             <p><?php _e('No data available in table'); ?></p>

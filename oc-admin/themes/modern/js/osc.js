@@ -100,6 +100,32 @@ osc.tooltip = function(message, options){
     });
 };
 
+$(document).ready(function() {
+    $('#upgrade-remind-later').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: osc.adm_base_ajax_url + 'core-upgrade-remind-later',
+            success: function(){
+                $('#core-upgrade-notification').remove();
+            }
+        });
+    });
+
+    $('#check-updates').click(function(e) {
+        e.preventDefault();
+
+        var href = $(this).attr('href');
+
+        $.ajax({
+            type: 'POST',
+            url: osc.adm_base_ajax_url + 'check_version',
+            success: function(res) {
+                location.href = href;
+            }
+        });
+    });
+});
+
 //extend
 $.fn.osc_tooltip = osc.tooltip
 

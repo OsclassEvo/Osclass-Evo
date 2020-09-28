@@ -1,6 +1,7 @@
 <?php if ( ! defined('OC_ADMIN')) exit('Direct access is not allowed.');
 
 osc_add_hook('ajax_admin_compactmode','modern_compactmode_actions');
+
 function modern_compactmode_actions(){
     $compactMode = osc_get_preference('compact_mode','modern_admin_theme');
     

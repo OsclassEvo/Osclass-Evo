@@ -21,18 +21,39 @@
             'no_subcategory' => __('No subcategory'),
             'select_subcategory' => __('Select subcategory')
         );
+
         $locales = osc_get_locales();
         $codes   = array();
+
         foreach($locales as $locale) {
             $codes[] = '\''. osc_esc_js($locale['pk_c_code']) . '\'';
         }
         ?>
+
         osc.locales = {};
         osc.locales._default = '<?php echo osc_language(); ?>';
         osc.locales.current = '<?php echo osc_current_admin_locale(); ?>';
-        osc.locales.codes   = new Array(<?php echo join(',', $codes); ?>);
+        osc.locales.codes   = new Array(<?php echo implode(',', $codes); ?>);
         osc.locales.string  = '[name*="' + osc.locales.codes.join('"],[name*="') + '"],.' + osc.locales.codes.join(',.');
         osc.langs = <?php echo json_encode($lang); ?>;
+
+        osc.ajax_url = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=runhook&hook=';
+        osc.base_ajax_url = '<?php echo osc_base_url(true); ?>?page=ajax&action=';
+        osc.adm_base_ajax_url = '<?php echo osc_admin_base_url(true); ?>?page=ajax&action=';
+        osc.adm_base_url = '<?php echo osc_admin_base_url(true); ?>';
+
+        osc.mouse_dragging = <?php echo osc_admin_scrolling_mouse() ? 1 : 0; ?>;
+
+        osc.translations = {
+            msg_select_file: '<?php _e('Select file'); ?>',
+            msg_remove_file: '<?php _e('Remove'); ?>',
+            msg_change_file: '<?php _e('Change'); ?>',
+            msg_success: '<?php _e('Settings updated'); ?>',
+            msg_confirm: '<?php _e('Confirm'); ?>',
+            msg_cancel: '<?php _e('Cancel'); ?>',
+            msg_delete: '<?php _e('Delete'); ?>',
+            msg_confirm_action: '<?php _e('Confirm action'); ?>',
+        };
     </script>
 
     <style>
@@ -78,9 +99,6 @@
 <div class="wrapper ">
     <div class="sidebar" data-color="<?php echo osc_get_preference('sidebar_filters', 'osclass') ? osc_get_preference('sidebar_filters', 'osclass') : 'rose'; ?>" data-background-color="<?php echo osc_get_preference('sidebar_background', 'osclass') ? osc_get_preference('sidebar_background', 'osclass') : 'black'; ?>" <?php if(osc_get_preference('sidebar_image_show', 'osclass')): ?>data-image="<?php echo osc_get_preference('sidebar_image', 'osclass') ? osc_get_preference('sidebar_image', 'osclass') : osc_current_admin_theme_url('img/sidebar-1.jpg'); ?>"<?php endif; ?>>
         <div class="logo">
-            <a href="https://osclass-evo.com/" class="simple-text logo-mini" target="_blank">
-                OE
-            </a>
             <a href="https://osclass-evo.com/" class="simple-text logo-normal" target="_blank">
                 <?php $logo = osc_get_preference('sidebar_background', 'osclass') == 'white' ? 'logo-dark.png' : 'logo-light.png'; ?>
                 <img data-img-url="<?php echo osc_current_admin_theme_url('img/'); ?>" src="<?php echo osc_current_admin_theme_url('img/' . $logo); ?>" />
@@ -154,4 +172,16 @@
         <!-- End Navbar -->
         <div class="content">
             <div class="container-fluid">
+                <?php if(osc_need_core_update()): ?>
+                    <div id="core-upgrade-notification" class="alert alert-rose alert-with-icon mt-0">
+                        <i class="material-icons" data-notify="icon">notifications</i>
+                        <?php printf(__('A new version of <strong>Osclass Evolution v.%s</strong> is available NOW!'), osc_get_latest_core_version(false)); ?>
+
+                        <div class="mt-3">
+                            <a href="<?php echo osc_admin_base_url(true); ?>?page=tools&action=upgrade" class="btn btn-info"><?php _e('Go to Upgrade page'); ?></a>
+                            <a href="javascript:;" id="upgrade-remind-later" class="btn btn-link btn-white"><?php _e('Remind me later'); ?></a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <div id="flash-message"><?php osc_show_flash_message('admin'); ?></div>

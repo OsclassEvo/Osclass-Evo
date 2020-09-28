@@ -13,9 +13,12 @@ h4 {
     margin: 10px 0 !important;
 }
 .card-plugins ol,
-.card-plugins ul {
+.card-plugins ul:not(.hummingbird-base) {
     flex: 100%;
     padding-left: 0;
+}
+.card-plugins ul.hummingbird-base ul {
+    padding-left: 40px;
 }
 li {
     list-style: none;

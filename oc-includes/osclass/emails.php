@@ -942,6 +942,114 @@
     }
     osc_add_hook('hook_email_admin_new_item', 'fn_email_admin_new_item');
 
+    function fn_email_item_moderated($item) {
+        View::newInstance()->_exportVariableToView('item', $item);
+
+        $mPages = new Page();
+        $locale = osc_current_user_locale();
+        $aPage = $mPages->findByInternalName('email_item_moderated');
+
+        if(isset($aPage['locale'][$locale]['s_title'])) {
+            $content = $aPage['locale'][$locale];
+        } else {
+            $content = current($aPage['locale']);
+        }
+
+        $contactEmail   = $item['s_contact_email'];
+        $contactName    = $item['s_contact_name'];
+
+        $item_url = osc_item_url();
+        $item_link = '<a href="' . $item_url . '" >' . $item['s_title'] . '</a>';
+
+        $words   = array();
+        $words[] = array(
+            '{USER_NAME}',
+            '{ITEM_LINK}'
+        );
+        $words[] = array(
+            $item['s_contact_name'],
+            $item_link
+        );
+
+        $title = osc_apply_filter('email_item_validation_title_after', osc_mailBeauty(osc_apply_filter('email_title', osc_apply_filter('email_item_validation_title', $content['s_title'], $item)), $words), $item);
+        $body = osc_apply_filter('email_item_validation_description_after', osc_mailBeauty(osc_apply_filter('email_description', osc_apply_filter('email_item_validation_description', $content['s_text'], $item)), $words), $item);
+
+        $emailParams =  array (
+            'from'     => _osc_from_email_aux(),
+            'to'       => $contactEmail,
+            'to_name'  => $contactName,
+            'subject'  => $title,
+            'body'     => $body,
+            'alt_body' => $body
+        );
+
+        osc_sendMail($emailParams);
+    }
+    osc_add_hook('hook_email_item_moderated', 'fn_email_item_moderated');
+
+function fn_email_admin_item_moderation($item) {
+    View::newInstance()->_exportVariableToView('item', $item);
+
+    $mPages = new Page();
+    $locale = osc_current_user_locale();
+    $aPage = $mPages->findByInternalName('email_admin_item_moderation');
+
+    if(isset($aPage['locale'][$locale]['s_title'])) {
+        $content = $aPage['locale'][$locale];
+    } else {
+        $content = current($aPage['locale']);
+    }
+
+    if($item['item_action'] == 'add') {
+        $item_action = __('published');
+    } else {
+        $item_action = __('edited');
+    }
+
+    $item_url = osc_item_url();
+    $item_link = '<a href="' . $item_url . '" >' . $item['s_title'] . '</a>';
+
+    $item_edit_link = '<a href="' . osc_item_admin_edit_url( $item['pk_i_id'] ) . '"><' . __('View & Approve Listing') . '/a>';
+
+    $words   = array();
+    $words[] = array(
+        '{ITEM_EDIT_LINK}',
+        '{ITEM_ACTION_TYPE}',
+        '{USER_NAME}',
+        '{USER_EMAIL}',
+        '{ITEM_DESCRIPTION}',
+        '{ITEM_LINK}'
+    );
+    $words[] = array(
+        $item_edit_link,
+        $item_action,
+        $item['s_contact_name'],
+        $item['s_contact_email'],
+        $item['s_description'],
+        $item_link
+    );
+
+    $title = osc_apply_filter('email_admin_new_item_title_after', osc_mailBeauty(osc_apply_filter('email_title', osc_apply_filter('email_admin_new_item_title', $content['s_title'], $item)), $words), $item);
+    $body  = osc_apply_filter('email_admin_new_item_description_after', osc_mailBeauty(osc_apply_filter('email_description', osc_apply_filter('email_admin_new_item_description', $content['s_text'], $item)), $words), $item);
+
+    $admins = Admin::newInstance()->listAll();
+
+    foreach($admins as $admin) {
+        if( !empty($admin['s_email']) ) {
+            $emailParams = array(
+                'from'     => _osc_from_email_aux(),
+                'to'       => $admin['s_email'],
+                'to_name'  => __('Admin'),
+                'subject'  => $title,
+                'body'     => $body,
+                'alt_body' => $body
+            );
+            osc_sendMail($emailParams);
+        }
+    }
+}
+osc_add_hook('hook_email_admin_item_moderation', 'fn_email_admin_item_moderation');
+
     function fn_email_item_validation_non_register_user($item) {
         View::newInstance()->_exportVariableToView('item', $item);
 

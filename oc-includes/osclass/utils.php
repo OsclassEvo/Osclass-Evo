@@ -254,7 +254,7 @@ function osc_doRequest($url, $_data) {
         // open a socket connection on port 80
         // use localhost in case of issues with NATs (hairpinning)
         $fp = @fsockopen($host, 80);
-        
+
         if($fp===false) { return false; };
 
         $data = http_build_query($_data);
@@ -475,8 +475,8 @@ function osc_mailBeauty($text, $params) {
         osc_base_url(),
         osc_page_title(),
         '<a href="' . osc_base_url() . '">' . osc_page_title() . '</a>',
-		date(osc_date_format()?osc_date_format():'Y-m-d').' '.date(osc_time_format()?osc_time_format():'H:i:s'),
-		date(osc_time_format()?osc_time_format():'H:i'),
+        date(osc_date_format()?osc_date_format():'Y-m-d').' '.date(osc_time_format()?osc_time_format():'H:i:s'),
+        date(osc_time_format()?osc_time_format():'H:i'),
         Params::getServerParam('REMOTE_ADDR')
     );
     $text = str_ireplace($kwords, $rwords, $text);
@@ -585,31 +585,34 @@ function osc_copyemz($file1,$file2){
 function osc_dbdump($path, $file) {
 
     require_once LIB_PATH . 'osclass/model/Dump.php';
-    if ( !is_writable($path) ) return -4;
+
+    if (!is_writable($path)) return -4;
     if($path == '') return -1;
 
     //checking connection
     $dump = Dump::newInstance();
-    if (!$dump) return -2;
 
-    $path .= $file;
+    if(!$dump) return -2;
+
+    $file_path = $path . $file;
+
     $result = $dump->showTables();
 
     if(!$result) {
         $_str = '';
-        $_str .= '/* no tables in ' . DB_NAME . ' */';
+        $_str .= '/* NO TABLES IN ' . DB_NAME . ' */';
         $_str .= "\n";
 
-        $f = fopen($path, "a");
+        $f = fopen($file_path, "a");
         fwrite($f, $_str);
         fclose($f);
 
         return -3;
     }
 
-    $_str = '/* OSCLASS MYSQL Autobackup (' . date(osc_date_format()?osc_date_format():'Y-m-d').' '.date(osc_time_format()?osc_time_format():'H:i:s') . ') */'."\n";
+    $_str = '/* OSCLASS EVOLUTION MYSQL AUTO BACKUP (' . date(osc_date_format() ? osc_date_format() : 'Y-m-d') . ' ' . date(osc_time_format() ? osc_time_format() : 'H:i:s') . ') */'."\n\n";
 
-    $f = fopen($path, "a");
+    $f = fopen($file_path, "a");
     fwrite($f, $_str);
     fclose($f);
 
@@ -619,21 +622,13 @@ function osc_dbdump($path, $file) {
         $tables[$tableName] = $tableName;
     }
 
-    $tables_order = array('t_locale', 't_country', 't_currency', 't_region', 't_city', 't_city_area', 't_widget', 't_admin', 't_user', 't_user_description', 't_category', 't_category_description', 't_category_stats', 't_item', 't_item_description', 't_item_location', 't_item_stats', 't_item_resource', 't_item_comment', 't_preference', 't_user_preferences', 't_pages', 't_pages_description', 't_plugin_category', 't_cron', 't_alerts', 't_keywords', 't_meta_fields', 't_meta_categories', 't_item_meta');
-    // Backup default Osclass tables in order, so no problem when importing them back
-    foreach($tables_order as $table) {
-        if(array_key_exists(DB_TABLE_PREFIX . $table, $tables)) {
-            $dump->table_structure($path, DB_TABLE_PREFIX . $table);
-            $dump->table_data($path, DB_TABLE_PREFIX . $table);
-            unset($tables[DB_TABLE_PREFIX . $table]);
-        }
+    foreach($tables as $index => $table) {
+        $dump->table_structure($path, $file, $table);
+        $dump->table_data($path, $file, $table);
     }
 
-    // Backup the rest of tables
-    foreach($tables as $table) {
-        $dump->table_structure($path, $table);
-        $dump->table_data($path, $table);
-    }
+    file_put_contents($file_path, file_get_contents($path . 'alter_tables.sql'), FILE_APPEND | LOCK_EX);
+    @unlink($path . 'alter_tables.sql');
 
     return 1;
 }
@@ -680,7 +675,7 @@ if( !function_exists('http_chunked_decode') ) {
         $len = strlen($chunk);
         $dechunk = null;
         while(($pos < $len)
-            && ($chunkLenHex = substr($chunk,$pos, ($newlineAt = strpos($chunk,"\n",$pos+1))-$pos)))
+              && ($chunkLenHex = substr($chunk,$pos, ($newlineAt = strpos($chunk,"\n",$pos+1))-$pos)))
         {
             if (! is_hex($chunkLenHex)) {
                 trigger_error('Value is not properly chunk encoded', E_USER_WARNING);
@@ -777,7 +772,7 @@ function download_fsockopen($sourceFile, $fileout = null, $post_data = null)
     if (!$fp) {
         return false;
     } else {
-        $ua  = Params::getServerParam('HTTP_USER_AGENT') . ' Osclass (v.' . osc_version() . ')';
+        $ua  = 'Osclass Evolution';
         $out = ($post_data!=null && is_array($post_data)?"POST":"GET") . " $link HTTP/1.1\r\n";
         $out .= "Host: $host\r\n";
         $out .= "User-Agent: $ua\r\n";
@@ -838,43 +833,50 @@ function download_fsockopen($sourceFile, $fileout = null, $post_data = null)
 
 function osc_downloadFile($sourceFile, $downloadedFile, $post_data = null)
 {
-    if(strpos($downloadedFile, "../")!==false || strpos($downloadedFile, "..\\")!==false) {
+    if(strpos($downloadedFile, "../") !== false || strpos($downloadedFile, "..\\") !== false) {
         return false;
     }
 
     if ( testCurl() ) {
         @set_time_limit(0);
-        $fp = @fopen (osc_content_path() . 'downloads/' . $downloadedFile, 'w+');
+        $fp = @fopen (osc_content_path() . 'downloads/oc-upgrade/' . $downloadedFile, 'w+');
+
         if($fp) {
             $ch = curl_init($sourceFile);
-            @curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-			@curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-            curl_setopt($ch, CURLOPT_USERAGENT, Params::getServerParam('HTTP_USER_AGENT') . ' Osclass (v.' . osc_version() . ')');
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Osclass Evolution');
             curl_setopt($ch, CURLOPT_FILE, $fp);
             @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_REFERER, osc_base_url());
 
-            if(stripos($sourceFile, 'https')!==false) {
+            if(stripos($sourceFile, 'https') !== false) {
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
             }
-            if($post_data!=null) {
+
+            if($post_data != null) {
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
             }
 
             curl_exec($ch);
+
+            $info = curl_getinfo($ch);
+
             curl_close($ch);
             fclose($fp);
-            return true;
+
+            return $info;
         } else {
             return false;
         }
-    } else if (testFsockopen()) { // test curl/fsockopen
-        $downloadedFile = osc_content_path() . 'downloads/' . $downloadedFile;
+    } else if (testFsockopen()) {
+        $downloadedFile = osc_content_path() . 'downloads/oc-upgrade/' . $downloadedFile;
+
         download_fsockopen($sourceFile, $downloadedFile);
+
         return true;
     }
+
     return false;
 }
 
@@ -885,8 +887,9 @@ function osc_file_get_contents($url, $post_data = null)
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         @curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-		@curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-        curl_setopt($ch, CURLOPT_USERAGENT, Params::getServerParam('HTTP_USER_AGENT') . ' Osclass (v.' . osc_version() . ')');
+        @curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_USERAGENT, Params::getServerParam('HTTP_USER_AGENT') . ' Osclass Evolution');
+//        curl_setopt($ch, CURLOPT_USERAGENT, 'Osclass Evolution');
         if( !defined('CURLOPT_RETURNTRANSFER') ) define('CURLOPT_RETURNTRANSFER', 1);
         @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_REFERER, osc_base_url());
@@ -1770,7 +1773,7 @@ function osc_calculate_location_slug($type) {
             break;
         default:
             return false;
-        break;
+            break;
     }
     $locations = $manager->listByEmptySlug();
     $locations_changed = 0;
@@ -1821,9 +1824,51 @@ function osc_do_upgrade() {
     /***********************
      **** DOWNLOAD FILE ****
      ***********************/
+    $source_file = osc_get_upgrade_download_url();
+
+    if($source_file) {
+        $tmp = explode('/', $source_file);
+        $filename = end($tmp);
+
+        $result = osc_downloadFile($source_file, $filename);
+
+
+    } else {
+        $message = __('Missing download URL');
+        $error = 1; // Missing download URL
+        $deleted = @unlink(ABS_PATH . '.maintenance');
+    }
+
+    if ($error == 5) {
+        $message .= "<br /><br />" . __('We had some errors upgrading your database. The follwing queries failed:') . implode("<br />", $sql_error_msg);
+    }
+
+    foreach ($perms as $k => $v) {
+        @chmod($k, $v);
+    }
+
+    return array('error' => $error, 'message' => $message, 'version' => @$data['s_name']);
+}
+
+function osc_do_upgrade1() {
+    $message = "";
+    $error = 0;
+    $sql_error_msg = "";
+    $rm_errors = 0;
+    $perms = osc_save_permissions();
+    osc_change_permissions();
+
+    $maintenance_file = ABS_PATH . '.maintenance';
+    $fileHandler = @fopen($maintenance_file, 'w');
+    fclose($fileHandler);
+
+    /***********************
+     **** DOWNLOAD FILE ****
+     ***********************/
     $data = osc_file_get_contents("https://osclass.org/latest_version_v1.php");
     $data = json_decode(substr($data, 1, strlen($data)-3), true);
     $source_file = $data['url'];
+
     if ($source_file != '') {
 
         $tmp = explode("/", $source_file);
@@ -1838,6 +1883,7 @@ function osc_do_upgrade() {
             @mkdir(osc_content_path().'downloads/oc-temp/', 0777);
             @mkdir($tmp_path, 0777);
             $res = osc_unzip_file(osc_content_path().'downloads/'.$filename, $tmp_path);
+
             if ($res == 1) { // Everything is OK, continue
                 /**********************
                  ***** COPY FILES *****
@@ -1951,6 +1997,24 @@ function osc_do_upgrade() {
         @chmod($k, $v);
     }
     return array('error' => $error, 'message' => $message, 'version' => @$data['s_name']);
+}
+
+/**
+ * @since: Osclass Evolution 4.3.0
+ */
+
+function osc_need_core_update($notificatiion = true) {
+    if(osc_get_latest_core_version() > osc_version()) {
+        if($notificatiion && strpos(osc_auto_update(), 'core') !== false && (osc_get_preference('core_upgrade_remind_later') && strtotime(osc_get_preference('core_upgrade_remind_later')) < time())) {
+            return true;
+        }
+
+        if(!$notificatiion) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function osc_do_auto_upgrade() {
@@ -2273,14 +2337,14 @@ if(!function_exists('hmacsha1')) {
         $ipad=str_repeat(chr(0x36),$blocksize);
         $opad=str_repeat(chr(0x5c),$blocksize);
         $hmac = pack(
+            'H*',$hashfunc(
+                ($key^$opad).pack(
                     'H*',$hashfunc(
-                        ($key^$opad).pack(
-                            'H*',$hashfunc(
-                                ($key^$ipad).$data
-                            )
-                        )
+                        ($key^$ipad).$data
                     )
-                );
+                )
+            )
+        );
         return bin2hex($hmac);
     }
 }

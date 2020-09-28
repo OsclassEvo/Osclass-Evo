@@ -101,7 +101,6 @@
     </div>
 </div>
 
-<input id="msg-success" type="hidden" value="<?php _e('Settings updated'); ?>" />
 <input id="msg-no-data" type="hidden" value="<?php _e('No data available in table'); ?>" />
 <input id="msg-confirm-delete-listing" type="hidden" value="<?php _e('Are you sure you want to delete this listing?'); ?>" />
 <input id="msg-confirm-delete-user" type="hidden" value="<?php _e('Are you sure you want to delete this user?'); ?>" />
@@ -119,10 +118,7 @@
 <input id="msg-confirm-delete-delete_city" type="hidden" value="<?php _e('Are you sure you want to delete this city?'); ?>" />
 <input id="msg-confirm-delete-plugin" type="hidden" value="<?php _e('Are you sure you want to delete this plugin?'); ?>" />
 <input id="msg-confirm-delete-category" type="hidden" value="<?php _e('This will also delete the listings under that category. This action cannot be undone. Are you sure you want to delete this category?'); ?>" />
-<input id="msg-delete-btn" type="hidden" value="<?php _e('Delete'); ?>" />
-<input id="msg-cancel-btn" type="hidden" value="<?php _e('Cancel'); ?>" />
 <input id="msg-confirm-delete-field" type="hidden" value="<?php _e('Are you sure you want to delete this custom field?'); ?>" />
-<input id="msg-confirm-action" type="hidden" value="<?php _e('Confirm action'); ?>" />
 <input id="msg-deleted-successfull" type="hidden" value="<?php _e('Deleted successfully'); ?>" />
 <input id="msg-stats-successfull" type="hidden" value="<?php _e('Сompleted successfully'); ?>" />
 <input id="msg-autocomplete-nothing-found" type="hidden" value="<?php _e('No results'); ?>" />
@@ -136,9 +132,6 @@
 <input id="msg-pages-not-selected" type="hidden" value="<?php _e('At least one Page must be selected!'); ?>" />
 <input id="msg-languages-not-selected" type="hidden" value="<?php _e('At least one Language must be selected!'); ?>" />
 <input id="msg-currencies-not-selected" type="hidden" value="<?php _e('At least one Currency must be selected!'); ?>" />
-<input id="url-ajax" type="hidden" value="<?php echo osc_admin_base_url(true); ?>?page=ajax&action=runhook&hook=" />
-<input id="url-admin-base-ajax" type="hidden" value="<?php echo osc_admin_base_url(true); ?>?page=ajax&action=" />
-<input id="url-base-ajax" type="hidden" value="<?php echo osc_base_url(true); ?>?page=ajax&action=" />
 
 <script src="<?php echo osc_current_admin_theme_js_url('dashboard.js?v=' . time()); ?>"></script>
 
@@ -155,8 +148,8 @@
         <p class="mb-1"><?php _e('From today, the Osclass is moving to a whole new level, and we sincerely hope that our work has been done not in vain!'); ?></p>
         <p class="mb-1"><?php _e('We will make every effort to make this CMS better and better every day, but without your help it will be very difficult to do.'); ?></p>
         <p class="mb-1"><?php printf(__('Therefore, please report all bugs you found to us on our forum: %s'), '<a href="https://forum.osclass-evo.com/forums/bugs/" target="_blank">' . __('Bugs Report') . '</a>'); ?></p>
-        <p class="mb-1"><?php printf(__('If you want to see new features here, please write to us on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/suggestions/" target="_blank">' . __('Suggestions') . '</a>'); ?></p>
-        <p class="mb-1"><?php printf(__('For all other questions, we will be glad to see you on our forum: %s or write to us by E-mail: %s'), '<a href="https://forum.osclass-evo.com/forums/" target="_blank">' . __('Forum') . '</a>', '<a href="mailto:support@osclass-evo.com" target="_blank">' . __('support@osclass-evo.com') . '</a>'); ?></p>
+        <p class="mb-1"><?php printf(__('If you want to see new features here, please write to us on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/user-suggestions/" target="_blank">' . __('Suggestions') . '</a>'); ?></p>
+        <p class="mb-1"><?php printf(__('For all other questions, we will be glad to see you on our forum: %s or write to us by E-mail: %s'), '<a href="https://forum.osclass-evo.com/" target="_blank">' . __('Forum') . '</a>', '<a href="mailto:support@osclass-evo.com" target="_blank">' . __('support@osclass-evo.com') . '</a>'); ?></p>
         <p class="mb-1"><?php _e('If you liked our work, buy us some beer - we will be very grateful:'); ?> <a id="ninja" href="javascript:;"><?php _e('Donate to us'); ?></a> :)</p>
         <hr class="mb-2">
         <p class="mb-1"><?php printf(__('Cheers, %s The %s team'), '<br>', '<a href="https://osclass-evo.com/" target="_blank">' . __('Osclass Evolution') . '</a>'); ?></p>
@@ -187,12 +180,12 @@
             <h3 class="mt-0"><?php _e('You have been using Osclass Evolution for a month now!'); ?></h3>
             <p class="mb-1"><?php _e('We noticed that you have been using the Osclass Evolution for a month now.'); ?></p>
             <p class="mb-1"><?php _e('We hope that during this time you were able to draw some conclusions on this script.'); ?></p>
-            <p class="mb-1"><?php printf(__('Please leave your feedback and rate the Osclass Evolution on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/feedback/" target="_blank">' . __('Post Feedback') . '</a>'); ?></p>
+            <p class="mb-1"><?php printf(__('Please leave your feedback and rate the Osclass Evolution on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/releases/" target="_blank">' . __('Post Feedback') . '</a>'); ?></p>
             <p class="mb-3"><?php _e('This will help us make the Oclass Evolution even better!'); ?></p>
             <p class="mb-1"><?php _e('And do not forget that:'); ?></p>
             <p class="mb-1"><?php printf(__('If you find a bug, let us know about it in our forum: %s'), '<a href="https://forum.osclass-evo.com/forums/bugs/" target="_blank">' . __('Bugs Report') . '</a>'); ?></p>
-            <p class="mb-1"><?php printf(__('If you want to see new features here, please write to us on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/suggestions/" target="_blank">' . __('Suggestions') . '</a>'); ?></p>
-            <p class="mb-1"><?php printf(__('For all other questions, we will be glad to see you on our forum: %s or write to us by E-mail: %s'), '<a href="https://forum.osclass-evo.com/forums/" target="_blank">' . __('Forum') . '</a>', '<a href="mailto:support@osclass-evo.com" target="_blank">' . __('support@osclass-evo.com') . '</a>'); ?></p>
+            <p class="mb-1"><?php printf(__('If you want to see new features here, please write to us on this page: %s'), '<a href="https://forum.osclass-evo.com/forums/user-suggestions/" target="_blank">' . __('Suggestions') . '</a>'); ?></p>
+            <p class="mb-1"><?php printf(__('For all other questions, we will be glad to see you on our forum: %s or write to us by E-mail: %s'), '<a href="https://forum.osclass-evo.com/" target="_blank">' . __('Forum') . '</a>', '<a href="mailto:support@osclass-evo.com" target="_blank">' . __('support@osclass-evo.com') . '</a>'); ?></p>
             <p class="mb-1"><?php _e('If you liked our work, buy us some beer - we will be very grateful:'); ?> <a id="ninja" href="javascript:;"><?php _e('Donate to us'); ?></a> :)</p>
             <hr class="mb-2">
             <p class="mb-1"><?php printf(__('Cheers, %s The %s team'), '<br>', '<a href="https://osclass-evo.com/" target="_blank">' . __('Osclass Evolution') . '</a>'); ?></p>
@@ -261,13 +254,13 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: $('#url-ajax').val() + 'sbfilters',
+            url: osc.ajax_url + 'sbfilters',
             data: {'color' : new_color}
         });
 
         $.notify({
             icon: "add_alert",
-            message: $('#msg-success').val()
+            message: osc.translations.msg_success
         },{
             type: 'success',
             newest_on_top: true,
@@ -295,13 +288,13 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: $('#url-ajax').val() + 'sbbackground',
+            url: osc.ajax_url + 'sbbackground',
             data: {'color' : new_color}
         });
 
         $.notify({
             icon: "add_alert",
-            message: $('#msg-success').val()
+            message: osc.translations.msg_success
         },{
             type: 'success',
             newest_on_top: true,
@@ -349,13 +342,13 @@ $(document).ready(function() {
       }
 
       $.ajax({
-            url: $('#url-ajax').val() + 'sbimage',
+            url: osc.ajax_url + 'sbimage',
             data: {'img' : new_image}
         });
 
         $.notify({
             icon: "add_alert",
-            message: $('#msg-success').val()
+            message: osc.translations.msg_success
         },{
             type: 'success',
             newest_on_top: true,
@@ -406,13 +399,13 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: $('#url-ajax').val() + 'sbimage_show',
+            url:  osc.ajax_url + 'sbimage_show',
             data: {'img_status' : img_status}
         });
 
         $.notify({
             icon: "add_alert",
-            message: $('#msg-success').val()
+            message: osc.translations.msg_success
         },{
             type: 'success',
             newest_on_top: true,

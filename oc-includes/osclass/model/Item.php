@@ -73,6 +73,7 @@
                 'b_premium',
                 's_ip',
                 'b_enabled',
+                'b_blocked',
                 'b_active',
                 'b_spam',
                 's_secret',
@@ -455,6 +456,7 @@
                 'i.b_enabled'       => 1,
                 'i.fk_i_user_id' => $userId
             );
+
             $this->dao->where($array_where);
             $this->dao->orderBy('i.pk_i_id', 'DESC');
             if($end!=null) {
@@ -613,7 +615,7 @@
             $this->dao->where("fk_i_user_id = $userId");
             //$this->dao->orderBy('pk_i_id', 'DESC');
 
-            if($itemType=='blocked') {
+            if($itemType == 'blocked') {
                 $this->dao->where('b_enabled', 0);
             } elseif($itemType != 'all') {
                 $this->dao->where('b_enabled', 1);

@@ -116,6 +116,7 @@
          */
         private $connErrorDesc  = 0;
 
+        public $connId;
 
         /** A list of incompatible SQL modes.
     	 *
@@ -296,6 +297,7 @@
             }
 
             $selectDb = $this->selectOsclassDb();
+
             if ( $selectDb == false ) {
                 $this->errorReport();
                 $this->releaseOsclassDb();
@@ -456,14 +458,15 @@
         function _connectToDb($host, $user, $password, &$connId)
         {
             if( OSC_DEBUG ) {
-                $connId = new mysqli($host, $user, $password);
+                $this->connId = $connId = new mysqli($host, $user, $password);
             } else {
-                $connId = @new mysqli($host, $user, $password);
+                $this->connId = $connId = @new mysqli($host, $user, $password);
             }
 
             if ( $connId->connect_errno ) {
                 return false;
             }
+
             $this->set_sql_mode(array(), $connId);
             return true;
         }

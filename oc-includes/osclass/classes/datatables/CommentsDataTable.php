@@ -146,6 +146,8 @@
                         $row['status'] = $status['text'];
                         $row['bulkactions'] = '<input type="checkbox" name="id[]" value="' . $aRow['pk_i_id']  . '" />';
                     } else {
+                        $actions = '';
+
                         // fill a row
                         $row['status-border'] = '';
                         $row['status'] = '<span class="badge ' . $status['evo-class'] . '">' . $status['text'] . '</span>';
@@ -180,14 +182,16 @@
                         $more_actions = '<div class="dropdown-menu">' . $more_options . '</div>' . PHP_EOL;
 
                         if( !$aRow['b_active'] ) {
-                            $btn_actions = '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url .'&amp;value=ACTIVE" rel="tooltip" class="btn btn-success" title="' . __('Activate') . '"><i class="material-icons">done</i><div class="ripple-container"></div></a>';
+                            $btn_actions = '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url .'&amp;value=ACTIVE" rel="tooltip" class="btn btn-success" title="' . __('Activate') . '"><i class="material-icons">done</i></a>';
+                        } else {
+                            $btn_actions = '';
                         }
 
-                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=comment_edit&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-warning" title="' . __('Edit') . '"><i class="material-icons">edit</i><div class="ripple-container"></div></a>';
+                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=comment_edit&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-warning" title="' . __('Edit') . '"><i class="material-icons">edit</i></a>';
                         
-                        $btn_actions .= '<a id="listing-delete" data-delete-type="comment" data-listing-id="' . $aRow['pk_i_id'] . '" href="' . osc_admin_base_url(true) . '?page=comments&amp;action=delete&amp;id[]=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-danger" title="' . __('Delete') . '"><i class="material-icons">delete</i><div class="ripple-container"></div></a>';
+                        $btn_actions .= '<a id="listing-delete" data-delete-type="comment" data-listing-id="' . $aRow['pk_i_id'] . '" href="' . osc_admin_base_url(true) . '?page=comments&amp;action=delete&amp;id[]=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-danger" title="' . __('Delete') . '"><i class="material-icons">delete</i></a>';
                         
-                        $btn_actions .= '<div class="btn-group"><a href="javascript:;"  class="btn btn-info" data-toggle="dropdown"><i class="material-icons">more_horiz</i><div class="ripple-container"></div></a>' . $more_actions . '</div>';
+                        $btn_actions .= '<div class="btn-group"><a href="javascript:;"  class="btn btn-info" data-toggle="dropdown"><i class="material-icons">more_horiz</i></a>' . $more_actions . '</div>';
 
                         $row['actions'] = $btn_actions;
                     }
@@ -196,6 +200,7 @@
                         $user = User::newInstance()->findByPrimaryKey( $aRow['fk_i_user_id'] );
                         $aRow['s_author_name'] = $user['s_email'];
                     }
+
                     $row['author'] = $aRow['s_author_name'] . ' (<a target="_blank" href="' . osc_item_url() . '">' . osc_item_title() . '</a>)'. $actions;
                     $row['comment'] = $aRow['s_body'];
                     $row['date'] = osc_format_date($aRow['dt_pub_date']);

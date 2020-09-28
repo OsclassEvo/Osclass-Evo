@@ -333,8 +333,8 @@ function customHead() {
 
         function show_region(code, name, is_clicked = false) {
             if(is_clicked) {
-                $('a.btn-view-country[data-country="' + code + '"]').removeClass('btn-light').addClass('btn-info');
-                $('a.btn-view-country[data-country!="' + code + '"]').removeClass('btn-info').addClass('btn-light');
+                $('a.btn-view-country[data-country="' + code + '"]').removeClass('text-dark').addClass('text-info');
+                $('a.btn-view-country[data-country!="' + code + '"]').removeClass('text-info').addClass('text-dark');
             }
 
             $.ajax({
@@ -350,9 +350,9 @@ function customHead() {
 
                     $.each(json, function(i, val){
                         if(selected_region && selected_region == val.pk_i_id) {
-                            view_class = 'btn-info';
+                            view_class = 'info';
                         } else {
-                            view_class = 'btn-ligth'
+                            view_class = 'dark'
                         }
 
                         html += '<tr>';
@@ -365,9 +365,9 @@ function customHead() {
                         html +=  val.s_name;
                         html += '</td>';
                         html += '<td class="col-actions w-25 text-right">';
-                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn btn-warning edit_region" title="<?php  _e('Edit'); ?>" data-id="' + val.pk_i_id + '" data-name="' + val.s_name + '" data-slug="' + val.s_slug + '" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editRegionModal"><i class="material-icons">edit</i></a>';
-                        html += '<a id="listing-delete" data-delete-type="delete_region" data-listing-id="' + val.pk_i_id + '" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_region&id[]=' + val.pk_i_id + '" rel="tooltip" class="btn btn-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>';
-                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn ' + view_class + ' btn-view-region" data-region="' + val.pk_i_id + '" onclick="show_city(' + val.pk_i_id + ', true);"  title="<?php  _e('View more'); ?>"><i class="material-icons">arrow_right_alt</i></a>';
+                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn-icon text-warning edit_region" title="<?php  _e('Edit'); ?>" data-id="' + val.pk_i_id + '" data-name="' + val.s_name + '" data-slug="' + val.s_slug + '" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editRegionModal"><i class="material-icons">edit</i></a>';
+                        html += '<a id="listing-delete" data-delete-type="delete_region" data-listing-id="' + val.pk_i_id + '" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_region&id[]=' + val.pk_i_id + '" rel="tooltip" class="btn-icon text-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>';
+                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn-icon text-' + view_class + ' btn-view-region" data-region="' + val.pk_i_id + '" onclick="show_city(' + val.pk_i_id + ', true);"  title="<?php  _e('View more'); ?>"><i class="material-icons">arrow_right_alt</i></a>';
                         html += '</td>';
                         html += '</tr>';
                     });
@@ -385,8 +385,8 @@ function customHead() {
 
         function show_city(region_id, is_clicked = false) {
             if(is_clicked) {
-                $('.btn-view-region[data-region="' + region_id + '"]').removeClass('btn-light').addClass('btn-info');
-                $('.btn-view-region[data-region!="' + region_id + '"]').removeClass('btn-info').addClass('btn-light');
+                $('.btn-view-region[data-region="' + region_id + '"]').removeClass('text-dark').addClass('text-info');
+                $('.btn-view-region[data-region!="' + region_id + '"]').removeClass('text-info').addClass('text-dark');
             }
 
             $.ajax({
@@ -408,8 +408,8 @@ function customHead() {
                         html +=  val.s_name;
                         html += '</td>';
                         html += '<td class="col-actions w-25 text-right">';
-                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn btn-warning edit_city" title="<?php  _e('Edit'); ?>" data-id="' + val.pk_i_id + '" data-name="' + val.s_name + '" data-slug="' + val.s_slug + '" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editCityModal"><i class="material-icons">edit</i></a>';
-                        html += '<a id="listing-delete" data-delete-type="delete_city" data-listing-id="' + val.pk_i_id + '" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_city&id[]=' + val.pk_i_id + '" rel="tooltip" class="btn btn-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>';
+                        html += '<a href="javascript:void(0);" rel="tooltip" class="btn-icon text-warning edit_city" title="<?php  _e('Edit'); ?>" data-id="' + val.pk_i_id + '" data-name="' + val.s_name + '" data-slug="' + val.s_slug + '" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editCityModal"><i class="material-icons">edit</i></a>';
+                        html += '<a id="listing-delete" data-delete-type="delete_city" data-listing-id="' + val.pk_i_id + '" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_city&id[]=' + val.pk_i_id + '" rel="tooltip" class="btn-icon text-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>';
                         html += '</td>';
                         html += '</tr>';
                     });
@@ -771,9 +771,9 @@ $aCountries = __get('aCountries');
                         <?php foreach($aCountries as $country): ?>
                             <?php
                             if(Params::getParam('country_code') && $country['pk_c_code'] == Params::getParam('country_code')) {
-                                $view_class = 'btn-info';
+                                $view_class = 'info';
                             } else {
-                                $view_class = 'btn-light';
+                                $view_class = 'dark';
                             }
                             ?>
                             <tr>
@@ -791,9 +791,9 @@ $aCountries = __get('aCountries');
                                     <?php echo $country['s_name']; ?>
                                 </td>
                                 <td class="col-actions w-25 text-right">
-                                    <a href="javascript:void(0);" rel="tooltip" class="btn btn-warning edit_country" title="<?php  _e('Edit'); ?>" data-name="<?php echo osc_esc_html($country['s_name']);?>" data-code="<?php echo $country['pk_c_code'];?>" data-slug="<?php echo $country['s_slug'];?>" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editCountryModal"><i class="material-icons">edit</i></a>
-                                    <a id="listing-delete" data-delete-type="delete_country" data-listing-id="<?php echo $country['pk_c_code']; ?>" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_country&id[]=<?php echo $country['pk_c_code']; ?>" rel="tooltip" class="btn btn-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>
-                                    <a href="javascript:void(0);" rel="tooltip" class="btn <?php echo $view_class; ?> btn-view-country" data-country="<?php echo $country['pk_c_code'];?>" onclick="show_region('<?php echo osc_esc_js($country['pk_c_code']); ?>', '<?php echo osc_esc_js($country['s_name']); ?>', true);" title="<?php  _e('View more'); ?>"><i class="material-icons">arrow_right_alt</i></a>
+                                    <a href="javascript:void(0);" rel="tooltip" class="btn-icon text-warning edit_country" title="<?php  _e('Edit'); ?>" data-name="<?php echo osc_esc_html($country['s_name']);?>" data-code="<?php echo $country['pk_c_code'];?>" data-slug="<?php echo $country['s_slug'];?>" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#editCountryModal"><i class="material-icons">edit</i></a>
+                                    <a id="listing-delete" data-delete-type="delete_country" data-listing-id="<?php echo $country['pk_c_code']; ?>" href="<?php echo osc_admin_base_url(true); ?>?page=settings&action=locations&type=delete_country&id[]=<?php echo $country['pk_c_code']; ?>" rel="tooltip" class="btn-icon text-danger" title="<?php  _e('Delete'); ?>"><i class="material-icons">delete</i></a>
+                                    <a href="javascript:void(0);" rel="tooltip" class="btn-icon text-<?php echo $view_class; ?> btn-view-country" data-country="<?php echo $country['pk_c_code'];?>" onclick="show_region('<?php echo osc_esc_js($country['pk_c_code']); ?>', '<?php echo osc_esc_js($country['s_name']); ?>', true);" title="<?php  _e('View more'); ?>"><i class="material-icons">arrow_right_alt</i></a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

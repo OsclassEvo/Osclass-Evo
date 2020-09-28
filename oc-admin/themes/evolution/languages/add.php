@@ -58,10 +58,7 @@ osc_add_hook('admin_page_header','customPageHeader');
                                 <div class="row no-gutters">
                                     <label class="col-12 col-sm-3 col-xl-1 col-form-label text-left"><?php _e('Language package (.zip)'); ?></label>
                                     <div class="col-12 col-sm-9 col-xl-10">
-                                    <span class="btn btn-round btn-success btn-file mt-3">
-                                        <span class="fileinput-new" input-file-id="package"><?php _e('Choose File'); ?></span>
-                                        <input id="package" type="file" name="package" onchange="getFileName('package');">
-                                    </span>
+                                        <input id="package" type="file" name="package">
                                     </div>
                                 </div>
                             </div>

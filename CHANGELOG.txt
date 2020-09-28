@@ -1,3 +1,31 @@
+Osclass Evo 4.3.0 2020-09-23
+------------------------
+- Added: the ability to check for Osclass Evolution upgrades
+- Added: the ability to install Osсlass Evolution upgrades via the REST API
+- Added: the ability to scroll the page by dragging the mouse (to activate this feature, you must enable it in the settings: "Scrolling dragging mouse")
+- Improved: and changed the interface for changing category positions by dragging them
+- Improved: some interface elements: sidebar menu, button for uploading files, etc
+- Improved: the database dump function has been completely redesigned (previously, it did not work correctly when installing some plugins)
+- Fixed: the time of the last user visit is now displayed in the admin panel
+- Fixed: a bug related to the "date" field in Custom fields
+- Fixed: a bug due to which it was impossible to edit some Custom fields
+- Fixed: some bugs in the layout for the mobile version of the site
+- Multiple minor fixes and improvements
+
+Osclass Evo 4.2.0 2020-08-11
+------------------------
+- Added: Settings for managing the redirect page after the listing is published (you can choose either to the category page or to the page of the published listing)
+- Added: Settings for managing listing moderation both when publishing and editing listing
+- Added: Notifications by email to the user and administrator when the "Listing Moderation" option is enabled
+- Added: Ability to filter listings that are under moderation in the admin panel
+- Added: User can change the primary uploaded image on the listings publishing page
+- Updated: Fine Uploader - image uploader plugin to the latest version 5.16.2
+- Improved: Some interface elements in the admin panel
+- Fixed: Layout in the Bender template
+- Fixed: Inability to delete comments in admin panel
+- Fixed: Some bugs sometimes occurring during script installation
+- Multiple minor fixes and improvements
+
 Osclass Evo 4.1.0 2020-07-15
 ------------------------
 - Added the ability to disable preload pages in the admin panel

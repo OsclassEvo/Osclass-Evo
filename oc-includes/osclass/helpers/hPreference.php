@@ -276,6 +276,33 @@
     }
 
     /**
+     * Get redirection page after item posted
+     *
+     * @return string
+     */
+    function osc_item_posted_redirect() {
+        return (getPreference('item_posted_redirect'));
+    }
+
+    /**
+     * Gets if the items should be moderation after items posted
+     *
+     * @return boolean
+     */
+    function osc_items_posted_moderation_enabled() {
+        return (getBoolPreference('enableField#listingsPostedModeration@items'));
+    }
+
+    /**
+     * Gets if the items should be moderation after items edited
+     *
+     * @return boolean
+     */
+    function osc_items_edited_moderation_enabled() {
+        return (getBoolPreference('enableField#listingsEditedModeration@items'));
+    }
+
+    /**
      * Gets if the prices are o not enabled on the item's form
      *
      * @return boolean
@@ -945,12 +972,21 @@
     }
 
     /**
-     * Gets if preloading pages in tha admin panel are enabled or not
+     * Gets if preloading pages in the admin panel are enabled or not
      *
      * @return boolean
      */
     function osc_admin_pages_preloading() {
         return(getPreference('admin_pages_preloading'));
+    }
+
+    /**
+     * Gets if scrolling pages by dragging the mouse in the admin panel are enabled or not
+     *
+     * @return boolean
+     */
+    function osc_admin_scrolling_mouse() {
+        return(getPreference('admin_scrolling_mouse'));
     }
 
     /**

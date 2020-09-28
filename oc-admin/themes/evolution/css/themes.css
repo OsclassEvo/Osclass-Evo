@@ -53,6 +53,20 @@ li {
     border-color: #008697;
     cursor: pointer !important;
 }
+.card .btn.btn-rose {
+    color: #fff;
+    background-color: #e91e63;
+    border-color: #e91e63;
+    box-shadow: 0 2px 2px 0 rgba(233,30,99,.14), 0 3px 1px -2px rgba(233,30,99,.2), 0 1px 5px 0 rgba(233,30,99,.12);
+}
+.card .btn.btn-rose.focus, .card .btn.btn-rose:focus, .card .btn.btn-rose:hover {
+    color: #fff;
+    background-color: #ea2c6d;
+    border-color: #b8124a;
+}
+.card .fileinput-new.btn-file.mt-3 {
+    margin-top: .3125rem!important;
+}
 .card .btn.btn-sm,
 .card .btn.btn-mini {
     height: 30px !important;

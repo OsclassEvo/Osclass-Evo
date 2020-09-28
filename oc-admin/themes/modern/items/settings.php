@@ -69,6 +69,16 @@
                 <fieldset>
                     <div class="form-horizontal">
                         <div class="form-row">
+                            <div class="form-label"><?php _e('Redirect after item posted'); ?></div>
+                            <div class="form-controls">
+                                <select name="item_posted_redirect">
+                                    <option value="category" <?php if(osc_item_posted_redirect() == 'category') echo 'selected'; ?>><?php _e('Category Page'); ?></option>
+                                    <option value="item" <?php if(osc_item_posted_redirect() == 'item') echo 'selected'; ?>><?php _e('Item Page'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
                             <div class="form-label"> <?php _e('Settings'); ?></div>
                             <div class="form-controls">
                                 <div class="form-label-checkbox">
@@ -184,6 +194,20 @@
                                         <input id="editor" class="form-check-input" type="checkbox" <?php echo (osc_editor_enabled_at_items() ? 'checked' : ''); ?> name="enableField#editor@items" value="1">
                                         <?php _e('Admin panel description editor'); ?>
                                     </label>
+                                    <div class="separate-top-medium">
+                                        <label>
+                                            <input type="checkbox" <?php echo ( osc_items_posted_moderation_enabled() ? 'checked' : '' ); ?> name="enableField#listingsPostedModeration@items" value="1"  />
+                                            <?php _e('Listings posted moderation'); ?>
+                                        </label>
+                                    </div>
+
+                                    <div class="separate-top-medium">
+                                        <label>
+                                            <input type="checkbox" <?php echo ( osc_items_edited_moderation_enabled() ? 'checked' : '' ); ?> name="enableField#listingsEditedModeration@items" value="1"  />
+                                            <?php _e('Listings edited moderation'); ?>
+                                        </label>
+                                    </div>
+
                                     <div class="separate-top-medium">
                                         <label>
                                             <input type="checkbox" <?php echo ( osc_price_enabled_at_items() ? 'checked' : '' ); ?> name="enableField#f_price@items" value="1"  />

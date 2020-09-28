@@ -345,7 +345,7 @@ switch( $step ) {
         <script type="text/javascript" src="<?php echo osc_get_absolute_url(); ?>oc-admin/themes/evolution/js/plugins/jquery.validate.min.js"></script>
         <script type="text/javascript" src="<?php echo osc_get_absolute_url(); ?>oc-admin/themes/evolution/js/plugins/bootstrap-selectpicker.js"></script>
         <script type="text/javascript" src="<?php echo osc_get_absolute_url(); ?>oc-admin/themes/evolution/js/plugins/bootstrap-notify.js"></script>
-        <script type="text/javascript" src="<?php echo osc_get_absolute_url(); ?>oc-admin/themes/evolution/js/dashboard.js?v="></script>
+        <script type="text/javascript" src="<?php echo osc_get_absolute_url(); ?>oc-admin/themes/evolution/js/dashboard.js?v=<?php echo time(); ?>"></script>
 
         <script>
             $(document).ready(function() {
@@ -359,6 +359,7 @@ switch( $step ) {
                 md.checkFullPageBackgroundImage();
 
                 $('.off-canvas-sidebar').perfectScrollbar();
+                $('.off-canvas-sidebar').perfectScrollbar('update');
             });
         </script>
     </body>

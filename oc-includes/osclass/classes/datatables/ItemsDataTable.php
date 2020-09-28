@@ -272,10 +272,10 @@ class ItemsDataTable extends DataTable
                     } else {
                         $options_more[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=ACTIVE">' . __('Activate') .'</a>';
                     }
-                    if($aRow['b_enabled']) {
-                        $options_more[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=DISABLE">' . __('Block') .'</a>';
-                    } else {
+                    if(!$aRow['b_enabled'] && $aRow['b_blocked']) {
                         $options_more[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=ENABLE">' . __('Unblock') .'</a>';
+                    } else {
+                        $options_more[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=DISABLE">' . __('Block') .'</a>';
                     }
                     if($aRow['b_premium']) {
                         $options_more[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=status_premium&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=0">' . __('Unmark as premium') .'</a>';
@@ -289,6 +289,10 @@ class ItemsDataTable extends DataTable
                     }
 
                     // general options
+                    if(!$aRow['b_enabled'] && !$aRow['b_blocked']) {
+                        $options[] = '<a href="' . osc_item_approve_url( $aRow['pk_i_id'] ) . '">' . __('Approve') .'</a>';
+                    }
+                    
                     $options[] = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=item_edit&amp;id=' . $aRow['pk_i_id'] . '">' . __('Edit') . '</a>';
                     $options[] = '<a onclick="return delete_dialog(\'' . $aRow['pk_i_id'] . '\');" href="' . osc_admin_base_url(true) . '?page=items&amp;action=delete&amp;id[]=' . $aRow['pk_i_id'] . '">' . __('Delete') . '</a>';
 
@@ -327,6 +331,7 @@ class ItemsDataTable extends DataTable
                     $row['bulkactions'] = '<input type="checkbox" name="id[]" value="' . $aRow['pk_i_id'] . '" active="' . $aRow['b_active'] . '" blocked="' . $aRow['b_enabled'] . '"/>';
                 } else {
                     $actions = '';
+                    $btn_actions = '';
 
                     // fill a row
                     $row['status-border'] = '';
@@ -347,10 +352,10 @@ class ItemsDataTable extends DataTable
                     } else {
                         $options_more[] = '<a class="dropdown-item"  href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=ACTIVE">' . __('Activate') .'</a>';
                     }
-                    if($aRow['b_enabled']) {
-                        $options_more[] = '<a class="dropdown-item" href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=DISABLE">' . __('Block') .'</a>';
-                    } else {
+                    if(!$aRow['b_enabled'] && $aRow['b_blocked']) {
                         $options_more[] = '<a class="dropdown-item" href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=ENABLE">' . __('Unblock') .'</a>';
+                    } else {
+                        $options_more[] = '<a class="dropdown-item" href="' . osc_admin_base_url(true) . '?page=items&amp;action=status&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=DISABLE">' . __('Block') .'</a>';
                     }
                     if($aRow['b_premium']) {
                         $options_more[] = '<a class="dropdown-item" href="' . osc_admin_base_url(true) . '?page=items&amp;action=status_premium&amp;id=' . $aRow['pk_i_id'] . '&amp;' . $csrf_token_url . '&amp;value=0">' . __('Unmark as premium') .'</a>';
@@ -378,21 +383,25 @@ class ItemsDataTable extends DataTable
 
                     $more_actions = '<div class="dropdown-menu">' . $more_options . '</div>' . PHP_EOL;
 
-                    $btn_actions = '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=item_edit&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-warning" title="' . __('Edit') . '"><i class="material-icons">edit</i><div class="ripple-container"></div></a>';
+                    if(!$aRow['b_enabled'] && !$aRow['b_blocked']) {
+                        $btn_actions .= '<a href="' . osc_item_approve_url( $aRow['pk_i_id'] ) . '" rel="tooltip" class="btn btn-success" title="' . __('Approve') . '"><i class="material-icons">done_all</i></a>';
+                    }
 
-                    $btn_actions .= '<a id="listing-delete" data-delete-type="listing" data-listing-id="' . $aRow['pk_i_id'] . '" href="' . osc_admin_base_url(true) . '?page=items&amp;action=delete&amp;id[]=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-danger" title="' . __('Delete') . '"><i class="material-icons">delete</i><div class="ripple-container"></div></a>';
+                    $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=items&amp;action=item_edit&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-warning" title="' . __('Edit') . '"><i class="material-icons">edit</i></a>';
+
+                    $btn_actions .= '<a id="listing-delete" data-delete-type="listing" data-listing-id="' . $aRow['pk_i_id'] . '" href="' . osc_admin_base_url(true) . '?page=items&amp;action=delete&amp;id[]=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-danger" title="' . __('Delete') . '"><i class="material-icons">delete</i></a>';
 
                     // only show if there are data
                     // speaker_notes textsms
                     if(ItemComment::newInstance()->totalComments( $aRow['pk_i_id'] ) > 0) {
-                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=list&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-primary" title="' . __('View comments') . '"><i class="material-icons">textsms</i><div class="ripple-container"></div></a>';
+                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=comments&amp;action=list&amp;id=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-primary" title="' . __('View comments') . '"><i class="material-icons">textsms</i></a>';
                     }
 
                     if(ItemResource::newInstance()->countResources( $aRow['pk_i_id'] ) > 0) {
-                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=media&amp;action=list&amp;resourceId=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-light" title="' . __('View media') . '"><i class="material-icons">image</i><div class="ripple-container"></div></a>';
+                        $btn_actions .= '<a href="' . osc_admin_base_url(true) . '?page=media&amp;action=list&amp;resourceId=' . $aRow['pk_i_id'] . '" rel="tooltip" class="btn btn-light" title="' . __('View media') . '"><i class="material-icons">image</i></a>';
                     }
 
-                    $btn_actions .= '<div class="btn-group"><a href="javascript:;"  class="btn btn-info" data-toggle="dropdown"><i class="material-icons">more_horiz</i><div class="ripple-container"></div></a>' . $more_actions . '</div>';
+                    $btn_actions .= '<div class="btn-group"><a href="javascript:;"  class="btn btn-info" data-toggle="dropdown"><i class="material-icons">more_horiz</i></a>' . $more_actions . '</div>';
 
                     $row['actions'] = $btn_actions;
                 }
@@ -610,14 +619,22 @@ class ItemsDataTable extends DataTable
                 $this->mSearch->addItemConditions(DB_TABLE_PREFIX.'t_item.b_active = '.$v);
                 $this->withFilters = true;
             }
+
             if($k == 'b_enabled' && $v != '') {
-                $this->mSearch->addItemConditions(DB_TABLE_PREFIX.'t_item.b_enabled = '.$v);
+                if($v == 'moderation') {
+                    $this->mSearch->addItemConditions(DB_TABLE_PREFIX.'t_item.b_enabled = 0 AND ' . DB_TABLE_PREFIX . 't_item.b_blocked = 0');
+                } else {
+                    $this->mSearch->addItemConditions(DB_TABLE_PREFIX.'t_item.b_enabled = '.$v);
+                }
+
                 $this->withFilters = true;
             }
+
             if($k == 'b_spam' && $v != '') {
                 $this->mSearch->addItemConditions(DB_TABLE_PREFIX.'t_item.b_spam = '.$v);
                 $this->withFilters = true;
             }
+
             if($k == 'user' && $v != '') {
                 $no_user_email = $v;
             }
@@ -677,15 +694,16 @@ class ItemsDataTable extends DataTable
     }
 
     /**
-     * Get the status of the row. There are five status:
+     * Get the status of the row. There are six status:
      *     - spam
      *     - blocked
      *     - inactive
      *     - premium
      *     - active
      *     - expired
+     *     - under moderation
      *
-     * @since 3.2 -> 3.4.x
+     * @since 3.2 -> 3.4.x -> 4.1.1
      *
      * @return array Array with the class and text of the status of the listing in this row. Example:
      *     array(
@@ -700,6 +718,14 @@ class ItemsDataTable extends DataTable
                 'class' => 'status-spam',
                 'evo-class' => 'badge-danger',
                 'text'  => __('Spam')
+            );
+        }
+
+        if( osc_item_is_under_moderation() ) {
+            return array(
+                'class' => 'status-under-moderation',
+                'evo-class' => 'badge-warning',
+                'text'  => __('Under Moderation')
             );
         }
 

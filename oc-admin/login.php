@@ -37,21 +37,23 @@ class CAdminLogin extends AdminBaseModel
                 $url_redirect  = osc_get_http_referer();
                 $page_redirect = '';
                 $password = Params::getParam('password', false, false);
+
                 if(preg_match('|[\?&]page=([^&]+)|', $url_redirect.'&', $match)) {
                     $page_redirect = $match[1];
                 }
-                if($page_redirect=='' || $page_redirect=='login' || $url_redirect=='') {
+
+                if($page_redirect == '' || $page_redirect == 'login' || $url_redirect == '') {
                     $url_redirect = osc_admin_base_url();
                 }
 
                 if( Params::getParam('user') == '' ) {
                     osc_add_flash_error_message( _m('The username field is empty'), 'admin');
-                    $this->redirectTo( osc_admin_base_url(true)."?page=login" );
+                    $this->redirectTo( osc_admin_base_url(true) . "?page=login" );
                 }
 
                 if( Params::getParam('password', false, false) == '' ) {
                     osc_add_flash_error_message( _m('The password field is empty'), 'admin');
-                    $this->redirectTo( osc_admin_base_url(true)."?page=login" );
+                    $this->redirectTo( osc_admin_base_url(true) . "?page=login" );
                 }
 
                 // fields are not empty
@@ -66,7 +68,7 @@ class CAdminLogin extends AdminBaseModel
                     osc_add_flash_error_message( sprintf(_m('Sorry, incorrect password. <a href="%s">Have you lost your password?</a>'), osc_admin_base_url(true) . '?page=login&amp;action=recover' ), 'admin');
                     $this->redirectTo( osc_admin_base_url(true)."?page=login" );
                 } else {
-                    if (@$admin['s_password']!='') {
+                    if (@$admin['s_password'] != '') {
                         if (preg_match('|\$2y\$([0-9]{2})\$|', $admin['s_password'], $cost)) {
                             if ($cost[1] != BCRYPT_COST) {
                                 Admin::newInstance()->update(

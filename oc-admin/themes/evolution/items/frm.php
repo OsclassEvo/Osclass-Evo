@@ -539,7 +539,7 @@ if($new_item) {
                             <?php printLocaleDescription(osc_get_locales()); ?>
 
                             <?php if(osc_price_enabled_at_items()): ?>
-                                <div class="row no-gutters price mt-3 mt-sm-0 mr-xl-5">
+                                <div class="row no-gutters price mt-3 mr-xl-5">
                                     <div class="col-5 col-sm-8">
                                         <div class="form-group">
                                             <label for="price" class="bmd-label-floating"><?php _e('Price'); ?></label>

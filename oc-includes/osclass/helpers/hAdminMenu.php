@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
     /**
      * Helper Menu Admin
      * @package Osclass
@@ -186,7 +185,7 @@
         $something_selected = false;
         $adminMenu          = AdminMenu::newInstance();
         $aMenu              = $adminMenu->get_array_menu();
-        
+
         $current_menu_id    = osc_current_menu();
         $is_moderator       = osc_is_moderator();
 
@@ -253,20 +252,20 @@
 
         $value = array();
         $plugin_wrapper = false;
-        
+
         foreach($aMenu as $key => $value) {
 
             $sSubmenu   = '';
             $credential = $value[3];
 
             if(!$is_moderator || ($is_moderator && $credential == 'moderator')) { // show
-                
-                if( $current_menu == $value[2] ) { 
-                    $main_menu_active = 'active'; $main_menu_expanded = 'aria-expanded="true"'; $main_menu_opened = 'show'; 
+
+                if( $current_menu == $value[2] ) {
+                    $main_menu_active = 'active'; $main_menu_expanded = 'aria-expanded="true"'; $main_menu_opened = 'show';
                 } else {
                     $main_menu_active      = ''; $main_menu_expanded = ''; $main_menu_opened = '';
                 }
-                
+
                 if(array_key_exists('sub', $value)) {
                     // submenu
                     $aSubmenu = $value['sub'];
@@ -341,10 +340,6 @@
 
                             $credential_sub = isset($aSub[4]) ? $aSub[4] : $aSub[3];
 
-                            $expr = '/(?<=\s|^)[A-Za-zА-Яа-яё]/u';
-                            preg_match_all($expr, $aSub[0], $matches);
-                            $abbr = implode('', $matches[0]);
-
                             if(!$is_moderator || ($is_moderator && $credential_sub == 'moderator')) { // show
                                 if(substr($aSub[1], 0, 8) == "divider_" && strpos($aSub[2], '_menu') !== false) {
                                     continue;
@@ -368,7 +363,7 @@
                                         $plugin_menu_active = ''; $plugin_menu_expanded = ''; $plugin_menu_opened = '';
                                     }
 
-                                    $sSubmenu .= '<li class="nav-item ' . $plugin_menu_active . '"><a class="nav-link" data-toggle="collapse" ' . $plugin_menu_expanded . ' href="#' . $kSub . '"><span class="sidebar-mini">' . strtoupper($abbr) . '</span><span class="sidebar-normal">' . $aSub[0] . '<b class="caret"></b></span></a>'.PHP_EOL;
+                                    $sSubmenu .= '<li class="nav-item ' . $plugin_menu_active . '"><a class="nav-link" data-toggle="collapse" ' . $plugin_menu_expanded . ' href="#' . $kSub . '"><span class="sidebar-normal">' . $aSub[0] . '<b class="caret"></b></span></a>'.PHP_EOL;
 
                                     $sSubmenu .= '<div class="collapse plugin-submenu ' . $plugin_menu_opened . '" id="divider_' . $divider . '_divider">' . PHP_EOL;
                                     $sSubmenu .= '<ul class="nav">' . PHP_EOL;
@@ -376,7 +371,7 @@
                                     if(!empty($divider) && strpos($aSub[2], $divider) !== false) {
                                         (osc_admin_base_url(true) . '?' . $actual_url == $aSub[1]) ? $plugin_sub_menu_active = 'active' : $plugin_sub_menu_active = '';
 
-                                        $sSubmenu .= '<li class="nav-item ' . $plugin_sub_menu_active . '"><a class="nav-link" href="'.$aSub[1].'"><span class="sidebar-mini">' . strtoupper($abbr) . '</span><span class="sidebar-normal"> '.$aSub[0].' </span></a></li>'.PHP_EOL;
+                                        $sSubmenu .= '<li class="nav-item ' . $plugin_sub_menu_active . '"><a class="nav-link" href="'.$aSub[1].'"><span class="sidebar-normal"> '.$aSub[0].' </span></a></li>'.PHP_EOL;
 
                                         $plugin_wrapper = true;
                                     } else {
@@ -388,7 +383,7 @@
                                             $plugin_wrapper = false;
                                         }
 
-                                        $sSubmenu .= '<li class="nav-item ' . $sub_menu_active . '"><a class="nav-link" href="'.$aSub[1].'"><span class="sidebar-mini">' . strtoupper($abbr) . '</span><span class="sidebar-normal"> '.$aSub[0].' </span></a></li>'.PHP_EOL;
+                                        $sSubmenu .= '<li class="nav-item ' . $sub_menu_active . '"><a class="nav-link" href="'.$aSub[1].'"><span class="sidebar-normal"> '.$aSub[0].' </span></a></li>'.PHP_EOL;
 
                                         $divider = '';
                                     }
@@ -443,7 +438,7 @@
                         $icon = '<i class="material-icons">apps</i>';
                         break;
                 }
-                
+
                 if(array_key_exists('sub', $value)) {
                     $href = 'data-toggle="collapse" ' . $main_menu_expanded . ' href="#' . $key . '"';
                     $url_title = $icon . '<p> ' . $value[0] . ' <b class="caret"></b></p>';
@@ -452,7 +447,7 @@
                     $href = 'href="' . $value[1] . '"';
                     $url_title = $icon . '<p> ' . $value[0] . ' </p>';
                 }
-                
+
                 $sMenu .= '<li class="nav-item ' . $main_menu_active . '">'.PHP_EOL;
                 $sMenu .= '<a class="nav-link" ' . $href . '>' . $url_title . '</a>'.PHP_EOL;
                 $sMenu .= $sSubmenu;
@@ -462,7 +457,7 @@
 
         $sMenu .= '</ul>'.PHP_EOL;
         $sMenu .= '<!-- menu end -->'.PHP_EOL;
-        
+
         echo $sMenu;
     }
 
